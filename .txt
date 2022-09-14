@@ -12,3 +12,12 @@ command:
 command:
 command:
 command:
+
+
+
+dark
+black: #0D0E0F
+link text: background: #6B4EFF; color: #6B4EFF
+
+light
+white #D9D9D9
