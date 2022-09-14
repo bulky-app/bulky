@@ -1,1 +1,14 @@
-npx expo install react-native-web@~0.18.7 react-dom@18.0.0 @expo/webpack-config@^0.17.0
+# To run your app
+
+command: npx expo start
+        if you get an error:
+            command: npx expo install react-native-web@~0.18.7 react-dom@18.0.0 @expo/webpack-config@^0.17.0
+            command: npx expo start
+
+# Dependancies
+command: 
+command:
+command:
+command:
+command:
+command:
