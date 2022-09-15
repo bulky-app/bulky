@@ -1,16 +1,8 @@
-import {
-  KeyboardAvoidingView,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  Keyboard,
-  Pressable,
-} from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../globalStyles";
 import emailImg from "../images/verificationImg.png";
 import { Image } from "react-native";
-import { useState } from "react";
 import SButton from "../components/SButton";
 
 const EmailVerificationScreen = () => {
@@ -32,7 +24,6 @@ const EmailVerificationScreen = () => {
           <Text style={styles.header}>Can't find the email?.</Text>
           <SButton text="Resend Link" onPress={handleButton} />
         </View>
-
         <View style={[styles.inlineText, { marginTop: 25 }]}>
           <Text style={[styles.greyText]}>Need help?</Text>
           <Pressable>
