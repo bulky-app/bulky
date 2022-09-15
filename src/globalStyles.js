@@ -1,23 +1,5 @@
-import { StyleSheet, Pressable, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
-
-const SOButton = ({ text, onPress }) => {
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        pressed && { opacity: 0.8 },
-        styles.buttonOutline,
-      ]}
-      android_ripple={{
-        color: "#F2F4F5",
-        radius: 48,
-      }}
-      onPress={onPress}
-    >
-      <Text style={[styles.buttonTextOutline, styles.purpleText]}>{text}</Text>
-    </Pressable>
-  );
-};
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
@@ -105,9 +87,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
-  textInputFocused:{
+  textInputFocused: {
     borderColor: "#6B4EFF",
-  }
+  },
 });
 
 export default styles;

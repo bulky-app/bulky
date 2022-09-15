@@ -2,9 +2,15 @@ import React from "react";
 import { TextInput } from "react-native";
 import styles from "../globalStyles";
 
-const SInput = ({ isSercure, keyboard, placeholderTxt, handleChange, isFocus, focus, blur }) => {
-    
-
+const SInput = ({
+  isSercure,
+  keyboard,
+  placeholderTxt,
+  handleChange,
+  isFocus,
+  focus,
+  blur,
+}) => {
   return (
     <TextInput
       placeholder={placeholderTxt}

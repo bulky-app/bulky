@@ -1,4 +1,3 @@
-import { SOButton } from "../globalStyles";
 import {
   View,
   Text,
@@ -6,6 +5,7 @@ import {
   ImageBackground,
   StyleSheet,
 } from "react-native";
+import SOButton from "../components/SOButton";
 import Image from "../images/welcomeImg.png";
 
 const WelcomeScreen = () => {
