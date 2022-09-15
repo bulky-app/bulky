@@ -24,7 +24,7 @@ const RegisterScreen = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [isFocusPass, setIsFocusPass] = useState(false);
   const [isFocusName, setIsFocusName] = useState(false);
-  const [acceptTerms, setacceptTerms] = useState(false);
+  const [acceptTerms, setacceptTerms] = useState(true);
   const [isFocusPassConfirm, setIsFocusPassConfirm] = useState(false);
 
   const handleEmail = (e) => {
@@ -136,13 +136,21 @@ const RegisterScreen = () => {
                 blur={handleBlurPassConfirm}
                 isFocus={isFocusPassConfirm}
               />
-              <Pressable style={styles.purpleText}>
+              <Pressable style={styles.checkboxWrapper}>
                 <CheckBox
+                  style={{ marginRight: 5 }}
                   checked={acceptTerms}
-                  color={styles.purpleText}
+                  color={styles.purpleText.color}
                   onPress={() => setacceptTerms(!acceptTerms)}
                 />
-                <Text style={styles.purpleText}>Fogot Password?</Text>
+                <Text style={[styles.greyText, { marginLeft: 5 }]}>
+                  I agree to
+                </Text>
+                <Pressable>
+                  <Text style={[styles.purpleText, { marginLeft: -7 }]}>
+                    Ts & Cs
+                  </Text>
+                </Pressable>
               </Pressable>
               <SButton text="Sign Up" onPress={handleButton} />
               <View style={[styles.inlineText]}>

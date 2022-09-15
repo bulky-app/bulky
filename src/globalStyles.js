@@ -90,6 +90,12 @@ const styles = StyleSheet.create({
   textInputFocused: {
     borderColor: "#6B4EFF",
   },
+  checkboxWrapper: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: 10,
+    alignItems: "center",
+  }
 });
 
 export default styles;
