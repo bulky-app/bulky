@@ -13,8 +13,9 @@ import { Image } from "react-native";
 import SInput from "../components/SInput";
 import { useState } from "react";
 import SButton from "../components/SButton";
+import Parse from "../../backend/server";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -94,7 +95,7 @@ const LoginScreen = () => {
               <SButton text="Sign In" onPress={handleButton} />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>New to Bulky?</Text>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
                   <Text style={styles.purpleText}>Create an account.</Text>
                 </Pressable>
               </View>

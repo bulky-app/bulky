@@ -15,16 +15,17 @@ import { useState } from "react";
 import SButton from "../components/SButton";
 import { CheckBox } from "react-native-btr";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const [show, setShow] = useState(true);
   const [isFocus, setIsFocus] = useState(false);
   const [isFocusPass, setIsFocusPass] = useState(false);
   const [isFocusName, setIsFocusName] = useState(false);
-  const [acceptTerms, setacceptTerms] = useState(true);
+  const [acceptTerms, setacceptTerms] = useState(false);
   const [isFocusPassConfirm, setIsFocusPassConfirm] = useState(false);
 
   const handleEmail = (e) => {
@@ -35,6 +36,7 @@ const RegisterScreen = () => {
   };
   const handleName = (e) => {
     setName(e.trim());
+    name.length > 3 && setShow(false)
   };
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.trim());
@@ -137,6 +139,7 @@ const RegisterScreen = () => {
                   style={{ marginRight: 5 }}
                   checked={acceptTerms}
                   color={styles.purpleText.color}
+                  disabled={show}
                   onPress={() => setacceptTerms(!acceptTerms)}
                 />
                 <Text style={[styles.greyText, { marginLeft: 5 }]}>
@@ -151,7 +154,7 @@ const RegisterScreen = () => {
               <SButton text="Sign Up" onPress={handleButton} />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>Already signed up?</Text>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("LoginScreen")}>
                   <Text style={styles.purpleText}>Sign In.</Text>
                 </Pressable>
               </View>

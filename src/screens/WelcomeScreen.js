@@ -8,7 +8,7 @@ import {
 import SOButton from "../components/SOButton";
 import Image from "../images/welcomeImg.png";
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={localStyles.container}>
@@ -18,7 +18,11 @@ const WelcomeScreen = () => {
           style={localStyles.image}
         ></ImageBackground>
         <Text>
-          <SOButton style={localStyles.button} text="Get Started!" />
+          <SOButton
+            style={localStyles.button}
+            text="Get Started!"
+            onPress={() => navigation.navigate("LoginScreen")}
+          />
         </Text>
       </View>
     </SafeAreaView>

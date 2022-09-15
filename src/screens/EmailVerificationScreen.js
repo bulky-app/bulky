@@ -5,7 +5,7 @@ import emailImg from "../images/verificationImg.png";
 import { Image } from "react-native";
 import SButton from "../components/SButton";
 
-const EmailVerificationScreen = () => {
+const EmailVerificationScreen = ({ navigation }) => {
   const handleButton = () => {};
 
   return (
@@ -19,7 +19,7 @@ const EmailVerificationScreen = () => {
             source={emailImg}
           />
           <Text style={styles.bigText}>
-            Email verification link has been sent to you email.
+            Email verification link has been sent to your email.
           </Text>
           <Text style={styles.header}>Can't find the email?.</Text>
           <SButton text="Resend Link" onPress={handleButton} />
