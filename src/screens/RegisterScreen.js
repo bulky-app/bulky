@@ -28,20 +28,16 @@ const RegisterScreen = () => {
   const [isFocusPassConfirm, setIsFocusPassConfirm] = useState(false);
 
   const handleEmail = (e) => {
-    //Strip white spaces
-    setEmail(e);
+    setEmail(e.trim());
   };
   const handlePassword = (e) => {
-    //Strip white spaces
-    setPassword(e);
+    setPassword(e.trim());
   };
   const handleName = (e) => {
-    //Strip white spaces
-    setName(e);
+    setName(e.trim());
   };
   const handlePasswordConfirm = (e) => {
-    //Strip white spaces
-    setPasswordConfirm(e);
+    setPasswordConfirm(e.trim());
   };
 
   const handleButton = () => {

@@ -22,11 +22,11 @@ const LoginScreen = () => {
 
   const handleEmail = (e) => {
     //Strip white spaces
-    setEmail(e);
+    setEmail(e.trim());
   };
   const handlePassword = (e) => {
     //Strip white spaces
-    setPassword(e);
+    setPassword(e.trim());
   };
 
   const handleButton = () => {
