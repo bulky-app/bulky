@@ -18,6 +18,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocus, setIsFocus] = useState(false);
+  const [isFocusPass, setIsFocusPass] = useState(false);
 
   const handleEmail = (e) => {
     //Strip white spaces
@@ -29,15 +30,27 @@ const LoginScreen = () => {
   };
 
   const handleButton = () => {
+    Keyboard.dismiss();
     console.log("Email: " + email);
     console.log("Pass: " + password);
     setPassword("");
     setEmail("");
   };
 
-  const handleHide = () => {
-  
+  const handleFocus = () => {
+    setIsFocus(true);
   };
+  const handleBlur = () => {
+    setIsFocus(false);
+  };
+  const handleFocusPass = () => {
+    setIsFocusPass(true);
+  };
+  const handleBlurPass = () => {
+    setIsFocusPass(false);
+    Keyboard.dismiss();
+  };
+
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
@@ -62,6 +75,8 @@ const LoginScreen = () => {
                 isSercure={false}
                 keyboard="email-address"
                 handleChange={handleEmail}
+                focus={handleFocus}
+                blur={handleBlur}
                 isFocus={isFocus}
               />
               <SInput
@@ -69,7 +84,9 @@ const LoginScreen = () => {
                 isSercure={true}
                 keyboard="default"
                 handleChange={handlePassword}
-                isFocus={isFocus}
+                focus={handleFocusPass}
+                blur={handleBlurPass}
+                isFocus={isFocusPass}
               />
               <Pressable style={styles.purpleText}>
                 <Text style={styles.purpleText}>Fogot Password?</Text>

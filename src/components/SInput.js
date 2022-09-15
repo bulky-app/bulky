@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput } from "react-native";
 import styles from "../globalStyles";
 
-const SInput = ({ isSercure, keyboard, placeholderTxt, handleChange, isFocus }) => {
+const SInput = ({ isSercure, keyboard, placeholderTxt, handleChange, isFocus, focus, blur }) => {
     
 
   return (
@@ -12,6 +12,8 @@ const SInput = ({ isSercure, keyboard, placeholderTxt, handleChange, isFocus }) 
       secureTextEntry={isSercure}
       style={[styles.textInput, isFocus && styles.textInputFocused]}
       onChangeText={handleChange}
+      onFocus={focus}
+      onBlur={blur}
     />
   );
 };
