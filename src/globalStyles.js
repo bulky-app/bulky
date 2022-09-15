@@ -95,6 +95,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginBottom: 10,
     alignItems: "center",
+  },
+  bigText:{
+    fontSize: 26,
+    marginVertical: 40,
+    textAlign: "center",
   }
 });
 
