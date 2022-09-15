@@ -1,19 +1,6 @@
 import { StyleSheet, Pressable, Text } from "react-native";
 
-const SButton = ({ text, onPress }) => {
-  return (
-    <Pressable
-      style={({ pressed }) => [pressed && { opacity: 0.8 }, styles.button]}
-      android_ripple={{
-        color: "#F2F4F5",
-        radius: 48,
-      }}
-      onPress={onPress}
-    >
-      <Text style={styles.buttonText}>{text}</Text>
-    </Pressable>
-  );
-};
+
 const SOButton = ({ text, onPress }) => {
   return (
     <Pressable
@@ -54,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     letterSpacing: 1.25,
+    color: "white",
   },
   buttonTextOutline: {
     fontSize: 20,
@@ -62,19 +50,64 @@ const styles = StyleSheet.create({
   },
   purpleText: {
     color: "#5538EE",
+    marginVertical: 15,
   },
   greyText: {
     color: "#72777A",
+    marginRight: 10,
   },
   loginSmallText: {
     lineHeight: 20,
     fontSize: 14,
     fontWeight: "400",
   },
-  container: {
+  safeContainer: {
     flex: 1,
+    backgroundColor: "#F2F4F5",
+    padding: 40,
   },
+  container: {
+    flex: 0.9,
+  },
+  inlineText: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  authImg: {
+    width: 210,
+    height: 175,
+  },
+  inner: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  header: {
+    fontSize: 16,
+    marginVertical: 40,
+    textAlign: "center",
+  },
+  textInput: {
+    height: 40,
+    borderColor: "#000000",
+    borderWidth: 1,
+    borderColor: "#E3E5E5",
+    marginVertical: 15,
+    width: 272,
+    color: "black",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  textInputFocused:{
+    borderColor: "#6B4EFF",
+  }
 });
 
-export { SButton, SOButton };
 export default styles;
