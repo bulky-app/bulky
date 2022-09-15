@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   container: {
-    flex: 0.9,
+    flex: 0.8,
   },
   inlineText: {
     flexDirection: "row",
