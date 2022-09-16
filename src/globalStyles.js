@@ -96,14 +96,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
   },
-  bigText:{
+  bigText: {
     fontSize: 26,
     marginVertical: 40,
     textAlign: "center",
   },
-  whiteBlackText:{
-    color: "black"
-  }
+  whiteBlackText: {
+    color: "black",
+  },
+  blackWhiteText: {
+    color: "white",
+  },
+  contentContainer: {
+    padding: 20,
+    justifyContent: "center",
+    backgroundColor: "#F2F4F5",
+  },
 });
 
 export default styles;
