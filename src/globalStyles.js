@@ -100,6 +100,9 @@ const styles = StyleSheet.create({
     fontSize: 26,
     marginVertical: 40,
     textAlign: "center",
+  },
+  whiteBlackText:{
+    color: "black"
   }
 });
 

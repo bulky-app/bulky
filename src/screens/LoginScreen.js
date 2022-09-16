@@ -46,7 +46,7 @@ const LoginScreen = ({ navigation }) => {
         const currentUser = await Parse.User.currentAsync();
         if (loggedInUser === currentUser) {
           currentUser.get("emailVerified")
-            ? console.log("Home Screen")//navigation.dispatch(StackActions.replace("RegisterScreen"))
+            ? navigation.dispatch(StackActions.replace("HomeScreen"))
             : navigation.navigate("EmailVerificationScreen")
         } else {
           ToastAndroid.showWithGravityAndOffset(
