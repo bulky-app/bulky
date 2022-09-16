@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import RootNavigation from "./src/navigation/RootNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 
 const App = () => {
   return (
-    /*component you want to see here*/ 
-    // <NavigationContainer>
-    //   <RootNavigation />
-    // </NavigationContainer>
+    //<RegisterScreen />
+        /*component you want to see here*/ 
+    <NavigationContainer>
+      <RootNavigation />
+    </NavigationContainer>
   );
 };
 
