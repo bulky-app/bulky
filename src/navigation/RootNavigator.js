@@ -52,7 +52,7 @@ let optionsStyles = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
     let provider;
-    size = 27
+    size = 27;
 
     if (route.name === "Home") {
       provider = 1;

@@ -34,8 +34,8 @@ const LoginScreen = ({ navigation }) => {
 
   const doUserLogin = async function () {
     Keyboard.dismiss();
-    return await Parse.User.logIn(email, password).then(
-      async (loggedInUser) => {
+    return await Parse.User.logIn(email, password)
+      .then(async (loggedInUser) => {
         ToastAndroid.showWithGravityAndOffset(
           `Logged in as ${loggedInUser.get("name")}`,
           ToastAndroid.LONG,
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
         if (loggedInUser === currentUser) {
           currentUser.get("emailVerified")
             ? navigation.dispatch(StackActions.replace("HomeScreen"))
-            : navigation.navigate("EmailVerificationScreen")
+            : navigation.navigate("EmailVerificationScreen");
         } else {
           ToastAndroid.showWithGravityAndOffset(
             `Error logging you in`,
@@ -59,8 +59,19 @@ const LoginScreen = ({ navigation }) => {
           setEmail("");
           setPassword("");
         }
-      }
-    );
+        return true;
+      })
+      .catch((error) => {
+        ToastAndroid.showWithGravityAndOffset(
+          "Invalid Email/Password.",
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+        setPassword("");
+        return false;
+      });
   };
 
   const handleFocus = () => {
