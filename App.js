@@ -6,10 +6,10 @@ import RegisterScreen from './src/screens/RegisterScreen';
 
 const App = () => {
   return (
-    <RegisterScreen />
+    //<RegisterScreen />
         /*component you want to see here*/ 
     
-      //<RootNavigation />
+      <RootNavigation />
    
   );
 };
