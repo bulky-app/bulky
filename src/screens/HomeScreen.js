@@ -11,7 +11,6 @@ import CategoryCard from "../components/CategoryCard";
 import ProfileCard from "../components/ProfileCard";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
-import Product from "../components/Product";
 import StoreContainer from "../components/StoreContainer";
 
 const HomeScreen = () => {
@@ -62,7 +61,7 @@ const HomeScreen = () => {
               renderItem={CategoryCard}
               keyExtractor={(item) => item.id}
             />
-            <Product
+            {/* <Product
               img={
                 <Image
                   style={{ maxHeight: 180, maxWidth: 120 }}
@@ -72,8 +71,8 @@ const HomeScreen = () => {
               price={30}
               id="hgkgcv"
               name="Tastic 5kg"
-            />
-            <StoreContainer/>
+            /> */}
+            <StoreContainer />
           </View>
         </View>
       )}
@@ -82,7 +81,6 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-const gridStyles = StyleSheet.create({});
 
 const itemData = [
   {

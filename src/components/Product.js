@@ -1,9 +1,18 @@
-import { Pressable, StyleSheet, Text, ToastAndroid, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 import styles from "../globalStyles";
 import { CartButton } from "./SButton";
 
-const Product = (product) => {
-  const doAddToCart = (id, name) => {
+import { addToCart } from "../redux/features/cartSlice";
+
+const Product = ({ item }, dispatch) => {
+  const doAddToCart = (name) => {
     ToastAndroid.showWithGravityAndOffset(
       `${name} added to cart`,
       ToastAndroid.SHORT,
@@ -21,7 +30,15 @@ const Product = (product) => {
           color: "#E7E7FF",
         }}
       >
-        <View style={[gridStyles.item.image]}>{product.img}</View>
+        <Image
+          style={{
+            height: 120,
+            width: 100,
+            alignSelf: "center",
+            marginBottom: 10,
+          }}
+          source={{ uri: item.image }}
+        />
         <View>
           <Text
             style={[
@@ -33,7 +50,7 @@ const Product = (product) => {
               },
             ]}
           >
-            R {product.price}
+            R {item.price}
           </Text>
           <Text
             style={[
@@ -41,13 +58,16 @@ const Product = (product) => {
               { textAlign: "center", marginTop: 5 },
             ]}
           >
-            {product.name}
+            {item.title}
           </Text>
         </View>
         <View style={gridStyles.item.buttonWrapper}>
           <CartButton
             text="Add to cart"
-            onPress={() => doAddToCart(5, "Tastic 5kg")}
+            onPress={() => {
+              dispatch(addToCart(item));
+              doAddToCart(item.title);
+            }}
           />
         </View>
       </Pressable>
@@ -57,7 +77,7 @@ const Product = (product) => {
 const gridStyles = StyleSheet.create({
   item: {
     flex: 1,
-    height: 250,
+    height: 300,
     width: 150,
     backgroundColor: styles.blackWhiteText.color,
     padding: 10,
@@ -66,11 +86,13 @@ const gridStyles = StyleSheet.create({
     borderRadius: 10,
     image: {
       flex: 1,
-      alignItems: "center",
+      align: "center",
     },
     name: {
       textAlign: "left",
       fontSize: 20,
+      height: 40,
+      overflow: "hidden",
     },
     buttonWrapper: {
       flex: 1,
@@ -80,5 +102,4 @@ const gridStyles = StyleSheet.create({
     },
   },
 });
-
 export default Product;
