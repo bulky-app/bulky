@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,39 +10,73 @@ import {
 import CategoryCard from "../components/CategoryCard";
 import ProfileCard from "../components/ProfileCard";
 import styles from "../globalStyles";
+import Parse from "../../backend/server";
+import Product from "../components/Product";
+import StoreContainer from "../components/StoreContainer";
 
 const HomeScreen = () => {
+  const [user, setUser] = useState("");
+  const [userId, setUserId] = useState("");
+  const [walletBalance, setWalletBalance] = useState();
+
+  useEffect(() => {
+    const currentUser = async () => {
+      await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+      const user = Parse.User.current();
+      setUser(user.get("name"));
+      setUserId(user.id);
+      setWalletBalance(user.get("walletBalance"));
+    };
+    currentUser();
+  }, [user]);
+
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
-      <View>
-        <ProfileCard
-          userId="uuekyheby"
-          userName="Axole Maranjana"
-          userBalance={50000}
-        />
-      </View>
+      {user && (
+        <View>
+          <View>
+            <ProfileCard
+              userId={userId}
+              userName={user}
+              userBalance={walletBalance}
+            />
+          </View>
 
-      <View style={{ marginVertical: 25 }}>
-        <Text style={{ fontSize: 20, fontWeight: "300" }}>
-          Shop by category
-        </Text>
-      </View>
+          <View style={{ marginVertical: 25 }}>
+            <Text style={{ fontSize: 20, fontWeight: "300" }}>
+              Shop by category
+            </Text>
+          </View>
 
-      <View
-        style={{
-          flex: 1,
-          alignContent: "center",
-          justifyContent: "center",
-          paddingHorizontal: 10,
-        }}
-      >
-        <FlatList
-          data={itemData}
-          numColumns={2}
-          renderItem={CategoryCard}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
+          <View
+            style={{
+              flex: 1,
+              alignContent: "center",
+              justifyContent: "center",
+              paddingHorizontal: 10,
+            }}
+          >
+            <FlatList
+              data={itemData}
+              numColumns={2}
+              renderItem={CategoryCard}
+              keyExtractor={(item) => item.id}
+            />
+            <Product
+              img={
+                <Image
+                  style={{ maxHeight: 180, maxWidth: 120 }}
+                  source={require("../images/categories/everdaymeals.png")}
+                />
+              }
+              price={30}
+              id="hgkgcv"
+              name="Tastic 5kg"
+            />
+            <StoreContainer/>
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 };

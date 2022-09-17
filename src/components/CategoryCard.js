@@ -31,8 +31,6 @@ const gridStyles = StyleSheet.create({
     height: 200,
     width: 150,
     backgroundColor: styles.blackWhiteText.color,
-    borderWidth: 1.5,
-    borderColor: "#fff",
     margin: 10,
     elevation: 1,
     borderRadius: 10,

@@ -11,8 +11,10 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EmailVerificationScreen from "../screens/EmailVerificationScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import CartScreen from "../screens/CartScreen";
+import ShopScreen from "../screens/ShopScreen";
 
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreen.js";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,8 +27,8 @@ function RootNavigation() {
         <Tab.Navigator screenOptions={optionsStyles}>
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Search" component={HomeScreen} />
-          <Tab.Screen name="Cart" component={HomeScreen} />
-          <Tab.Screen name="History" component={HomeScreen} />
+          <Tab.Screen name="Cart" component={CartScreen} />
+          <Tab.Screen name="History" component={ShopScreen} />
           <Tab.Screen name="Profile" component={HomeScreen} />
         </Tab.Navigator>
       ) : (
@@ -98,4 +100,6 @@ let optionsStyles = ({ route }) => ({
   },
 });
 
+
 export default RootNavigation;
+

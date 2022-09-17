@@ -112,6 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#F2F4F5",
   },
+  dangerText: {
+    color: "coral",
+    fontSize: 20,
+    marginVertical: 10,
+    textAlign: "center",
+  },
 });
 
 export default styles;
