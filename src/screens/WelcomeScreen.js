@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import SOButton from "../components/SOButton";
 import Image from "../images/welcomeImg.png";
+import { StackActions } from "@react-navigation/native";
 
 const WelcomeScreen = ({ navigation }) => {
   return (
@@ -21,7 +22,9 @@ const WelcomeScreen = ({ navigation }) => {
           <SOButton
             style={localStyles.button}
             text="Get Started!"
-            onPress={() => navigation.navigate("LoginScreen")}
+            onPress={() =>
+              navigation.dispatch(StackActions.replace("RegisterScreen"))
+            }
           />
         </Text>
       </View>

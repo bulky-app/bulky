@@ -5,6 +5,7 @@ import {
   View,
   Keyboard,
   Pressable,
+  ToastAndroid,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../globalStyles";
@@ -14,6 +15,7 @@ import SInput from "../components/SInput";
 import { useState } from "react";
 import SButton from "../components/SButton";
 import { CheckBox } from "react-native-btr";
+import Parse from "../../backend/server";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -36,7 +38,7 @@ const RegisterScreen = ({ navigation }) => {
   };
   const handleName = (e) => {
     setName(e.trim());
-    name.length > 3 && setShow(false)
+    name.length > 3 && setShow(false);
   };
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.trim());
@@ -44,14 +46,40 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleButton = () => {
     Keyboard.dismiss();
-    console.log("Email: " + name);
-    console.log("Pass: " + email);
-    console.log("Email: " + password);
-    console.log("Pass: " + passwordConfirm);
-    setPassword("");
-    setEmail("");
-  };
+    if (!acceptTerms) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Please accept the Terms of Service to continue",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return false;
+    }
 
+    //doUserRegistration()
+  };
+  async function doUserRegistration() {
+    const user = new Parse.User();
+    user.set("username", email);
+    user.set("password", password);
+    user.set("email", email);
+    user.set("name", name);
+    user.set("walletBalance", 0);
+    try {
+      const a = await user.signUp();
+      navigation.dispatch("EmailVerificationScreen");
+      console.log(a);
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.massage,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  }
   const handleFocus = () => {
     setIsFocus(true);
   };
@@ -151,7 +179,7 @@ const RegisterScreen = ({ navigation }) => {
                   </Text>
                 </Pressable>
               </Pressable>
-              <SButton text="Sign Up" onPress={handleButton} />
+              <SButton text="Sign Up" onPress={doUserRegistration} />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>Already signed up?</Text>
                 <Pressable onPress={() => navigation.navigate("LoginScreen")}>

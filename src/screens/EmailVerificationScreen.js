@@ -25,7 +25,7 @@ const EmailVerificationScreen = ({ navigation }) => {
           <SButton text="Resend Link" onPress={handleButton} />
         </View>
         <View style={[styles.inlineText, { marginTop: 25 }]}>
-          <Text style={[styles.greyText]}>Need help?</Text>
+          <Text style={styles.greyText}>Need help?</Text>
           <Pressable>
             <Text style={[styles.purpleText]}>Contact Us.</Text>
           </Pressable>
