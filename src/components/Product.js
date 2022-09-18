@@ -11,7 +11,8 @@ import { CartButton } from "./SButton";
 
 import { addToCart } from "../redux/features/cartSlice";
 
-const Product = ({ item }, dispatch) => {
+const Product = ({ item }, dispatch, nav) => {
+
   const doAddToCart = (name) => {
     ToastAndroid.showWithGravityAndOffset(
       `${name} added to cart`,
@@ -25,7 +26,7 @@ const Product = ({ item }, dispatch) => {
     <View>
       <Pressable
         style={gridStyles.item}
-        onPress={() => console.log("Go to this product detail screen")}
+        onPress={() => nav.navigate("Details", item)}
         android_ripple={{
           color: "#E7E7FF",
         }}

@@ -15,37 +15,54 @@ import CartScreen from "../screens/CartScreen";
 import ShopScreen from "../screens/ShopScreen";
 
 import HomeScreen from "../screens/HomeScreen.js";
+import ProductDetails from "../screens/ProductDetails";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function AllScreens() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Tabs" component={Tabs} />
+      <Stack.Screen name="Details" component={ProductDetails} />
+    </Stack.Navigator>
+  );
+}
+
+function Tabs() {
+  return (
+    <Tab.Navigator screenOptions={optionsStyles}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Search" component={HomeScreen} />
+      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen name="History" component={ShopScreen} />
+      <Tab.Screen name="Profile" component={HomeScreen} />
+    </Tab.Navigator>
+  );
+}
+function notLogged() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen
+        name="EmailVerificationScreen"
+        component={EmailVerificationScreen}
+      />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+    </Stack.Navigator>
+  );
+}
 
 function RootNavigation() {
   const logedIn = true;
   return (
     <NavigationContainer>
-      {logedIn ? (
-        <Tab.Navigator screenOptions={optionsStyles}>
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Search" component={HomeScreen} />
-          <Tab.Screen name="Cart" component={CartScreen} />
-          <Tab.Screen name="History" component={ShopScreen} />
-          <Tab.Screen name="Profile" component={HomeScreen} />
-        </Tab.Navigator>
-      ) : (
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-          <Stack.Screen
-            name="EmailVerificationScreen"
-            component={EmailVerificationScreen}
-          />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        </Stack.Navigator>
-      )}
+      {logedIn ? <AllScreens/> : <notLogged/>}
     </NavigationContainer>
   );
 }
@@ -100,6 +117,4 @@ let optionsStyles = ({ route }) => ({
   },
 });
 
-
 export default RootNavigation;
-

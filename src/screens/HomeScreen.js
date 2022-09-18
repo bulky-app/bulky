@@ -13,7 +13,7 @@ import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import StoreContainer from "../components/StoreContainer";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
   const [walletBalance, setWalletBalance] = useState();
@@ -72,7 +72,7 @@ const HomeScreen = () => {
               id="hgkgcv"
               name="Tastic 5kg"
             /> */}
-            <StoreContainer />
+            <StoreContainer nav={navigation}/>
           </View>
         </View>
       )}
