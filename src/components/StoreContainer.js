@@ -10,7 +10,7 @@ const url = "https://course-api.com/react-useReducer-cart-project";
 const StoreContainer = () => {
   const dispatch = useDispatch();
   
-const nav = useNavigation();
+  const nav = useNavigation();
   const [data, setData] = useState(Data);
 
   useEffect(() => {

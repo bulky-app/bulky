@@ -8,12 +8,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import styles from "../globalStyles";
 
 import LoginScreen from "../screens/LoginScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EmailVerificationScreen from "../screens/EmailVerificationScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
+
 import CartScreen from "../screens/CartScreen";
 import ShopScreen from "../screens/ShopScreen";
-
 import HomeScreen from "../screens/HomeScreen.js";
 import ProductDetails from "../screens/ProductDetails";
 
@@ -23,7 +23,7 @@ const Tab = createBottomTabNavigator();
 function AllScreens() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Tabs" component={Tabs} />
+      <Stack.Screen options={{ headerShown: false }} name="Tabs" component={Tabs} />
       <Stack.Screen name="Details" component={ProductDetails} />
     </Stack.Navigator>
   );
@@ -40,7 +40,7 @@ function Tabs() {
     </Tab.Navigator>
   );
 }
-function notLogged() {
+function NotLogged() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -62,7 +62,7 @@ function RootNavigation() {
   const logedIn = true;
   return (
     <NavigationContainer>
-      {logedIn ? <AllScreens/> : <notLogged/>}
+      {logedIn ? <AllScreens/> : <NotLogged/>}
     </NavigationContainer>
   );
 }
