@@ -117,7 +117,7 @@ const RegisterScreen = ({ navigation }) => {
             resizeMethod="auto"
             source={loginImage}
           />
-          <Text style={styles.header}>Sign in to your account</Text>
+          <Text style={styles.header}>Sign up for an account</Text>
         </View>
 
         <KeyboardAvoidingView

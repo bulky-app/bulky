@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { View, Text, SectionList,StatusBar,StyleSheet, SafeAreaView,KeyboardAvoidingView,
 TouchableWithoutFeedback,Keyboard, TouchableOpacity,Platform} from 'react-native';
-import {SearchBar} from"react-native-elements";
+import {SearchBar} from"@rneui/base";
 
 const DATA = [
   {
