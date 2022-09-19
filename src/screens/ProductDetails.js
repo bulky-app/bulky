@@ -22,43 +22,40 @@ const ProductDetails = ({ route }) => {
   const { title, price, image, description } = route.params;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
       <View>
         <Image source={{ uri: image }} style={localStyles.img} />
-        <Text style={localStyles.title}>{title}</Text>
-        <Text style={localStyles.desc}>{description}</Text>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <Text >
-            Current orders: 25
-          </Text>
-          <Text>
-            {price}
-          </Text>
-          <CartButton
-            text="Add to cart"
-            onPress={() => {
-              const item = {
-                description: description,
-                image: image,
-                price: price,
-                title: title,
-                id: id,
-                uid: uid,
-              };
-              dispatch(addToCart(item));
-              doAddToCart(title);
-            }}
-          />
-        </View>
-        <Text>Related</Text>
-        <FlatList
-          data={Data}
-          horizontal={true}
-          renderItem={(item) => Product(item, dispatch, nav)}
-          keyExtractor={(item) => item.id}
-          ListFooterComponent={() => <View style={{ height: 10 }} />}
+      </View>
+
+      <Text style={localStyles.title}>{title}</Text>
+      <Text style={localStyles.desc}>{description}</Text>
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <Text>Current orders: 25</Text>
+        <Text>{price}</Text>
+        <CartButton
+          text="Add to cart"
+          onPress={() => {
+            const item = {
+              description: description,
+              image: image,
+              price: price,
+              title: title,
+              id: id,
+              uid: uid,
+            };
+            dispatch(addToCart(item));
+            doAddToCart(title);
+          }}
         />
       </View>
+      <Text>Related</Text>
+      <FlatList
+        data={Data}
+        horizontal={true}
+        renderItem={(item) => Product(item, dispatch, nav)}
+        keyExtractor={(item) => item.id}
+        ListFooterComponent={() => <View style={{ height: 10 }} />}
+      />
     </SafeAreaView>
   );
 };
@@ -74,12 +71,12 @@ const localStyles = StyleSheet.create({
     elevation: 1,
   },
   title: {
-    fontSize: 14,
+    fontSize: 24,
     color: styles.purpleText.color,
     overflow: "scroll",
     height: 80,
   },
-  desc: { fontSize: 20, color: styles.greyText.color },
+  desc: { fontSize: 18, color: styles.greyText.color },
 });
 
 const doAddToCart = (name) => {

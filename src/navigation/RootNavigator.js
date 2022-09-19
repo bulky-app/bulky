@@ -22,8 +22,19 @@ const Tab = createBottomTabNavigator();
 
 function AllScreens() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="Tabs" component={Tabs} />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: styles.purpleText.color,
+          shadowColor: styles.purpleText.color,
+        },
+      }}
+    >
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Tabs"
+        component={Tabs}
+      />
       <Stack.Screen name="Details" component={ProductDetails} />
     </Stack.Navigator>
   );
@@ -62,7 +73,7 @@ function RootNavigation() {
   const logedIn = true;
   return (
     <NavigationContainer>
-      {logedIn ? <AllScreens/> : <NotLogged/>}
+      {logedIn ? <AllScreens /> : <NotLogged />}
     </NavigationContainer>
   );
 }
