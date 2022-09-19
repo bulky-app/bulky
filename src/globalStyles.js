@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   greyText: {
     color: "#72777A",
-    marginRight: 10,
+    marginRight: 7,
   },
   loginSmallText: {
     lineHeight: 20,

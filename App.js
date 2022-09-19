@@ -8,10 +8,17 @@ import EmailVerificationScreen from "./src/screens/EmailVerificationScreen";
 
 const App = () => {
   return (
+
     /*component you want to see here*/ 
+<<<<<<< Updated upstream
     // <NavigationContainer>
       <RootNavigation />
     //</NavigationContainer>
+=======
+    <NavigationContainer>
+      <RootNavigation />
+    </NavigationContainer>
+>>>>>>> Stashed changes
   );
 };
 
