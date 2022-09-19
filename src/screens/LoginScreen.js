@@ -5,6 +5,7 @@ import {
   View,
   Keyboard,
   Pressable,
+  ToastAndroid,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../globalStyles";
@@ -14,6 +15,7 @@ import SInput from "../components/SInput";
 import { useState } from "react";
 import SButton from "../components/SButton";
 import Parse from "../../backend/server";
+import { StackActions } from "@react-navigation/native";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -30,12 +32,46 @@ const LoginScreen = ({ navigation }) => {
     setPassword(e.trim());
   };
 
-  const handleButton = () => {
+  const doUserLogin = async function () {
     Keyboard.dismiss();
-    console.log("Email: " + email);
-    console.log("Pass: " + password);
-    setPassword("");
-    setEmail("");
+    return await Parse.User.logIn(email, password)
+      .then(async (loggedInUser) => {
+        ToastAndroid.showWithGravityAndOffset(
+          `Logged in as ${loggedInUser.get("name")}`,
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+        const currentUser = await Parse.User.currentAsync();
+        if (loggedInUser === currentUser) {
+          currentUser.get("emailVerified")
+            ? navigation.dispatch(StackActions.replace("HomeScreen"))
+            : navigation.navigate("EmailVerificationScreen");
+        } else {
+          ToastAndroid.showWithGravityAndOffset(
+            `Error logging you in`,
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+            25,
+            50
+          );
+          setEmail("");
+          setPassword("");
+        }
+        return true;
+      })
+      .catch((error) => {
+        ToastAndroid.showWithGravityAndOffset(
+          "Invalid Email/Password.",
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+        setPassword("");
+        return false;
+      });
   };
 
   const handleFocus = () => {
@@ -92,10 +128,12 @@ const LoginScreen = ({ navigation }) => {
               <Pressable style={styles.purpleText}>
                 <Text style={styles.purpleText}>Fogot Password?</Text>
               </Pressable>
-              <SButton text="Sign In" onPress={handleButton} />
+              <SButton text="Sign In" onPress={doUserLogin} />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>New to Bulky?</Text>
-                <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
+                <Pressable
+                  onPress={() => navigation.navigate("RegisterScreen")}
+                >
                   <Text style={styles.purpleText}>Create an account.</Text>
                 </Pressable>
               </View>
