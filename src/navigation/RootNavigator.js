@@ -71,7 +71,7 @@ function NotLogged() {
 }
 
 function RootNavigation() {
-  const logedIn = true;
+  const logedIn = false;
   return (
     <NavigationContainer>
       {logedIn ? <AllScreens /> : <NotLogged />}

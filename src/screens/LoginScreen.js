@@ -14,6 +14,7 @@ import SInput from "../components/SInput";
 import { useState } from "react";
 import SButton from "../components/SButton";
 import Parse from "../../backend/server";
+import { validateEmail, ValidateEmail } from "../navigation/functions";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -32,10 +33,10 @@ const LoginScreen = ({ navigation }) => {
 
   const handleButton = () => {
     Keyboard.dismiss();
-    console.log("Email: " + email);
-    console.log("Pass: " + password);
-    setPassword("");
-    setEmail("");
+    if (validateEmail(email) === true){
+      console.log("Correct")
+    }else{console.log("invalid")}
+   
   };
 
   const handleFocus = () => {
