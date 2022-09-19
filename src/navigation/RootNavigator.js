@@ -16,6 +16,7 @@ import CartScreen from "../screens/CartScreen";
 import ShopScreen from "../screens/ShopScreen";
 import HomeScreen from "../screens/HomeScreen.js";
 import ProductDetails from "../screens/ProductDetails";
+import HistoryScreen from "../screens/HistoryScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,7 +47,7 @@ function Tabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={HomeScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
-      <Tab.Screen name="History" component={ShopScreen} />
+      <Tab.Screen name="History" component={HistoryScreen} />
       <Tab.Screen name="Profile" component={HomeScreen} />
     </Tab.Navigator>
   );

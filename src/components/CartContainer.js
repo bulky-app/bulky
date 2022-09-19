@@ -21,12 +21,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { cartTotalPriceSelector } from "../redux/selectors";
 import { EmptyCart } from "./EmptyCart";
+import { useNavigation } from "@react-navigation/native";
 
 const amount = 0;
 const CartContainer = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const totalPrice = useSelector(cartTotalPriceSelector);
 
   useEffect(() => {
     () => {
@@ -105,7 +105,7 @@ const CartContainer = () => {
         data={cart}
         renderItem={renderStoreItems}
         keyExtractor={(item) => item.id}
-        ListFooterComponent={ListFooterComponent(totalPrice)}
+        ListFooterComponent={ListFooterComponent}
       />
     </View>
   );
@@ -191,7 +191,8 @@ const LocalStyles = StyleSheet.create({
   },
 });
 
-const ListFooterComponent = (cart) => {
+const ListFooterComponent = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const totalPrice = useSelector(cartTotalPriceSelector);
 
@@ -215,7 +216,7 @@ const ListFooterComponent = (cart) => {
     <View style={LocalStyles.cartFooter}>
       <View style={LocalStyles.checkout}>
         {totalPrice === 0 ? (
-          <EmptyCart />
+          <EmptyCart onClick={() => navigation.navigate("Home")} />
         ) : (
           <View style={LocalStyles.checkoutFull}>
             <Text

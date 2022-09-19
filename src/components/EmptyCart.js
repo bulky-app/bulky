@@ -3,6 +3,7 @@ import styles from "../globalStyles";
 import cartImg from "../images/cartImg.png";
 import historyImg from "../images/historyImg.png";
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const OUButton = ({ text, onPress, icon }) => {
   return (
@@ -18,14 +19,14 @@ const OUButton = ({ text, onPress, icon }) => {
     </Pressable>
   );
 };
-const EmptyHistory = () => {
+const EmptyHistory = ({onClick}) => {
   return (
     <View style={localStyles.container}>
-      <Image source={cartImg} style={localStyles.img} />
+      <Image source={historyImg} style={localStyles.img} />
       <Text style={localStyles.txt}>No history made yet!</Text>
       <OUButton
         text="Lets make history"
-        onPress={() => console.log("Went to the search screen")}
+        onPress={onClick}
         icon={
           <Feather
             name="arrow-right"
@@ -38,14 +39,14 @@ const EmptyHistory = () => {
   );
 };
 
-const EmptyCart = () => {
+const EmptyCart = ({onClick}) => {
   return (
     <View style={localStyles.container}>
       <Image source={cartImg} style={localStyles.img} />
       <Text style={localStyles.txt}>Looks like the cart is empyty!</Text>
       <OUButton
         text="Lets fill it"
-        onPress={() => console.log("Went to the search screen")}
+        onPress={() => onClick={onClick}}
         icon={
           <Feather
             name="arrow-right"
