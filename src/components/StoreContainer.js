@@ -1,15 +1,15 @@
+import Product from "./Product";
+import Data from "../../assets/cartItems";
 import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import Data from "../../assets/cartItems";
-import Product from "./Product";
 
 const url = "https://course-api.com/react-useReducer-cart-project";
 
 const StoreContainer = () => {
   const dispatch = useDispatch();
-  
+
   const nav = useNavigation();
   const [data, setData] = useState(Data);
 
@@ -19,7 +19,7 @@ const StoreContainer = () => {
       .then((json) => setData(json));
   }, []);
 
-  const StoreItems = ({nav}) => {
+  const StoreItems = ({ nav }) => {
     return (
       <View>
         <FlatList
@@ -34,7 +34,7 @@ const StoreContainer = () => {
   };
   return (
     <View>
-      <StoreItems nav={nav}/>
+      <StoreItems nav={nav} />
     </View>
   );
 };

@@ -16,8 +16,8 @@ import EmailVerificationScreen from "../screens/EmailVerificationScreen";
 import CartScreen from "../screens/CartScreen";
 import ShopScreen from "../screens/ShopScreen";
 import HomeScreen from "../screens/HomeScreen.js";
-import ProductDetails from "../screens/ProductDetails";
 import HistoryScreen from "../screens/HistoryScreen";
+import ProductDetails from "../screens/ProductDetails";
 
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -43,6 +43,11 @@ function AllScreens() {
       <Stack.Screen
         name="Details"
         component={ProductDetails}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Shop"
+        component={ShopScreen}
         options={{ headerTintColor: "white" }}
       />
     </Stack.Navigator>

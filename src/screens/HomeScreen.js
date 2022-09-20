@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, Text, View } from "react-native";
-import CategoryCard from "../components/CategoryCard";
-import ProfileCard from "../components/ProfileCard";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
+import { useEffect, useState } from "react";
+import ProfileCard from "../components/ProfileCard";
+import CategoryCard from "../components/CategoryCard";
+import { useNavigation } from "@react-navigation/native";
 import StoreContainer from "../components/StoreContainer";
+import { FlatList, Image, ScrollView, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
+  const nav = useNavigation();
+
+  const [error, seterror] = useState();
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
-  const [error, seterror] = useState();
   const [walletBalance, setWalletBalance] = useState();
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
               data={itemData}
               numColumns={2}
-              renderItem={CategoryCard}
+              renderItem={(item) => CategoryCard(item, nav)}
               keyExtractor={(item) => item.id}
             />
             <StoreContainer nav={navigation} />

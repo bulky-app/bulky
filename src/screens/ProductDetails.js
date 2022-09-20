@@ -39,7 +39,6 @@ const ProductDetails = ({ route }) => {
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Price</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            {" "}
             {price}
           </Text>
         </View>
