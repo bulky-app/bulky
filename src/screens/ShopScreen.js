@@ -1,16 +1,22 @@
 import React from "react";
 import StoreContainer from "../components/StoreContainer";
-import { StyleSheet, Text ,ScrollView, View} from "react-native";
+import { StyleSheet, Text, ScrollView, View, SafeAreaView } from "react-native";
 
 const ShopScreen = ({ route }) => {
   const { categoryName, id } = route.params;
   return (
-    <ScrollView contentContainerStyle={localStyles.contentContainer}>
-      <View>
-        <Text style={localStyles.categoryName}>{categoryName}</Text>
-      </View>
-      <StoreContainer />
-    </ScrollView>
+    <SafeAreaView style={localStyles.contentContainer}>
+      <ScrollView
+        contentContainerStyle={localStyles.contentContainer}
+        stickyHeaderIndices={[1]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View>
+          <Text style={localStyles.categoryName}>{categoryName}</Text>
+        </View>
+        <StoreContainer />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -18,10 +24,12 @@ const localStyles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    paddingBottom: 25
   },
   categoryName: {
-    height: 50,
+    fontSize: 18,
+    elevation:3,
+    paddingVertical: 10
   },
 });
 

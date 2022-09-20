@@ -27,7 +27,8 @@ const StoreContainer = () => {
           numColumns={2}
           renderItem={(item) => Product(item, dispatch, nav)}
           keyExtractor={(item) => item.id}
-          ListFooterComponent={() => <View style={{ height: 10 }} />}
+          ListFooterComponent={() => <View style={{ height: 10 }} />
+        }
         />
       </View>
     );
