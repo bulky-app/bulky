@@ -16,6 +16,7 @@ import { useState } from "react";
 import SButton from "../components/SButton";
 import { CheckBox } from "react-native-btr";
 import Parse from "../../backend/server";
+import { validateEmail } from "../navigation/functions";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -44,22 +45,45 @@ const RegisterScreen = ({ navigation }) => {
     setPasswordConfirm(e.trim());
   };
 
-  const handleButton = () => {
+  const handleButton = (navigation) => {
     Keyboard.dismiss();
     if (!acceptTerms) {
-      ToastAndroid.showWithGravityAndOffset(
+      return ToastAndroid.showWithGravityAndOffset(
         "Please accept the Terms of Service to continue",
         ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
+        ToastAndroid.TOP,
         25,
         50
       );
-      return false;
+    } else if (password !== passwordConfirm) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Passwords do not match!",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    } else if (password.length < 5) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Passwords too short!",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    } else if (validateEmail(email) === false) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Invalid email!",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    } else {
+      doUserRegistration(navigation);
     }
-
-    //doUserRegistration()
   };
-  async function doUserRegistration() {
+  const doUserRegistration = async (navigation) => {
     const user = new Parse.User();
     user.set("username", email);
     user.set("password", password);
@@ -67,19 +91,20 @@ const RegisterScreen = ({ navigation }) => {
     user.set("name", name);
     user.set("walletBalance", 0);
     try {
-      const a = await user.signUp();
-      navigation.dispatch("EmailVerificationScreen");
-      console.log(a);
+      await user.signUp();
+
+      return navigation.navigate("EmailVerificationScreen");
     } catch (error) {
-      ToastAndroid.showWithGravityAndOffset(
-        error.massage,
+      console.log(error);
+      return ToastAndroid.showWithGravityAndOffset(
+        "Account already exists for this email.",
         ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
+        ToastAndroid.TOP,
         25,
         50
       );
     }
-  }
+  };
   const handleFocus = () => {
     setIsFocus(true);
   };
@@ -179,7 +204,10 @@ const RegisterScreen = ({ navigation }) => {
                   </Text>
                 </Pressable>
               </Pressable>
-              <SButton text="Sign Up" onPress={doUserRegistration} />
+              <SButton
+                text="Sign Up"
+                onPress={() => handleButton(navigation)}
+              />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>Already signed up?</Text>
                 <Pressable onPress={() => navigation.navigate("LoginScreen")}>

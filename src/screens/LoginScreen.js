@@ -23,11 +23,9 @@ const LoginScreen = ({ navigation }) => {
   const [isFocusPass, setIsFocusPass] = useState(false);
 
   const handleEmail = (e) => {
-    //Strip white spaces
     setEmail(e.trim());
   };
   const handlePassword = (e) => {
-    //Strip white spaces
     setPassword(e.trim());
   };
 
