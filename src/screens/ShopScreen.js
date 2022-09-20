@@ -1,8 +1,6 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import { ScrollView } from "react-native";
-import { View } from "react-native-web";
 import StoreContainer from "../components/StoreContainer";
+import { StyleSheet, Text ,ScrollView, View} from "react-native";
 
 const ShopScreen = ({ route }) => {
   const { categoryName, id } = route.params;
