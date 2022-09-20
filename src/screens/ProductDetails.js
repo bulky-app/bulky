@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   Image,
@@ -7,14 +6,14 @@ import {
   Text,
   View,
 } from "react-native";
-
-import Data from "../../assets/cartItems";
-import Product from "../components/Product";
-import { CartButton } from "../components/SButton";
-
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/features/cartSlice";
 import styles from "../globalStyles";
+import Data from "../../assets/cartItems";
+import { useDispatch } from "react-redux";
+import Product from "../components/Product";
+import { ToastAndroid } from "react-native";
+import { CartButton } from "../components/SButton";
+import { addToCart } from "../redux/features/cartSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const ProductDetails = ({ route }) => {
   const dispatch = useDispatch();
@@ -23,25 +22,35 @@ const ProductDetails = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
-      <View>
+      <View style={localStyles.imgContainer}>
         <Image source={{ uri: image }} style={localStyles.img} />
       </View>
 
       <Text style={localStyles.title}>{title}</Text>
       <Text style={localStyles.desc}>{description}</Text>
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <Text>Current orders: 25</Text>
-        <Text>{price}</Text>
+
+      <View style={localStyles.infoTextWrapper}>
+        <View style={localStyles.infoTextInnerWrapper}>
+          <Text>Current orders:</Text>
+          <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
+            25
+          </Text>
+        </View>
+        <View style={localStyles.infoTextInnerWrapper}>
+          <Text>Price</Text>
+          <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
+            {" "}
+            {price}
+          </Text>
+        </View>
         <CartButton
           text="Add to cart"
           onPress={() => {
             const item = {
-              description: description,
               image: image,
               price: price,
               title: title,
               id: id,
-              uid: uid,
             };
             dispatch(addToCart(item));
             doAddToCart(title);
@@ -54,7 +63,7 @@ const ProductDetails = ({ route }) => {
         horizontal={true}
         renderItem={(item) => Product(item, dispatch, nav)}
         keyExtractor={(item) => item.id}
-        ListFooterComponent={() => <View style={{ height: 10 }} />}
+        ListFooterComponent={() => <View style={{ height: 150 }} />}
       />
     </SafeAreaView>
   );
@@ -62,9 +71,17 @@ const ProductDetails = ({ route }) => {
 export default ProductDetails;
 
 const localStyles = StyleSheet.create({
+  imgContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
   img: {
-    width: 300,
-    height: 250,
+    width: 200,
+    height: 150,
     borderRadius: 10,
     backgroundColor: "white",
     padding: 20,
@@ -74,9 +91,19 @@ const localStyles = StyleSheet.create({
     fontSize: 24,
     color: styles.purpleText.color,
     overflow: "scroll",
-    height: 80,
+    marginVertical: 10,
   },
   desc: { fontSize: 18, color: styles.greyText.color },
+  infoTextWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  infoTextInnerWrapper: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
 });
 
 const doAddToCart = (name) => {

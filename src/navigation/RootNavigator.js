@@ -40,7 +40,11 @@ function AllScreens() {
         name="Tabs"
         component={Tabs}
       />
-      <Stack.Screen name="Details" component={ProductDetails} />
+      <Stack.Screen
+        name="Details"
+        component={ProductDetails}
+        options={{ headerTintColor: "white" }}
+      />
     </Stack.Navigator>
   );
 }
