@@ -7,16 +7,16 @@ import {
   Pressable,
   ToastAndroid,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import styles from "../globalStyles";
-import loginImage from "../images/registerImg.png";
-import { Image } from "react-native";
-import SInput from "../components/SInput";
 import { useState } from "react";
-import SButton from "../components/SButton";
-import { CheckBox } from "react-native-btr";
+import { Image } from "react-native";
+import styles from "../globalStyles";
 import Parse from "../../backend/server";
+import SInput from "../components/SInput";
+import { CheckBox } from "react-native-btr";
+import SButton from "../components/SButton";
+import loginImage from "../images/registerImg.png";
 import { validateEmail } from "../navigation/functions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
