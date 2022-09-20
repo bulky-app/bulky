@@ -14,7 +14,8 @@ import SInput from "../components/SInput";
 import { useState } from "react";
 import SButton from "../components/SButton";
 import Parse from "../../backend/server";
-import { validateEmail, ValidateEmail } from "../navigation/functions";
+import { validateEmail } from "../navigation/functions";
+import { ToastAndroid } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -31,10 +32,61 @@ const LoginScreen = ({ navigation }) => {
 
   const handleButton = () => {
     Keyboard.dismiss();
-    if (validateEmail(email) === true){
-      console.log("Correct")
-    }else{console.log("invalid")}
-   
+    if (validateEmail(email) === true) {
+      doUserLogIn(navigation);
+    } else {
+      console.log("invalid");
+    }
+  };
+
+  const doUserLogIn = async (navigation) => {
+    const user = new Parse.User();
+    user.set("username", email);
+    user.set("password", password);
+    return await user
+      .logIn()
+      .then(async (loggedInUser) => {
+        const currentUser = await Parse.User.currentAsync();
+        if (loggedInUser === currentUser) {
+          //if user in the phone match the response: Success
+          if (loggedInUser.get("emailVerified") === true) {
+            // if use email is verified: Success
+            ToastAndroid.showWithGravityAndOffset(
+              //Success massage
+              `Hi, ${loggedInUser.get("name")} you successfully signed in!`,
+              ToastAndroid.LONG,
+              ToastAndroid.TOP,
+              25,
+              50
+            );
+            return navigation.dispatch(StackActions.replace("Home")); //redirect to Home screen
+          } else {
+            // if use not verified
+            return navigation.navigate("EmailVerificationScreen");
+          }
+        } else {
+          // if users do not match we logout and display the massage
+          await Parse.User.logOut();
+          return ToastAndroid.showWithGravityAndOffset(
+            "Some error occured please try again.",
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+            25,
+            50
+          );
+        }
+      })
+      // if error occures during login
+      .catch((error) => {
+        console.log(error); //Watch out
+        return ToastAndroid.showWithGravityAndOffset(
+          "Invalid username/password.",
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+      });
   };
 
   const handleFocus = () => {
@@ -91,10 +143,15 @@ const LoginScreen = ({ navigation }) => {
               <Pressable style={styles.purpleText}>
                 <Text style={styles.purpleText}>Fogot Password?</Text>
               </Pressable>
-              <SButton text="Sign In" onPress={handleButton} />
+              <SButton
+                text="Sign In"
+                onPress={() => handleButton(navigation)}
+              />
               <View style={[styles.inlineText]}>
                 <Text style={[styles.greyText]}>New to Bulky ?</Text>
-                <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
+                <Pressable
+                  onPress={() => navigation.navigate("RegisterScreen")}
+                >
                   <Text style={styles.purpleText}>Create an account.</Text>
                 </Pressable>
               </View>

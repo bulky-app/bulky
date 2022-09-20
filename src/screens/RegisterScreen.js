@@ -92,7 +92,7 @@ const RegisterScreen = ({ navigation }) => {
     user.set("walletBalance", 0);
     try {
       await user.signUp();
-
+      await Parse.User.logOut();
       return navigation.navigate("EmailVerificationScreen");
     } catch (error) {
       console.log(error);
