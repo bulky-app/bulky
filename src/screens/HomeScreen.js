@@ -20,7 +20,6 @@ const HomeScreen = ({ navigation }) => {
         setUser(user.get("name"));
         setUserId(user.id);
         setWalletBalance(user.get("walletBalance"));
-        await Parse.User.logOut();
         return true;
       } catch (error) {
         return seterror(error);

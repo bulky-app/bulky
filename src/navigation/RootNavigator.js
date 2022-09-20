@@ -132,7 +132,6 @@ const RootNavigator = () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
-        console.log(user);
         if (user != null) {
           setLoggedin(true);
         } else {
