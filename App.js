@@ -7,9 +7,6 @@ import store from "./src/redux/store";
 const App = () => {
   return (
     <Provider store={store}>
-      {
-        //component you want to see here
-      }
       <RootNavigation />
     </Provider>
   );
