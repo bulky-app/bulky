@@ -6,16 +6,18 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import styles from "../globalStyles";
-import loginImage from "../images/loginImg.png";
-import { Image } from "react-native";
-import SInput from "../components/SInput";
 import { useState } from "react";
-import SButton from "../components/SButton";
+import { Image } from "react-native";
+import styles from "../globalStyles";
+import { useDispatch } from "react-redux";
 import Parse from "../../backend/server";
-import { validateEmail } from "../navigation/functions";
+import SInput from "../components/SInput";
 import { ToastAndroid } from "react-native";
+import SButton from "../components/SButton";
+import loginImage from "../images/loginImg.png";
+import { toggleActive } from "../redux/features/auth";
+import { validateEmail } from "../navigation/functions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -29,13 +31,20 @@ const LoginScreen = ({ navigation }) => {
   const handlePassword = (e) => {
     setPassword(e.trim());
   };
-
+  const dispatch = useDispatch();
   const handleButton = () => {
     Keyboard.dismiss();
+
     if (validateEmail(email) === true) {
       doUserLogIn(navigation);
     } else {
-      console.log("invalid");
+      ToastAndroid.showWithGravityAndOffset(
+        `Invalid email.`,
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
     }
   };
 
@@ -48,18 +57,15 @@ const LoginScreen = ({ navigation }) => {
       .then(async (loggedInUser) => {
         const currentUser = await Parse.User.currentAsync();
         if (loggedInUser === currentUser) {
-          //if user in the phone match the response: Success
           if (loggedInUser.get("emailVerified") === true) {
-            // if use email is verified: Success
             ToastAndroid.showWithGravityAndOffset(
-              //Success massage
               `Hi, ${loggedInUser.get("name")} you successfully signed in!`,
               ToastAndroid.LONG,
               ToastAndroid.TOP,
               25,
               50
             );
-            return navigation.dispatch(StackActions.replace("Home")); //redirect to Home screen
+            return dispatch(toggleActive());
           } else {
             // if use not verified
             return navigation.navigate("EmailVerificationScreen");

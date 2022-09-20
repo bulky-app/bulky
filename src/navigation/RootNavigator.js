@@ -1,3 +1,4 @@
+import Parse from "../../backend/server";
 import { Feather } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -17,6 +18,9 @@ import ShopScreen from "../screens/ShopScreen";
 import HomeScreen from "../screens/HomeScreen.js";
 import ProductDetails from "../screens/ProductDetails";
 import HistoryScreen from "../screens/HistoryScreen";
+
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,15 +74,6 @@ function NotLogged() {
   );
 }
 
-function RootNavigation() {
-  const logedIn = false;
-  return (
-    <NavigationContainer>
-      {logedIn ? <AllScreens /> : <NotLogged />}
-    </NavigationContainer>
-  );
-}
-
 let optionsStyles = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
@@ -129,4 +124,31 @@ let optionsStyles = ({ route }) => ({
   },
 });
 
-export default RootNavigation;
+const RootNavigator = () => {
+  const userIsActive = useSelector((state) => state.user.active);
+  const [loggedIn, setLoggedin] = useState(userIsActive);
+  useEffect(() => {
+    const isLoggedIn = async () => {
+      try {
+        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+        const user = Parse.User.current();
+        console.log(user);
+        if (user != null) {
+          setLoggedin(true);
+        } else {
+          setLoggedin(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    isLoggedIn();
+  }, [userIsActive]);
+  return (
+    <NavigationContainer>
+      {loggedIn ? <AllScreens /> : <NotLogged />}
+    </NavigationContainer>
+  );
+};
+
+export default RootNavigator;

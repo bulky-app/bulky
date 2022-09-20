@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Image, ScrollView, Text, View } from "react-native";
 import CategoryCard from "../components/CategoryCard";
 import ProfileCard from "../components/ProfileCard";
 import styles from "../globalStyles";
@@ -16,15 +9,22 @@ import StoreContainer from "../components/StoreContainer";
 const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
+  const [error, seterror] = useState();
   const [walletBalance, setWalletBalance] = useState();
 
   useEffect(() => {
     const currentUser = async () => {
-      await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
-      const user = Parse.User.current();
-      setUser(user.get("name"));
-      setUserId(user.id);
-      setWalletBalance(user.get("walletBalance"));
+      try {
+        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+        const user = Parse.User.current();
+        setUser(user.get("name"));
+        setUserId(user.id);
+        setWalletBalance(user.get("walletBalance"));
+        await Parse.User.logOut();
+        return true;
+      } catch (error) {
+        return seterror(error);
+      }
     };
     currentUser();
   }, [user]);
@@ -61,18 +61,7 @@ const HomeScreen = ({ navigation }) => {
               renderItem={CategoryCard}
               keyExtractor={(item) => item.id}
             />
-            {/* <Product
-              img={
-                <Image
-                  style={{ maxHeight: 180, maxWidth: 120 }}
-                  source={require("../images/categories/everdaymeals.png")}
-                />
-              }
-              price={30}
-              id="hgkgcv"
-              name="Tastic 5kg"
-            /> */}
-            <StoreContainer nav={navigation}/>
+            <StoreContainer nav={navigation} />
           </View>
         </View>
       )}

@@ -7,10 +7,9 @@ import {
   View,
 } from "react-native";
 import styles from "../globalStyles";
-import { Ionicons } from "@expo/vector-icons";
-import * as Clipboard from "expo-clipboard";
-
 import userImg from "../images/userImg.png";
+import * as Clipboard from "expo-clipboard";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfileCard = ({ userId, userName, userBalance }) => {
   const copyToClipboard = (userId) => {

@@ -17,11 +17,11 @@ import {
 import SButton from "./SButton";
 import { useEffect } from "react";
 import styles from "../globalStyles";
+import { EmptyCart } from "./EmptyCart";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { cartTotalPriceSelector } from "../redux/selectors";
-import { EmptyCart } from "./EmptyCart";
 import { useNavigation } from "@react-navigation/native";
+import { cartTotalPriceSelector } from "../redux/selectors";
 
 const amount = 0;
 const CartContainer = () => {

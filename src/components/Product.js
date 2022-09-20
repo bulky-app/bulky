@@ -8,11 +8,9 @@ import {
 } from "react-native";
 import styles from "../globalStyles";
 import { CartButton } from "./SButton";
-
 import { addToCart } from "../redux/features/cartSlice";
 
 const Product = ({ item }, dispatch, nav) => {
-
   const doAddToCart = (name) => {
     ToastAndroid.showWithGravityAndOffset(
       `${name} added to cart`,

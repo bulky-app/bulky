@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState=[]
+const initialState = [];
 
 const cartSlice = createSlice({
   name: "cart",
@@ -56,13 +56,10 @@ const cartSlice = createSlice({
     loadCart: (state) => {
       async () => {
         try {
-          const jsonValue = await AsyncStorage.getItem('@Cart')
+          const jsonValue = await AsyncStorage.getItem("@Cart");
           return jsonValue != null && JSON.parse(jsonValue);
-        } catch(e) {
-          
-        }
-      }
-      
+        } catch (e) {}
+      };
     },
   },
 });
