@@ -35,5 +35,38 @@ const CartButton = ({ text, onPress }) => {
     </Pressable>
   );
 };
-export { CartButton };
+
+const SSButton = ({ click, text, outline }) => {
+  return (
+    <Pressable
+      android_ripple={{
+        color: styles.safeContainer.backgroundColor,
+        radius: 48,
+      }}
+      style={[
+        { padding: 10, width: 140, borderRadius: 48, elevation: 3 },
+        outline
+          ? {
+              backgroundColor: styles.safeContainer.backgroundColor,
+              borderColor: styles.purpleText.color,
+              borderWidth: 1,
+            }
+          : { backgroundColor: styles.purpleText.color },
+      ]}
+      onPress={click}
+    >
+      <Text
+        style={[
+          { fontSize: 20, textAlign: "center" },
+          outline
+            ? { color: styles.purpleText.color }
+            : { color: styles.blackWhiteText.color },
+        ]}
+      >
+        {text}
+      </Text>
+    </Pressable>
+  );
+};
+export { CartButton, SSButton };
 export default SButton;

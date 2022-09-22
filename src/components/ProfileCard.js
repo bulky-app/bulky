@@ -49,7 +49,7 @@ const ProfileCard = ({ userId, userName, userBalance }) => {
   );
 };
 export default ProfileCard;
-const styless = StyleSheet.create({
+export const styless = StyleSheet.create({
   profileCard: {
     padding: 20,
     borderRadius: 13,

@@ -2,13 +2,13 @@ import "react-native-gesture-handler";
 import store from "./src/redux/store";
 import { Provider } from "react-redux";
 import RootNavigator from "./src/navigation/RootNavigator";
-import Address from "./src/screens/profile/Address";
+import Wallet from "./src/screens/profile/Wallet";
 
 const App = () => {
   return (
     <Provider store={store}>
       {/* <RootNavigator /> */}
-      <Address/>
+      <Wallet/>
     </Provider>
   );
 };
