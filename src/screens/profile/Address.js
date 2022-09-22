@@ -1,13 +1,12 @@
 import React from "react";
 import styles from "../../globalStyles";
 import { Input } from "@rneui/themed";
-import PLACESAPI_KEY from "../../../backend/env.vars";
+import { PLACESAPI_KEY } from "../../../backend/env.vars";
 import SInput from "../../components/SInput";
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
@@ -15,6 +14,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { useState } from "react";
 import { TextInput } from "react-native";
 import SButton from "../../components/SButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 navigator.geolocation = require("react-native-geolocation-service");
 // navigator.geolocation = require('@react-native-community/geolocation');
@@ -26,6 +26,7 @@ const Address = () => {
   const [suburb, setSuburb] = useState("");
   const [location, setLocation] = useState({});
   const [isFocus, setIsFocus] = useState(false);
+  const [city, setCity] = useState("");
   const [isFocusnotes, setIsFocusnotes] = useState(false);
   const [isFocussuburb, setIsFocussuburb] = useState(false);
   const [isFocuslocation, setIsFocuslocation] = useState(false);
@@ -42,6 +43,9 @@ const Address = () => {
   };
   const handlesuburb = (e) => {
     setSuburb(e);
+  };
+  const handlecity = (e) => {
+    setCity(e);
   };
   const handleFocuslocation = () => {
     setIsFocuslocation(true);
@@ -74,29 +78,35 @@ const Address = () => {
     setIsFocussetStreetAddress(false);
   };
 
-  const handleSave = () => {
-    
-  };
-
+  const handleSave = () => {};
 
   return (
-    <View style={[styles.safeContainer,{ flex: 1, padding: 40, alignItems: "center" }]}>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        
-        <KeyboardAvoidingView
-          style={{ alignItems: "center", height: 550 }}
-          onPress={Keyboard.dismiss}
+    <SafeAreaView
+      style={{
+        backgroundColor: styles.safeContainer.backgroundColor,
+        padding: 20,
+        height: "100%",
+      }}
+    >
+      <View
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            height: 200,
+          }}
         >
-          
           <GooglePlacesAutocomplete
             placeholder="Type to start search"
             minLength={5}
-            autoFocus={false}
+            autoFocus={true}
             returnKeyType={"search"}
             listViewDisplayed="auto"
             fetchDetails={true}
-            //enableHighAccuracyLocation={true}
-            //enablePoweredByContainer={true}
+            enableHighAccuracyLocation={true}
+            enablePoweredByContainer={true}
             renderDescription={(row) => row.description}
             textInputProps={{
               InputComp: Input,
@@ -104,68 +114,30 @@ const Address = () => {
               errorStyle: { color: "red" },
             }}
             onPress={(data, details = null) => {
-              console.log("data", data);
-              console.log("details", details);
+              setStreetAddress(
+                details.address_components[0].long_name +
+                  " " +
+                  details.address_components[1].long_name
+              );
+              setSuburb(details.address_components[2].long_name);
+              setCity(details.address_components[3].long_name);
+              setLocation(details.geometry.location);
+              setResName(details.name);
             }}
             query={{
               key: PLACESAPI_KEY,
               language: "en",
-              //components: 'country:za',
+              components: "country:za",
             }}
-            styles={{
-              container: {
-                flex: 1,
-              },
-              textInputContainer: {
-                flexDirection: "row",
-              },
-              textInput: {
-                backgroundColor: "#FFFFFF",
-                height: 44,
-                borderRadius: 5,
-                paddingVertical: 5,
-                paddingHorizontal: 10,
-                borderColor: styles.purpleText.color,
-                fontSize: 15,
-              },
-              poweredContainer: {
-                justifyContent: "flex-end",
-                alignItems: "center",
-              },
-              powered: {},
-              listView: {},
-              row: {
-                backgroundColor: "#FFFFFF",
-                padding: 13,
-                height: 44,
-                flexDirection: "row",
-              },
-              separator: {
-                height: 0.5,
-                backgroundColor: "#c8c7cc",
-              },
-              description: {},
-              loader: {
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                height: 20,
-              },
-            }}
+            styles={localStyles.searchBar}
             currentLocation={true}
             currentLocationLabel="Use my current location"
-            GoogleReverseGeocodingQuery={
-              {
-                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-              }
-            }
-            GooglePlacesSearchQuery={{
-              // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-              rankby: "distance",
-            }}
-            //debounce={200}
           />
-          <View style={{ marginTop: 0 }}>
-            <View style={{ marginTop: 40 }}>
+        </View>
+
+        <View style={{ marginTop: 40 }}>
+          <View>
+            <KeyboardAvoidingView behavior="position">
               <Text style={{ fontWeight: "500", fontSize: 16 }}>
                 Residence Name:
               </Text>
@@ -176,56 +148,98 @@ const Address = () => {
                 focus={handleFocus}
                 blur={handleBlur}
                 isFocus={isFocus}
+                value={resName}
               />
-            </View>
-            <View tyle={{ marginTop: 40 }}>
-              <Text style={{ fontWeight: "500", fontSize: 16 }}>Address:</Text>
-              <SInput
-                placeholderTxt="1 Bunting Road"
-                handleChange={handleResName}
-                keyboardType="default"
-                focus={handleFocusstreetAddress}
-                blur={handleBlurstreetAddress}
-                isFocus={isFocussetStreetAddress}
-              />
-              <SInput
-                placeholderTxt="Auckland Park"
-                handleChange={handleResName}
-                keyboardType="default"
-                focus={handleFocussuburb}
-                blur={handleBlursuburb}
-                isFocus={isFocussuburb}
-              />
-              <SInput
-                placeholderTxt="Johannesburg"
-                handleChange={handleResName}
-                keyboardType="default"
-                focus={handleFocuslocation}
-                blur={handleBlurlocation}
-                isFocus={isFocuslocation}
-              />
-            </View>
-            <View tyle={{ marginTop: 40 }}>
-              <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
-              <TextInput
-                onFocus={handleFocusnotes}
-                onBlur={handleBlurnotes}
-                multiline={true}
-                placeholder="Notes here..."
-                numberOfLines={5}
-                style={[
-                  styles.textInput,
-                  isFocusnotes && styles.textInputFocused,
-                  { marginBottom: 40 },
-                ]}
-              />
-            </View>
+            </KeyboardAvoidingView>
           </View>
-        </KeyboardAvoidingView>
-        <SButton text="Save" onPress />
+          <View tyle={{ marginTop: 40 }}>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Address:</Text>
+            <SInput
+              placeholderTxt="1 Bunting Road"
+              handleChange={handlestreetAddress}
+              keyboardType="default"
+              focus={handleFocusstreetAddress}
+              blur={handleBlurstreetAddress}
+              isFocus={isFocussetStreetAddress}
+              value={streetAddress}
+            />
+            <SInput
+              placeholderTxt="Auckland Park"
+              handleChange={handlesuburb}
+              keyboardType="default"
+              focus={handleFocussuburb}
+              blur={handleBlursuburb}
+              isFocus={isFocussuburb}
+              value={suburb}
+            />
+            <SInput
+              placeholderTxt="Johannesburg"
+              handleChange={handlecity}
+              keyboardType="default"
+              focus={handleFocuslocation}
+              blur={handleBlurlocation}
+              isFocus={isFocuslocation}
+            />
+          </View>
+          <View tyle={{ marginTop: 40 }}>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
+            <TextInput
+              onFocus={handleFocusnotes}
+              onBlur={handleBlurnotes}
+              multiline={true}
+              placeholder="Notes here..."
+              numberOfLines={5}
+              style={[
+                styles.textInput,
+                isFocusnotes && styles.textInputFocused,
+                { marginBottom: 40 },
+              ]}
+              value={notes}
+            />
+          </View>
+
+          <SButton text="Save" onPress={handleSave} />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
-const localStyles = StyleSheet.create({});
+const localStyles = StyleSheet.create({
+  searchBar: {
+    container: {
+      flex: 1,
+      height: 10,
+    },
+    textInputContainer: {
+      flexDirection: "row",
+      borderColor: "#FF0000",
+    },
+    textInput: {
+      backgroundColor: "#FFFFFF",
+      height: 40,
+      borderRadius: 5,
+      paddingVertical: 3,
+      paddingHorizontal: 7,
+      borderColor: styles.purpleText.color,
+      fontSize: 15,
+    },
+    poweredContainer: {
+      justifyContent: "flex-end",
+      alignItems: "center",
+    },
+    row: {
+      backgroundColor: "#FFFFFF",
+      height: 30,
+    },
+    separator: {
+      height: 0.5,
+      backgroundColor: "#c8c7cc",
+    },
+    loader: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      height: 20,
+    },
+  },
+});
 export default Address;

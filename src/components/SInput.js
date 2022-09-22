@@ -21,6 +21,7 @@ const SInput = ({
       onChangeText={handleChange}
       onFocus={focus}
       onBlur={blur}
+      value={value}
     />
   );
 };
