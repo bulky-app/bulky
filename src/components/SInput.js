@@ -10,6 +10,7 @@ const SInput = ({
   isFocus,
   focus,
   blur,
+  value
 }) => {
   return (
     <TextInput
