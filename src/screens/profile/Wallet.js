@@ -1,4 +1,5 @@
 import styles from "../../globalStyles";
+import { useState, useEffect } from "react";
 import { SSButton } from "../../components/SButton";
 import { Text, View, StyleSheet } from "react-native";
 import HistoryItem from "../../components/HistoryItem";
@@ -7,6 +8,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Wallet = () => {
+    const [balance, setBalance] = useState(0);
+    const [history, setHistory] = useState({});
   return (
     <SafeAreaView
       style={[
@@ -16,7 +19,7 @@ const Wallet = () => {
     >
       <View style={[localStyles.walletCard, styless.profileCard.boxWithShadow]}>
         <Text style={localStyles.walletCard.leftText}>Wallet balance:</Text>
-        <Text style={localStyles.walletCard.rightText}>R 800.59</Text>
+        <Text style={localStyles.walletCard.rightText}>R {balance.toFixed(2)}</Text>
       </View>
 
       <View style={localStyles.table}>

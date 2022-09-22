@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
         const user = Parse.User.current();
         setUser(user.get("name"));
         setUserId(user.id);
-        setWalletBalance(user.get("walletBalance"));
+        setWalletBalance(user.get("walletBalance").toFixed(2));
         return true;
       } catch (error) {
         return seterror(error);

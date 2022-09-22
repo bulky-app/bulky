@@ -49,7 +49,7 @@ const Product = ({ item }, dispatch, nav) => {
               },
             ]}
           >
-            R {item.price}
+            R {item.price.toFixed(2)}
           </Text>
           <Text
             style={[
