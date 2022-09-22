@@ -16,8 +16,7 @@ import { TextInput } from "react-native";
 import SButton from "../../components/SButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-navigator.geolocation = require("react-native-geolocation-service");
-// navigator.geolocation = require('@react-native-community/geolocation');
+ navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
   const [resName, setResName] = useState("");
