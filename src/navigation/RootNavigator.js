@@ -22,6 +22,15 @@ import ProductDetails from "../screens/ProductDetails";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
+import ProfileScreen from "../screens/ProfileScreen";
+
+import Wallet from "../screens/profile/Wallet";
+import Address from "../screens/profile/Address";
+import About from "../screens/profile/About";
+import Help from "../screens/profile/Help";
+import Settings from "../screens/profile/Settings";
+import Account from "../screens/profile/Account";
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +59,37 @@ function AllScreens() {
         component={ShopScreen}
         options={{ headerTintColor: "white" }}
       />
+      {/* Profile Screen Navigations */}
+      <Stack.Screen
+        name="Wallet"
+        component={Wallet}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Account"
+        component={Account}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Address"
+        component={Address}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Help"
+        component={Help}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="About"
+        component={About}
+        options={{ headerTintColor: "white" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -61,7 +101,7 @@ function Tabs() {
       <Tab.Screen name="Search" component={HomeScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
-      <Tab.Screen name="Profile" component={HomeScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

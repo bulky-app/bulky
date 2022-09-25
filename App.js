@@ -7,8 +7,8 @@ import Wallet from "./src/screens/profile/Wallet";
 const App = () => {
   return (
     <Provider store={store}>
-      {/* <RootNavigator /> */}
-      <Wallet/>
+      {/*  <Wallet/>*/}
+      <RootNavigator />
     </Provider>
   );
 };

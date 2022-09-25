@@ -12,16 +12,7 @@ import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 
 const ProfileCard = ({ userId, userName, userBalance }) => {
-  const copyToClipboard = (userId) => {
-    Clipboard.setStringAsync(userId);
-    ToastAndroid.showWithGravityAndOffset(
-      `Reference copied to clipboard`,
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-      25,
-      50
-    );
-  };
+ 
   return (
     <View style={[styless.profileCard, styless.profileCard.boxWithShadow]}>
       <Image style={styless.profileCard.imageIcon} source={userImg} />
@@ -48,6 +39,7 @@ const ProfileCard = ({ userId, userName, userBalance }) => {
     </View>
   );
 };
+export {copyToClipboard}
 export default ProfileCard;
 export const styless = StyleSheet.create({
   profileCard: {
@@ -88,3 +80,13 @@ export const styless = StyleSheet.create({
     },
   },
 });
+const copyToClipboard = (userId) => {
+  Clipboard.setStringAsync(userId);
+  ToastAndroid.showWithGravityAndOffset(
+    `Reference copied to clipboard`,
+    ToastAndroid.LONG,
+    ToastAndroid.TOP,
+    25,
+    50
+  );
+};
