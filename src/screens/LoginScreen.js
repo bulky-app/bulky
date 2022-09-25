@@ -16,8 +16,8 @@ import { ToastAndroid } from "react-native";
 import SButton from "../components/SButton";
 import loginImage from "../images/loginImg.png";
 import { toggleActive } from "../redux/features/auth";
-import { validateEmail } from "../navigation/functions";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { doUserPasswordReset, validateEmail } from "../navigation/functions";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -95,6 +95,20 @@ const LoginScreen = ({ navigation }) => {
       });
   };
 
+  const resetPassword = () => {
+    if (validateEmail(email) === true) {
+      doUserPasswordReset(email);
+    } else {
+      ToastAndroid.showWithGravityAndOffset(
+        `Invalid email.`,
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
+  };
+
   const handleFocus = () => {
     setIsFocus(true);
   };
@@ -146,7 +160,7 @@ const LoginScreen = ({ navigation }) => {
                 blur={handleBlurPass}
                 isFocus={isFocusPass}
               />
-              <Pressable style={styles.purpleText}>
+              <Pressable style={styles.purpleText} onPress={resetPassword}>
                 <Text style={styles.purpleText}>Fogot Password?</Text>
               </Pressable>
               <SButton
