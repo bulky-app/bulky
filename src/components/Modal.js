@@ -8,23 +8,28 @@ import {
   ToastAndroid,
 } from "react-native";
 import Parse from "../../backend/server";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { toggleActive } from "../redux/features/auth";
 
-const SModal = ({ handleModal, modalVisible, nav }) => {
-  const logout = async () => {
-    await Parse.User.logOut();
-    ToastAndroid.showWithGravityAndOffset(
-      `Logged out successfully.`,
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-      25,
-      50
-    );
-    nav.reset({
-      index: 0,
-      routes: [{ name: "LoginScreen" }],
-    });
-    dispatch(toggleActive());
-    return nav.navigate("LoginScreen");
+const SModal = ({ handleModal, modalVisible }) => {
+  const dispatch = useDispatch();
+  const nav = useNavigation();
+  const logout = async (nav, dispatch) => {
+    try {
+      await Parse.User.logOut();
+      ToastAndroid.showWithGravityAndOffset(
+        `Logged out successfully.`,
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+      dispatch(toggleActive());
+      return nav.navigate("LoginScreen");
+    } catch (error) {
+      () => error;
+    }
   };
   return (
     <Modal
@@ -41,7 +46,7 @@ const SModal = ({ handleModal, modalVisible, nav }) => {
           <Pressable
             style={localStyles.button}
             activeOpacity={0.3}
-            onPress={() => logout()}
+            onPress={() => logout(nav, dispatch)}
           >
             <Text style={[localStyles.textStyle, styles.dangerText]}>
               Logout

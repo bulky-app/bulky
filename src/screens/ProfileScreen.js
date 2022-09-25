@@ -123,7 +123,6 @@ const ProfileScreen = () => {
         <ProfileOption
           text="Share"
           nav={onSharePress}
-          dispatch={dispatch}
           icon={
             <Ionicons name="share-social-outline" size={24} color="black" />
           }
@@ -131,7 +130,6 @@ const ProfileScreen = () => {
         <ProfileOption
           nav={nav}
           text="Logout"
-          dispatch={dispatch}
           handleModal={handleModal}
           icon={<Ionicons name="log-out-outline" size={24} color="black" />}
         />
@@ -141,6 +139,7 @@ const ProfileScreen = () => {
           handleModal={handleModal}
           modalVisible={modalVisible}
           nav={nav}
+          dispatch={dispatch}
         />
       )}
     </ScrollView>
