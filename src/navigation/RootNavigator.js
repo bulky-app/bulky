@@ -14,15 +14,17 @@ import RegisterScreen from "../screens/RegisterScreen";
 import EmailVerificationScreen from "../screens/EmailVerificationScreen";
 
 import CartScreen from "../screens/CartScreen";
-import ShopScreen from "../screens/ShopScreen";
 import HomeScreen from "../screens/HomeScreen.js";
+import SearchScreen from "../screens/SearchScreen";
 import HistoryScreen from "../screens/HistoryScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+
+import ShopScreen from "../screens/ShopScreen";
 import ProductDetails from "../screens/ProductDetails";
 
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 
-import ProfileScreen from "../screens/ProfileScreen";
+import { useEffect, useState } from "react";
 
 import Wallet from "../screens/profile/Wallet";
 import Address from "../screens/profile/Address";
@@ -98,13 +100,14 @@ function Tabs() {
   return (
     <Tab.Navigator screenOptions={optionsStyles}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={HomeScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
+
 function NotLogged() {
   return (
     <Stack.Navigator
@@ -122,56 +125,6 @@ function NotLogged() {
     </Stack.Navigator>
   );
 }
-
-let optionsStyles = ({ route }) => ({
-  tabBarIcon: ({ focused, color, size }) => {
-    let iconName;
-    let provider;
-    size = 27;
-
-    if (route.name === "Home") {
-      provider = 1;
-      iconName = focused ? "home" : "home";
-    } else if (route.name === "Search") {
-      provider = 0;
-      iconName = focused ? "ios-search-outline" : "ios-search";
-    } else if (route.name === "Cart") {
-      provider = 0;
-      iconName = focused ? "ios-cart-outline" : "ios-cart-outline";
-    } else if (route.name === "History") {
-      provider = 0;
-      iconName = focused ? "time-outline" : "time-outline";
-    } else if (route.name === "Profile") {
-      provider = 0;
-      iconName = focused ? "person-outline" : "person-outline";
-    }
-
-    // You can return any component that you like here!
-    if (provider === 1) {
-      return <Feather name={iconName} size={size} color={color} />;
-    } else {
-      return <Ionicons name={iconName} size={size} color={color} />;
-    }
-  },
-  tabBarStyle: {
-    height: 70,
-    paddingBottom: 10,
-    shadowColor: styles.purpleText.color,
-  },
-  tabBarLabelStyle: { fontSize: 14 },
-  tabBarActiveTintColor: styles.purpleText.color,
-  tabBarInactiveTintColor: styles.greyText.color,
-  headerShadowVisible: true,
-  headerStyle: {
-    backgroundColor: styles.safeContainer.backgroundColor,
-    shadowColor: styles.purpleText.color,
-  },
-  headerTintColor: styles.whiteBlackText.color,
-  headerTitleStyle: {
-    fontWeight: "bold",
-    fontSize: 25,
-  },
-});
 
 const RootNavigator = () => {
   const userIsActive = useSelector((state) => state.user.active);
@@ -198,5 +151,54 @@ const RootNavigator = () => {
     </NavigationContainer>
   );
 };
+
+let optionsStyles = ({ route }) => ({
+  tabBarIcon: ({ focused, color, size }) => {
+    let iconName;
+    let provider;
+    size = 27;
+
+    if (route.name === "Home") {
+      provider = 1;
+      iconName = focused ? "home" : "home";
+    } else if (route.name === "Search") {
+      provider = 0;
+      iconName = focused ? "ios-search-outline" : "ios-search";
+    } else if (route.name === "Cart") {
+      provider = 0;
+      iconName = focused ? "ios-cart-outline" : "ios-cart-outline";
+    } else if (route.name === "History") {
+      provider = 0;
+      iconName = focused ? "time-outline" : "time-outline";
+    } else if (route.name === "Profile") {
+      provider = 0;
+      iconName = focused ? "person-outline" : "person-outline";
+    }
+
+    if (provider === 1) {
+      return <Feather name={iconName} size={size} color={color} />;
+    } else {
+      return <Ionicons name={iconName} size={size} color={color} />;
+    }
+  },
+  tabBarStyle: {
+    height: 70,
+    paddingBottom: 10,
+    shadowColor: styles.purpleText.color,
+  },
+  tabBarLabelStyle: { fontSize: 14 },
+  tabBarActiveTintColor: styles.purpleText.color,
+  tabBarInactiveTintColor: styles.greyText.color,
+  headerShadowVisible: true,
+  headerStyle: {
+    backgroundColor: styles.safeContainer.backgroundColor,
+    shadowColor: styles.purpleText.color,
+  },
+  headerTintColor: styles.whiteBlackText.color,
+  headerTitleStyle: {
+    fontWeight: "bold",
+    fontSize: 25,
+  },
+});
 
 export default RootNavigator;
