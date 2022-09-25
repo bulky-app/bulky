@@ -1,57 +1,155 @@
 import styles from "../../globalStyles";
+import { ToastAndroid } from "react-native";
 import { useState, useEffect } from "react";
-import { SSButton } from "../../components/SButton";
-import { Text, View, StyleSheet } from "react-native";
-import HistoryItem from "../../components/HistoryItem";
-import { styless } from "../../components/ProfileCard";
+import { Text, View, StyleSheet, Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Settings = () => {
-    const [balance, setBalance] = useState(0);
-    const [history, setHistory] = useState({});
+  const [isEnabledDark, setIsEnabledDark] = useState(false);
+  const [isEnabledEmail, setIsEnabledEmail] = useState(false);
+  const [isEnabledPush, setIsEnabledPush] = useState(false);
+  const [isEnabledSMS, setIsEnabledSMS] = useState(false);
+
+  useEffect(() => {
+    const update = async () => {
+      await AsyncStorage.getItem("email").then((value) => {
+        if (value === "true") {
+          return setIsEnabledEmail(false);
+        } else {
+          return setIsEnabledEmail(true);
+        }
+      });
+      await AsyncStorage.getItem("dark").then((value) => {
+        if (value === "true") {
+          return setIsEnabledDark(false);
+        } else {
+          return setIsEnabledDark(true);
+        }
+      });
+      await AsyncStorage.getItem("sms").then((value) => {
+        if (value === "true") {
+          return setIsEnabledSMS(false);
+        } else {
+          return setIsEnabledSMS(true);
+        }
+      });
+      await AsyncStorage.getItem("push").then((value) => {
+        if (value === "true") {
+          return setIsEnabledPush(false);
+        } else {
+          return setIsEnabledPush(true);
+        }
+      });
+    };
+
+    update().catch((e) => {});
+  }, []);
+
+  const toggleSwitchDark = (name) => {
+    const updateStorage = async (name, value) => {
+      try {
+        await AsyncStorage.setItem(name, value.toString());
+      } catch (e) {
+        ToastAndroid.showWithGravityAndOffset(
+          `Some error occured, please try again.`,
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+      }
+    };
+    if (name === "push") {
+      setIsEnabledPush(!isEnabledPush);
+      return updateStorage(name, isEnabledPush);
+    }
+    if (name === "dark") {
+      setIsEnabledDark(!isEnabledDark);
+      return updateStorage(name, isEnabledDark);
+    }
+    if (name === "email") {
+      setIsEnabledEmail(!isEnabledEmail);
+      return updateStorage(name, isEnabledEmail);
+    }
+    if (name === "sms") {
+      setIsEnabledSMS(!isEnabledSMS);
+      return updateStorage(name, isEnabledSMS);
+    } else {
+      return false;
+    }
+  };
+
   return (
     <SafeAreaView
       style={[
         styles.safeContainer,
-        { position: "relative", alignItems: "center" },
+        {
+          position: "relative",
+          //alignItems: "center",
+          marginTop: 0,
+          paddingTop: 0,
+        },
       ]}
     >
-      <View style={[localStyles.walletCard, styless.profileCard.boxWithShadow]}>
-        <Text style={localStyles.walletCard.leftText}>Wallet balance:</Text>
-        <Text style={localStyles.walletCard.rightText}>R {balance.toFixed(2)}</Text>
-      </View>
-
-      <View style={localStyles.table}>
-        <Text style={[styles.greyText, { fontSize: 18 }]}>
-          Transactions History:
-        </Text>
-        <View style={localStyles.table.head}>
-          <Text style={localStyles.table.head.data}>Date</Text>
-          <Text style={localStyles.table.head.data}>Type</Text>
-          <Text style={localStyles.table.head.data}>Amount</Text>
+      <Text style={localStyles.text}>Communication Preferences</Text>
+      <View style={localStyles.item}>
+        <View style={localStyles.item.container}>
+          <Text style={localStyles.item.text}>Email Notifications</Text>
+          <Switch
+            trackColor={{
+              false: localStyles.item.switch.false,
+              true: localStyles.item.switch.true,
+            }}
+            thumbColor={isEnabledEmail ? styles.purpleText.color : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => toggleSwitchDark("email")}
+            value={isEnabledEmail}
+          />
         </View>
-        <View style={{ height: 500 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <HistoryItem
-              amount={800.59}
-              date="2021/10/20 - 15:23"
-              type="Deposit"
-            />
-          </ScrollView>
+        <View style={localStyles.item.container}>
+          <Text style={localStyles.item.text}>Push Notifications</Text>
+          <Switch
+            trackColor={{
+              false: localStyles.item.switch.false,
+              true: localStyles.item.switch.true,
+            }}
+            thumbColor={isEnabledPush ? styles.purpleText.color : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onChange={() => toggleSwitchDark("push")}
+            //onValueChange={}
+            value={isEnabledPush}
+          />
+        </View>
+        <View style={localStyles.item.container}>
+          <Text style={localStyles.item.text}>SMS Notifications</Text>
+          <Switch
+            trackColor={{
+              false: localStyles.item.switch.false,
+              true: localStyles.item.switch.true,
+            }}
+            thumbColor={isEnabledSMS ? styles.purpleText.color : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => toggleSwitchDark("sms")}
+            value={isEnabledSMS}
+          />
         </View>
       </View>
-      <View style={localStyles.buttons}>
-        <SSButton
-          text="Withdraw"
-          click={() => console.log("Im clicked")}
-          outline={true}
-        />
-        <SSButton
-          text="Deposit"
-          click={() => console.log("Im clicked")}
-          outline={false}
-        />
+      <Text style={localStyles.text}>App Appearance</Text>
+      <View style={localStyles.item}>
+        <View style={localStyles.item.container}>
+          <Text style={localStyles.item.text}>Dark mode</Text>
+          <Switch
+            trackColor={{
+              false: localStyles.item.switch.false,
+              true: localStyles.item.switch.true,
+            }}
+            thumbColor={isEnabledDark ? styles.purpleText.color : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => toggleSwitchDark("dark")}
+            value={isEnabledDark}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -59,45 +157,25 @@ const Settings = () => {
 export default Settings;
 
 const localStyles = StyleSheet.create({
-  walletCard: {
-    flexDirection: "row",
-    paddingHorizontal: 22,
-    paddingVertical: 15,
-    width: "100%",
-    justifyContent: "space-between",
-    elevation: 4,
-    backgroundColor: styles.blackWhiteText.color,
-    borderRadius: 10,
-    marginVertical: 10,
-    leftText: {
-      fontWeight: "800",
-      fontSize: 20,
-    },
-    rightText: {
-      color: styles.purpleText.color,
-      fontWeight: "800",
-      fontSize: 20,
-    },
-  },
-  table: {
-    marginTop: 20,
-    head: {
+  item: {
+    padding: 5,
+    borderBottomWidth: 0.3,
+    borderBottomColor: styles.greyText.color,
+    marginVertical: 20,
+    container: {
+      borderRadius: 20,
+      marginVertical: 5,
+      alignItems: "center",
       flexDirection: "row",
-      paddingVertical: 10,
+      paddingHorizontal: 15,
       justifyContent: "space-between",
       backgroundColor: styles.blackWhiteText.color,
-      color: styles.greyText.color,
-      data: {
-        width: 100,
-        textAlign: "center",
-      },
+    },
+    text: { fontSize: 16 },
+    switch: {
+      true: styles.safeContainer.backgroundColor,
+      false: "#767577",
     },
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    position: "absolute",
-    bottom: 20,
-    width: "100%",
-  },
+  text: { fontSize: 21, fontWeight: "300" },
 });
