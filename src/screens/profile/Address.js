@@ -16,7 +16,7 @@ import { TextInput } from "react-native";
 import SButton from "../../components/SButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 
- navigator.geolocation = require("react-native-geolocation-service");
+navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
   const [resName, setResName] = useState("");
@@ -84,6 +84,7 @@ const Address = () => {
       style={{
         backgroundColor: styles.safeContainer.backgroundColor,
         padding: 20,
+        paddingTop: 0,
         height: "100%",
       }}
     >
@@ -134,51 +135,52 @@ const Address = () => {
           />
         </View>
 
-        <View style={{ marginTop: 40 }}>
-          <View>
-            <KeyboardAvoidingView behavior="position">
-              <Text style={{ fontWeight: "500", fontSize: 16 }}>
-                Residence Name:
-              </Text>
-              <SInput
-                placeholderTxt="Residence name"
-                handleChange={handleResName}
-                keyboardType="default"
-                focus={handleFocus}
-                blur={handleBlur}
-                isFocus={isFocus}
-                value={resName}
-              />
-            </KeyboardAvoidingView>
-          </View>
+        <View style={{ marginTop: 20 }}>
+          <KeyboardAvoidingView>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>
+              Residence Name:
+            </Text>
+            <SInput
+              placeholderTxt="Residence name"
+              handleChange={handleResName}
+              keyboardType="default"
+              focus={handleFocus}
+              blur={handleBlur}
+              isFocus={isFocus}
+              value={resName}
+            />
+          </KeyboardAvoidingView>
+
           <View tyle={{ marginTop: 40 }}>
             <Text style={{ fontWeight: "500", fontSize: 16 }}>Address:</Text>
-            <SInput
-              placeholderTxt="1 Bunting Road"
-              handleChange={handlestreetAddress}
-              keyboardType="default"
-              focus={handleFocusstreetAddress}
-              blur={handleBlurstreetAddress}
-              isFocus={isFocussetStreetAddress}
-              value={streetAddress}
-            />
-            <SInput
-              placeholderTxt="Auckland Park"
-              handleChange={handlesuburb}
-              keyboardType="default"
-              focus={handleFocussuburb}
-              blur={handleBlursuburb}
-              isFocus={isFocussuburb}
-              value={suburb}
-            />
-            <SInput
-              placeholderTxt="Johannesburg"
-              handleChange={handlecity}
-              keyboardType="default"
-              focus={handleFocuslocation}
-              blur={handleBlurlocation}
-              isFocus={isFocuslocation}
-            />
+            <KeyboardAvoidingView>
+              <SInput
+                placeholderTxt="1 Bunting Road"
+                handleChange={handlestreetAddress}
+                keyboardType="default"
+                focus={handleFocusstreetAddress}
+                blur={handleBlurstreetAddress}
+                isFocus={isFocussetStreetAddress}
+                value={streetAddress}
+              />
+              <SInput
+                placeholderTxt="Auckland Park"
+                handleChange={handlesuburb}
+                keyboardType="default"
+                focus={handleFocussuburb}
+                blur={handleBlursuburb}
+                isFocus={isFocussuburb}
+                value={suburb}
+              />
+              <SInput
+                placeholderTxt="Johannesburg"
+                handleChange={handlecity}
+                keyboardType="default"
+                focus={handleFocuslocation}
+                blur={handleBlurlocation}
+                isFocus={isFocuslocation}
+              />
+            </KeyboardAvoidingView>
           </View>
           <View tyle={{ marginTop: 40 }}>
             <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
