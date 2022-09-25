@@ -10,12 +10,14 @@ const SInput = ({
   isFocus,
   focus,
   blur,
-  value
+  value,
+  isDisable
 }) => {
   return (
     <TextInput
       placeholder={placeholderTxt}
       keyboardType={keyboard}
+      editable={isDisable}
       secureTextEntry={isSercure}
       style={[styles.textInput, isFocus && styles.textInputFocused]}
       onChangeText={handleChange}

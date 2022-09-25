@@ -1,103 +1,146 @@
+import {
+  Text,
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Keyboard,
+} from "react-native";
 import styles from "../../globalStyles";
 import { useState, useEffect } from "react";
-import { SSButton } from "../../components/SButton";
-import { Text, View, StyleSheet } from "react-native";
-import HistoryItem from "../../components/HistoryItem";
-import { styless } from "../../components/ProfileCard";
+import SInput from "../../components/SInput";
+import SButton from "../../components/SButton";
+import userImg from "../../images/userImg.png";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
+import { doUserPasswordReset } from "../../navigation/functions";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Account = () => {
-    const [balance, setBalance] = useState(0);
-    const [history, setHistory] = useState({});
-  return (
-    <SafeAreaView
-      style={[
-        styles.safeContainer,
-        { position: "relative", alignItems: "center" },
-      ]}
-    >
-      <View style={[localStyles.walletCard, styless.profileCard.boxWithShadow]}>
-        <Text style={localStyles.walletCard.leftText}>Wallet balance:</Text>
-        <Text style={localStyles.walletCard.rightText}>R {balance.toFixed(2)}</Text>
-      </View>
+  const [name, setName] = useState("");
+  const [phone, setphone] = useState("");
+  const [email, setEmail] = useState("");
+  const [surName, setSurName] = useState("");
 
-      <View style={localStyles.table}>
-        <Text style={[styles.greyText, { fontSize: 18 }]}>
-          Transactions History:
-        </Text>
-        <View style={localStyles.table.head}>
-          <Text style={localStyles.table.head.data}>Date</Text>
-          <Text style={localStyles.table.head.data}>Type</Text>
-          <Text style={localStyles.table.head.data}>Amount</Text>
-        </View>
-        <View style={{ height: 500 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <HistoryItem
-              amount={800.59}
-              date="2021/10/20 - 15:23"
-              type="Deposit"
-            />
-          </ScrollView>
-        </View>
-      </View>
-      <View style={localStyles.buttons}>
-        <SSButton
-          text="Withdraw"
-          click={() => console.log("Im clicked")}
-          outline={true}
+  const [isFocus, setIsFocus] = useState(false);
+  const [isFocusPhone, setIsFocusPhone] = useState(false);
+  const [isFocussurName, setIsFocussurName] = useState(false);
+
+  const handleName = (e) => {
+    setName(e.trim());
+  };
+  const handleSurName = (e) => {
+    setSurName(e.trim());
+  };
+  const handlephone = (e) => {
+    setphone(e.trim());
+  };
+
+  const handleFocus = () => {
+    setIsFocus(true);
+  };
+  const handleBlur = () => {
+    setIsFocus(false);
+  };
+  const handleFocusSurName = () => {
+    setIsFocussurName(true);
+  };
+  const handleBlurSurName = () => {
+    setIsFocussurName(false);
+    Keyboard.dismiss();
+  };
+  const handleFocusPhone = () => {
+    setIsFocusPhone(true);
+  };
+  const handleBlurPhone = () => {
+    setIsFocusPhone(false);
+    Keyboard.dismiss();
+  };
+
+  const handleSaveButton = ()=>{
+
+  }
+  const handlePassResetButton =()=>{
+    doUserPasswordReset(email);
+  }
+
+
+  return (
+    <SafeAreaView style={[styles.safeContainer, { paddingTop: 0 }]}>
+      <View style={[styles.container, { alignItems: "center" }]}>
+        <Image
+          style={{ height: 100, width: 100, marginBottom: 40 }}
+          source={userImg}
         />
-        <SSButton
-          text="Deposit"
-          click={() => console.log("Im clicked")}
-          outline={false}
-        />
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.innerContainer}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+              <View style={{ marginVertical: 5 }}>
+                <Text style={{ marginBottom: -10 }}>First Name:</Text>
+                <SInput
+                  placeholderTxt="Email"
+                  isSercure={false}
+                  keyboard="default"
+                  handleChange={handleName}
+                  focus={handleFocus}
+                  blur={handleBlur}
+                  isFocus={isFocus}
+                  value={name}
+                />
+              </View>
+              <View style={{ marginVertical: 5 }}>
+                <Text style={{ marginBottom: -10 }}>Last Name:</Text>
+                <SInput
+                  placeholderTxt="Surname"
+                  keyboard="default"
+                  handleChange={handleSurName}
+                  focus={handleFocusSurName}
+                  blur={handleBlurSurName}
+                  isFocus={isFocussurName}
+                  value={surName}
+                />
+              </View>
+              <View style={{ marginVertical: 5 }}>
+                <Text style={{ marginBottom: -10 }}>Email:</Text>
+                <SInput
+                  placeholderTxt="Email"
+                  isDisable={false}
+                  value={email}
+                />
+              </View>
+              <View style={{ marginVertical: 5 }}>
+                <Text style={{ marginBottom: -10 }}>Phone Number:</Text>
+                <SInput
+                  placeholderTxt="069 999 8888"
+                  isSercure={false}
+                  keyboard="phone-pad"
+                  handleChange={handlephone}
+                  focus={handleFocusPhone}
+                  blur={handleBlurPhone}
+                  isFocus={isFocusPhone}
+                  value={phone}
+                />
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <SButton
+                  text="Save Update"
+                  onPress={() => handleSaveButton()}
+                />
+              </View>
+              <View style={{ marginTop: 30 }}>
+                <SButton
+                  text="Reset Password"
+                  outline={true}
+                  onPress={() => handlePassResetButton()}
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
     </SafeAreaView>
   );
 };
 export default Account;
-
-const localStyles = StyleSheet.create({
-  walletCard: {
-    flexDirection: "row",
-    paddingHorizontal: 22,
-    paddingVertical: 15,
-    width: "100%",
-    justifyContent: "space-between",
-    elevation: 4,
-    backgroundColor: styles.blackWhiteText.color,
-    borderRadius: 10,
-    marginVertical: 10,
-    leftText: {
-      fontWeight: "800",
-      fontSize: 20,
-    },
-    rightText: {
-      color: styles.purpleText.color,
-      fontWeight: "800",
-      fontSize: 20,
-    },
-  },
-  table: {
-    marginTop: 20,
-    head: {
-      flexDirection: "row",
-      paddingVertical: 10,
-      justifyContent: "space-between",
-      backgroundColor: styles.blackWhiteText.color,
-      color: styles.greyText.color,
-      data: {
-        width: 100,
-        textAlign: "center",
-      },
-    },
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    position: "absolute",
-    bottom: 20,
-    width: "100%",
-  },
-});

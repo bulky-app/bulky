@@ -1,17 +1,36 @@
 import { Pressable, Text } from "react-native";
 import styles from "../globalStyles";
 
-const SButton = ({ text, onPress }) => {
+const SButton = ({ text, onPress, outline }) => {
   return (
     <Pressable
-      style={({ pressed }) => [pressed && { opacity: 0.8 }, styles.button]}
+      style={({ pressed }) => [
+        pressed && { opacity: 0.8 },
+        outline
+          ? [
+              styles.button,
+              {
+                backgroundColor: styles.safeContainer.backgroundColor,
+                borderColor: styles.purpleText.color,
+                borderWidth: 1,
+              },
+            ]
+          : styles.button,
+      ]}
       android_ripple={{
         color: "#F2F4F5",
         radius: 48,
       }}
       onPress={onPress}
     >
-      <Text style={styles.buttonText}>{text}</Text>
+      <Text
+        style={[
+          styles.buttonText,
+          outline && { color: styles.purpleText.color },
+        ]}
+      >
+        {text}
+      </Text>
     </Pressable>
   );
 };
