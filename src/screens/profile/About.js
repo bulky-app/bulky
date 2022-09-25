@@ -1049,33 +1049,33 @@ export default About;
 
 const localStyles = StyleSheet.create({
   collapse: {
+    elevation: 3,
     marginBottom: 15,
-
     header: {
-      paddingVertical: 15,
-      borderWidth: 0.3,
-      paddingHorizontal: 20,
+      flex: 1,
       fontSize: 16,
+      borderWidth: 0.3,
       borderRadius: 15,
       fontWeight: "600",
-      backgroundColor: styles.blackWhiteText.color,
+      paddingVertical: 15,
+      paddingHorizontal: 20,
       flexDirection: "column",
-      flex: 1,
+      backgroundColor: styles.blackWhiteText.color,
     },
     body: {
-      borderRadius: 5,
-      marginTop: 10,
       padding: 10,
       fontSize: 14,
+      marginTop: 10,
+      borderRadius: 5,
       fontWeight: "300",
       textAlign: "justify",
-      backgroundColor: styles.blackWhiteText.color,
       flexDirection: "column",
+      backgroundColor: styles.blackWhiteText.color,
       p: {
+        flex: 1,
         marginLeft: 10,
         marginVertical: 5,
         flexDirection: "column",
-        flex: 1,
         bold: {
           fontWeight: "600",
         },
@@ -1084,11 +1084,11 @@ const localStyles = StyleSheet.create({
       h3: { fontSize: 16, fontWeight: "600" },
       ul: { marginLeft: 15, li: { marginLeft: 10 } },
       h2: { fontSize: 16, fontWeight: "700" },
-      h1: { fontSize: 18, fontWeight: "800" },
+      h1: { fontSize: 18, fontWeight: "800", marginVertical: 5 },
     },
   },
   version: {
-    color: styles.greyText.color,
     alignSelf: "center",
+    color: styles.greyText.color,
   },
 });
