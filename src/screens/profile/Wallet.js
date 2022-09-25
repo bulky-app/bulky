@@ -8,18 +8,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Wallet = () => {
-    const [balance, setBalance] = useState(0);
-    const [history, setHistory] = useState({});
+  const [balance, setBalance] = useState(0);
+  const [history, setHistory] = useState({});
   return (
     <SafeAreaView
       style={[
         styles.safeContainer,
-        { position: "relative", alignItems: "center" },
+        { position: "relative", alignItems: "center", paddingTop: 0 }
       ]}
     >
       <View style={[localStyles.walletCard, styless.profileCard.boxWithShadow]}>
         <Text style={localStyles.walletCard.leftText}>Wallet balance:</Text>
-        <Text style={localStyles.walletCard.rightText}>R {balance.toFixed(2)}</Text>
+        <Text style={localStyles.walletCard.rightText}>
+          R {balance.toFixed(2)}
+        </Text>
       </View>
 
       <View style={localStyles.table}>
@@ -65,10 +67,10 @@ const localStyles = StyleSheet.create({
     paddingVertical: 15,
     width: "100%",
     justifyContent: "space-between",
-    elevation: 4,
+    elevation: 3,
     backgroundColor: styles.blackWhiteText.color,
     borderRadius: 10,
-    marginVertical: 10,
+    marginBottom: 10,
     leftText: {
       fontWeight: "800",
       fontSize: 20,
