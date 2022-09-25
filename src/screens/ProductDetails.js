@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 const ProductDetails = ({ route }) => {
   const dispatch = useDispatch();
   const nav = useNavigation();
-  const { title, price, image, description } = route.params;
+  const { title, price, image, description, id } = route.params;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
