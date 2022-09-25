@@ -34,10 +34,11 @@ const ProfileScreen = () => {
 
   const onSharePress = () =>
     Share.share({
-      title: "Title",
-      message: "Message to share", // Note that according to the documentation at least one of "message" or "url" fields is required
-      url: "www.example.com",
-      subject: "Subject",
+      title: "Share bulk with friends.",
+      message:
+        "Hey, there is this app called *Bulky* where grocery is *cheaper* than anywhere else. Check its out here https://bulky.co.za",
+      url: "https://bulky.co.za",
+      subject: "Check out Bulky",
     });
 
   useEffect(() => {
@@ -136,7 +137,11 @@ const ProfileScreen = () => {
         />
       </View>
       {modalVisible && (
-        <Modal handleModal={handleModal} modalVisible={modalVisible} nav={nav}/>
+        <Modal
+          handleModal={handleModal}
+          modalVisible={modalVisible}
+          nav={nav}
+        />
       )}
     </ScrollView>
   );
