@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "@rneui/base": "^4.0.0-rc.6",
     "@rneui/themed": "^4.0.0-rc.6",
+    "accordion-collapse-react-native": "^1.1.1",
     "expo": "~46.0.9",
     "expo-clipboard": "~3.1.0",
     "expo-location": "~14.3.0",
