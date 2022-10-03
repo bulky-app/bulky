@@ -4,6 +4,7 @@ import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+//import { initializeParse, useParseQuery } from  '@parse/react-native';
 
 const url = "https://course-api.com/react-useReducer-cart-project";
 
@@ -18,6 +19,14 @@ const StoreContainer = () => {
       .then((res) => res.json())
       .then((json) => setData(json));
   }, []);
+
+
+//New code
+
+//End code
+
+
+
 
   const StoreItems = ({ nav }) => {
     return (

@@ -147,7 +147,7 @@ const RootNavigator = () => {
   }, [userIsActive]);
   return (
     <NavigationContainer>
-      {loggedIn ? <AllScreens /> : <NotLogged />}
+      {true ? <AllScreens /> : <NotLogged />}
     </NavigationContainer>
   );
 };
