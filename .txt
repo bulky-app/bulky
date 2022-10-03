@@ -21,3 +21,34 @@ link text: background: #6B4EFF; color: #6B4EFF
 
 light
 white #D9D9D9
+
+
+
+
+Categories
+snacks - UnjwmvHJd3
+everyday - SB7z4wK5Hr
+toiletries - NM0kWSezrS
+busket - x9pc6rXKFc
+
+orders
+jMfduTSjh1
+GVSXn71hBF
+
+products
+uZ3NquTG1T
+RJ9wYGTFIF
+
+
+Todo.
+1 Fix the search page
+2 Review edit page
+3 Get data to the Home page from db
+4 make store container reusable troughot the app
+5 make sure the data can be added to cart
+6 enable shop by category
+7 get data to account, address, wallet
+8 make balance to update with out refresh (store it in redux and do a live query)
+9 make search to work
+10 save cart to phone
+11 show loading thing
