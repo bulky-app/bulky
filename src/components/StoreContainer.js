@@ -1,5 +1,4 @@
 import Product from "./Product";
-import { Alert } from "react-native";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
 import { View, FlatList } from "react-native";
@@ -20,7 +19,7 @@ const StoreContainer = ({ category }) => {
       const queryResult = await query.find();
       setData(queryResult);
     } catch (error) {
-      Alert.alert("error", error.massage, ["ok"]);
+      return error;
     }
   }
 

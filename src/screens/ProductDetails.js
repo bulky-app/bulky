@@ -39,7 +39,7 @@ const ProductDetails = ({ route }) => {
       const queryResult = await query.find();
       setRelated(queryResult);
     } catch (error) {
-      Alert.alert("error", error.massage, ["ok"]);
+      return error;
     }
   }
 

@@ -1,15 +1,37 @@
 import { View, Text, StyleSheet } from "react-native";
 import styles from "../globalStyles";
 
-const HistoryItem = ({ amount, date, type }) => {
+const HistoryItem = ({ amount, date, type, status }) => {
   return (
     <View>
       <View style={localStyles.table.row}>
-        <Text style={localStyles.table.data}>{date}</Text>
-        <Text style={[localStyles.table.data, { textAlign: "center" }]}>
+        <Text
+          style={[
+            localStyles.table.data,
+            status.toLowerCase() === "declined" && { color: "red" },
+            status.toLowerCase() === "processed" && { color: "green" },
+          ]}
+        >
+          {date.toString().substring(4, 21)}
+        </Text>
+        <Text
+          style={[
+            localStyles.table.data,
+            { textAlign: "center" },
+            status.toLowerCase() === "declined" && { color: "red" },
+            status.toLowerCase() === "processed" && { color: "green" },
+          ]}
+        >
           {type}
         </Text>
-        <Text style={[localStyles.table.data, { textAlign: "center" }]}>
+        <Text
+          style={[
+            localStyles.table.data,
+            { textAlign: "center" },
+            status.toLowerCase() === "declined" && { color: "red" },
+            status.toLowerCase() === "processed" && { color: "green" },
+          ]}
+        >
           R {amount}
         </Text>
       </View>
