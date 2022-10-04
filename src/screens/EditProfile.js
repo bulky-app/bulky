@@ -9,7 +9,7 @@ import { SSButton } from "../../components/SButton";
 import Ionicons from "@expo/vector-icons";
 
 
-const EditProfile = () => {
+const EditProfile = ({navigation}) => {
     const [show, setShow] = useState(true);
     const [fname, setfName]= useState("");
     const [lname , setlName]= useState("");
@@ -118,7 +118,7 @@ const EditProfile = () => {
               click={() => console.log("Im clicked")}
               outline={false}
               icon={<Ionicons name="save-outline" size={24} color="black" />}
-              onPress = {() =>handleOnSave (Alert , "Saved Successfully")}
+              onPress = {() =>handleOnSave (Alert.alert ("Saved Successfully"))}
              />
              </View>
     </SafeAreaView>
