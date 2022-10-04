@@ -3,7 +3,7 @@ import { ProfileCard , styless } from "../../components/ProfileCard";
 import SInput from "../components/SInput";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../globalStyles";
-import { Image, Text , View ,Keyboard , KeyboardAvoidingView, TouchableWithoutFeedback,} from "react-native";
+import { Image, Text , View ,Keyboard , KeyboardAvoidingView, TouchableWithoutFeedback, Alert,} from "react-native";
 import userImg from "../images/userImg.png";
 import { SSButton } from "../../components/SButton";
 import Ionicons from "@expo/vector-icons";
@@ -16,6 +16,8 @@ const EditProfile = () => {
     const [phonenumber, setPhoneNumber]= useState ("");
     const [isFocus, setIsFocus] = useState(false);
     const [isFocusName, setIsFocusName] = useState(false);
+    const [ userdetails , setUserDetails] = useState("");
+    const [saved ,setSaved] = useState([]);
 
     const handlefName = (e) => {
         setfName(e.trim());
@@ -43,6 +45,19 @@ const EditProfile = () => {
       const handleBlurName = () => {
         setIsFocusName(false);
       };
+
+      const handleOnSave= (userdetails) => {
+        const newUserDetails = [...saved , userdetails]
+        setSaved(newUserDetails);
+
+        const userdetails = JSON.stringify(newUserDetails);
+
+        SaveUserDetails( "saved successfully" , userdetails)
+        .then((res) => {
+          console.warn("saved successfully" ,res);
+          console.catch((e) => console.warn(e));
+        });
+      }
     return (
         <SafeAreaView
       style={[
@@ -103,7 +118,7 @@ const EditProfile = () => {
               click={() => console.log("Im clicked")}
               outline={false}
               icon={<Ionicons name="save-outline" size={24} color="black" />}
-              onPress = {() => {}}
+              onPress = {() =>handleOnSave (Alert , "Saved Successfully")}
              />
              </View>
     </SafeAreaView>
