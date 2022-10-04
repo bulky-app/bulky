@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../../globalStyles";
 import { Input } from "@rneui/themed";
 import { PLACESAPI_KEY } from "../../../backend/env.vars";
@@ -13,29 +13,70 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useState } from "react";
 import { TextInput } from "react-native";
+import Parse from "../../../backend/server";
 import SButton from "../../components/SButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ToastAndroid } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
-  const [resName, setResName] = useState("");
-  const [notes, setNotes] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [suburb, setSuburb] = useState("");
-  const [location, setLocation] = useState({});
-  const [isFocus, setIsFocus] = useState(false);
+
   const [city, setCity] = useState("");
+  const [notes, setNotes] = useState("");
+  const [user, setUser] = useState("");
+  const [userId, setUserId] = useState("");
+  const [suburb, setSuburb] = useState("");
+  const [resName, setResName] = useState("");
+  const [location, setLocation] = useState({});
+  const [streetAddress, setStreetAddress] = useState("");
+
+
+  const [isFocus, setIsFocus] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [isFocusnotes, setIsFocusnotes] = useState(false);
   const [isFocussuburb, setIsFocussuburb] = useState(false);
   const [isFocuslocation, setIsFocuslocation] = useState(false);
   const [isFocussetStreetAddress, setIsFocussetStreetAddress] = useState(false);
 
+  //Get data from DB
+  useEffect(() => {
+    const currentUser = async () => {
+      try {
+        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+        const user = Parse.User.current();
+
+        const query = new Parse.Query("userAddresses");
+        query.contains("userId", user.id);
+
+        const queryResult = await query.find();
+        setUser(queryResult[0].id);
+        setNotes(queryResult[0].get("notes"));
+        setCity(queryResult[0].get("cityName"));
+        setUserId(queryResult[0].get("userId"));
+        setResName(queryResult[0].get("resName"));
+        setSuburb(queryResult[0].get("suburbName"));
+        setStreetAddress(queryResult[0].get("streetAddresses"));
+        setLocation({
+          latitude: queryResult[0].get("location").latitude,
+          longitude: queryResult[0].get("location").longitude
+        }
+        );
+
+        return true
+      } catch (error) {
+        return error;
+      }
+    };
+    currentUser();
+  }, [refresh]);
+
   const handleResName = (e) => {
     setResName(e);
   };
   const handlenotes = (e) => {
-    setNotes(e);
+    setNotes(e.target.value);
   };
   const handlestreetAddress = (e) => {
     setStreetAddress(e);
@@ -77,7 +118,40 @@ const Address = () => {
     setIsFocussetStreetAddress(false);
   };
 
-  const handleSave = () => {};
+  //Save data to database
+  const handleSave = async () => {
+
+    const Update = new Parse.Object('userAddresses');
+    Update.set('objectId', user);
+
+    // Set new done value and save Parse Object changes
+    Update.set('notes', notes);
+    Update.set('userId', userId);
+    Update.set('cityName', city);
+    Update.set('resName', resName);
+    Update.set('suburbName', suburb);
+    Update.set('streetAddresses', streetAddress);
+    Update.set('location', new Parse.GeoPoint(location.latitude, location.longitude));
+    try {
+      await Update.save();
+      setRefresh(!refresh)
+      return ToastAndroid.showWithGravityAndOffset(
+        "Updated successfully.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    } catch (error) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Some error occured please try again.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    };
+  };
 
   return (
     <SafeAreaView
@@ -116,8 +190,8 @@ const Address = () => {
             onPress={(data, details = null) => {
               setStreetAddress(
                 details.address_components[0].long_name +
-                  " " +
-                  details.address_components[1].long_name
+                " " +
+                details.address_components[1].long_name
               );
               setSuburb(details.address_components[2].long_name);
               setCity(details.address_components[3].long_name);
@@ -134,73 +208,75 @@ const Address = () => {
             currentLocationLabel="Use my current location"
           />
         </View>
-
-        <View style={{ marginTop: 20 }}>
-          <KeyboardAvoidingView>
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>
-              Residence Name:
-            </Text>
-            <SInput
-              placeholderTxt="Residence name"
-              handleChange={handleResName}
-              keyboardType="default"
-              focus={handleFocus}
-              blur={handleBlur}
-              isFocus={isFocus}
-              value={resName}
-            />
-          </KeyboardAvoidingView>
-
-          <View tyle={{ marginTop: 40 }}>
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>Address:</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ marginTop: 20 }}>
             <KeyboardAvoidingView>
+              <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                Residence Name:
+              </Text>
               <SInput
-                placeholderTxt="1 Bunting Road"
-                handleChange={handlestreetAddress}
+                placeholderTxt="Residence name"
+                handleChange={handleResName}
                 keyboardType="default"
-                focus={handleFocusstreetAddress}
-                blur={handleBlurstreetAddress}
-                isFocus={isFocussetStreetAddress}
-                value={streetAddress}
-              />
-              <SInput
-                placeholderTxt="Auckland Park"
-                handleChange={handlesuburb}
-                keyboardType="default"
-                focus={handleFocussuburb}
-                blur={handleBlursuburb}
-                isFocus={isFocussuburb}
-                value={suburb}
-              />
-              <SInput
-                placeholderTxt="Johannesburg"
-                handleChange={handlecity}
-                keyboardType="default"
-                focus={handleFocuslocation}
-                blur={handleBlurlocation}
-                isFocus={isFocuslocation}
+                focus={handleFocus}
+                blur={handleBlur}
+                isFocus={isFocus}
+                value={resName}
               />
             </KeyboardAvoidingView>
-          </View>
-          <View tyle={{ marginTop: 40 }}>
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
-            <TextInput
-              onFocus={handleFocusnotes}
-              onBlur={handleBlurnotes}
-              multiline={true}
-              placeholder="Notes here..."
-              numberOfLines={5}
-              style={[
-                styles.textInput,
-                isFocusnotes && styles.textInputFocused,
-                { marginBottom: 40 },
-              ]}
-              value={notes}
-            />
-          </View>
 
-          <SButton text="Save" onPress={handleSave} />
-        </View>
+            <View tyle={{ marginTop: 40 }}>
+              <Text style={{ fontWeight: "500", fontSize: 16 }}>Address:</Text>
+              <KeyboardAvoidingView>
+                <SInput
+                  placeholderTxt="1 Bunting Road"
+                  handleChange={handlestreetAddress}
+                  keyboardType="default"
+                  focus={handleFocusstreetAddress}
+                  blur={handleBlurstreetAddress}
+                  isFocus={isFocussetStreetAddress}
+                  value={streetAddress}
+                />
+                <SInput
+                  placeholderTxt="Auckland Park"
+                  handleChange={handlesuburb}
+                  keyboardType="default"
+                  focus={handleFocussuburb}
+                  blur={handleBlursuburb}
+                  isFocus={isFocussuburb}
+                  value={suburb}
+                />
+                <SInput
+                  placeholderTxt="Johannesburg"
+                  handleChange={handlecity}
+                  keyboardType="default"
+                  focus={handleFocuslocation}
+                  blur={handleBlurlocation}
+                  isFocus={isFocuslocation}
+                  value={city}
+                />
+              </KeyboardAvoidingView>
+            </View>
+            <View tyle={{ marginTop: 40 }}>
+              <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
+              <TextInput
+                onFocus={handleFocusnotes}
+                onBlur={handleBlurnotes}
+                onChange={handlenotes}
+                multiline={true}
+                placeholder="Notes here..."
+                numberOfLines={5}
+                style={[
+                  styles.textInput,
+                  isFocusnotes && styles.textInputFocused,
+                  { marginBottom: 40 },
+                ]}
+                value={notes}
+              />
+            </View>
+
+            <SButton text="Save" onPress={handleSave} />
+          </View></TouchableWithoutFeedback>
       </View>
     </SafeAreaView>
   );
