@@ -20,10 +20,11 @@ const Product = ({ item }, dispatch, nav) => {
       50
     );
   };
+
   return (
     <View>
       <Pressable
-        style={gridStyles.item}
+        style={gridStyles.itemData}
         onPress={() => nav.navigate("Details", item)}
         android_ripple={{
           color: "#E7E7FF",
@@ -36,12 +37,12 @@ const Product = ({ item }, dispatch, nav) => {
             alignSelf: "center",
             marginBottom: 10,
           }}
-          source={{ uri: item.image }}
+          source={{ uri: item.get("productPicture").url() }}
         />
         <View>
           <Text
             style={[
-              gridStyles.item.name,
+              gridStyles.itemData.name,
               {
                 fontWeight: "700",
                 color: styles.purpleText.color,
@@ -49,23 +50,23 @@ const Product = ({ item }, dispatch, nav) => {
               },
             ]}
           >
-            R {item.price.toFixed(2)}
+            R {item.get("productPrice").toFixed(2)}
           </Text>
           <Text
             style={[
-              gridStyles.item.name,
+              gridStyles.itemData.name,
               { textAlign: "center", marginTop: 5 },
             ]}
           >
-            {item.title}
+            {item.get("productName")}
           </Text>
         </View>
-        <View style={gridStyles.item.buttonWrapper}>
+        <View style={gridStyles.itemData.buttonWrapper}>
           <CartButton
             text="Add to cart"
             onPress={() => {
               dispatch(addToCart(item));
-              doAddToCart(item.title);
+              doAddToCart(item.get("productName"));
             }}
           />
         </View>
@@ -74,7 +75,7 @@ const Product = ({ item }, dispatch, nav) => {
   );
 };
 const gridStyles = StyleSheet.create({
-  item: {
+  itemData: {
     flex: 1,
     height: 300,
     width: 150,

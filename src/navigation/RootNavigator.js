@@ -140,19 +140,19 @@ const RootNavigator = () => {
           setLoggedin(false);
         }
       } catch (error) {
-        console.log(error);
+        //Display error
       }
     };
     isLoggedIn();
   }, [userIsActive]);
   return (
     <NavigationContainer>
-      {true ? <AllScreens /> : <NotLogged />}
+      {loggedIn ? <AllScreens /> : <NotLogged />}
     </NavigationContainer>
   );
 };
 
-let optionsStyles = ({ route }) => ({
+const optionsStyles = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
     let provider;
@@ -160,26 +160,26 @@ let optionsStyles = ({ route }) => ({
 
     if (route.name === "Home") {
       provider = 1;
-      iconName = focused ? "home" : "home";
+      iconName = "home";
     } else if (route.name === "Search") {
       provider = 0;
       iconName = focused ? "ios-search-outline" : "ios-search";
     } else if (route.name === "Cart") {
       provider = 0;
-      iconName = focused ? "ios-cart-outline" : "ios-cart-outline";
+      iconName = "ios-cart-outline";
     } else if (route.name === "History") {
       provider = 0;
-      iconName = focused ? "time-outline" : "time-outline";
+      iconName = "time-outline";
     } else if (route.name === "Profile") {
       provider = 0;
-      iconName = focused ? "person-outline" : "person-outline";
+      iconName = "person-outline";
     }
 
-    if (provider === 1) {
-      return <Feather name={iconName} size={size} color={color} />;
-    } else {
-      return <Ionicons name={iconName} size={size} color={color} />;
-    }
+    return provider === 1 ? (
+      <Feather name={iconName} size={size} color={color} />
+    ) : (
+      <Ionicons name={iconName} size={size} color={color} />
+    );
   },
   tabBarStyle: {
     height: 70,

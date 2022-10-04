@@ -54,7 +54,8 @@ const CartContainer = () => {
           >
             <Text style={LocalStyles.storeItemTitle}>{item.title}</Text>
             <Text style={LocalStyles.storeItemPrice}>
-              R{(item.quantity * item.price).toFixed(2)}
+              R{(item.quantity * item.price)
+              }
             </Text>
           </View>
 
@@ -235,7 +236,8 @@ const ListFooterComponent = () => {
               ]}
             >
               Total:
-              <Text style={styles.purpleText}> R {totalPrice.toFixed(2)}</Text>
+              <Text style={styles.purpleText}> R {totalPrice
+              }</Text>
             </Text>
 
             <SButton

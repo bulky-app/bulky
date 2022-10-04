@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
               renderItem={(item) => CategoryCard(item, nav)}
               keyExtractor={(item) => item.id}
             />
-            <StoreContainer nav={navigation} />
+            {/* <StoreContainer nav={navigation} /> */}
           </View>
         </View>
       )}
@@ -76,22 +76,22 @@ export default HomeScreen;
 const itemData = [
   {
     icon: <Image source={require("../images/categories/everdaymeals.png")} />,
-    id: 1,
-    categoryName: "My Needs",
+    id: "SB7z4wK5Hr",
+    categoryName: "Everyday needs",
   },
   {
     icon: <Image source={require("../images/categories/snacks.png")} />,
-    id: 2,
+    id: "UnjwmvHJd3",
     categoryName: "Snacks",
   },
   {
     icon: <Image source={require("../images/categories/toiletries.png")} />,
-    id: 3,
+    id: "NM0kWSezrS",
     categoryName: "Toiletries",
   },
   {
     icon: <Image source={require("../images/categories/busket.png")} />,
-    id: 4,
+    id: "x9pc6rXKFc",
     categoryName: "Bulky bulks",
   },
 ];

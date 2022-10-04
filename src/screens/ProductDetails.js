@@ -7,58 +7,89 @@ import {
   View,
 } from "react-native";
 import styles from "../globalStyles";
-import Data from "../../assets/cartItems";
+import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
 import Product from "../components/Product";
+import { useState, useEffect } from "react";
 import { ToastAndroid } from "react-native";
 import { CartButton } from "../components/SButton";
 import { addToCart } from "../redux/features/cartSlice";
 import { useNavigation } from "@react-navigation/native";
 
 const ProductDetails = ({ route }) => {
-  const dispatch = useDispatch();
+  const item = route.params;
   const nav = useNavigation();
-  const { title, price, image, description, id } = route.params;
+  const dispatch = useDispatch();
+
+  const id = item.get("id");
+  const name = item.get("productName");
+  const price = item.get("productPrice");
+  const pic = item.get("productPicture").url();
+  const category = item.get("productCategory");
+
+  const [related, setRelated] = useState([]);
+
+  async function fetchProducts() {
+    const query = new Parse.Query("products");
+    query.contains("productName", name.substring(4, 5));
+    query.contains("productCategory", category.id);
+    //query.lessThanOrEqualTo("productPrice", price);
+    //query.ascending("productPrice", price);
+    try {
+      const queryResult = await query.find();
+      setRelated(queryResult);
+    } catch (error) {
+      Alert.alert("error", error.massage, ["ok"]);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
       <View style={localStyles.imgContainer}>
-        <Image source={{ uri: image }} style={localStyles.img} />
+        <Image
+          source={{ uri: item.get("productPicture").url() }}
+          style={localStyles.img}
+        />
       </View>
 
-      <Text style={localStyles.title}>{title}</Text>
-      <Text style={localStyles.desc}>{description}</Text>
+      <Text style={localStyles.title}>{item.get("productName")}</Text>
+      <Text style={localStyles.desc}>{item.get("poductDesc")}</Text>
 
       <View style={localStyles.infoTextWrapper}>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Current orders:</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            25
+            {item.get("currentOrders")}
           </Text>
         </View>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Price</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            {price}
+            R {item.get("productPrice").toFixed(2)}
           </Text>
         </View>
         <CartButton
           text="Add to cart"
           onPress={() => {
             const item = {
-              image: image,
-              price: price,
-              title: title,
-              id: id,
+              image: pic,
+              title: name,
+              price,
+              id,
             };
             dispatch(addToCart(item));
-            doAddToCart(title);
+            doAddToCart(name);
           }}
         />
       </View>
       <Text>Related</Text>
+      {console.log(related)}
       <FlatList
-        data={Data}
+        data={related}
         horizontal={true}
         renderItem={(item) => Product(item, dispatch, nav)}
         keyExtractor={(item) => item.id}
