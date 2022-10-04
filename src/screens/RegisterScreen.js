@@ -1,11 +1,11 @@
 import {
-  KeyboardAvoidingView,
   Text,
-  TouchableWithoutFeedback,
   View,
   Keyboard,
   Pressable,
   ToastAndroid,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useState } from "react";
 import { Image } from "react-native";
@@ -83,6 +83,7 @@ const RegisterScreen = ({ navigation }) => {
       doUserRegistration(navigation);
     }
   };
+
   const doUserRegistration = async (navigation) => {
     const user = new Parse.User();
     user.set("username", email);
@@ -105,6 +106,7 @@ const RegisterScreen = ({ navigation }) => {
       );
     }
   };
+
   const handleFocus = () => {
     setIsFocus(true);
   };

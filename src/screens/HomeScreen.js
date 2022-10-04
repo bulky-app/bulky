@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import CategoryCard from "../components/CategoryCard";
 import { useNavigation } from "@react-navigation/native";
-import StoreContainer from "../components/StoreContainer";
+//import StoreContainer from "../components/StoreContainer";
 import { FlatList, Image, ScrollView, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {

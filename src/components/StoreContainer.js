@@ -21,7 +21,6 @@ const StoreContainer = ({ category }) => {
       setData(queryResult);
     } catch (error) {
       Alert.alert("error", error.massage, ["ok"]);
-      //console.log(error);
     }
   }
 

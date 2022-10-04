@@ -103,25 +103,25 @@ export default ProductDetails;
 const localStyles = StyleSheet.create({
   imgContainer: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
   img: {
     width: 200,
     height: 150,
-    borderRadius: 10,
-    backgroundColor: "white",
     padding: 20,
     elevation: 1,
+    borderRadius: 10,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
-    color: styles.purpleText.color,
     overflow: "scroll",
     marginVertical: 10,
+    color: styles.purpleText.color,
   },
   desc: { fontSize: 18, color: styles.greyText.color },
   infoTextWrapper: {
@@ -131,8 +131,8 @@ const localStyles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   infoTextInnerWrapper: {
-    flexDirection: "column",
     alignItems: "center",
+    flexDirection: "column",
   },
 });
 
