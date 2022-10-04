@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import styles from "../../globalStyles";
 import { useState, useEffect } from "react";
+import Parse from "../../../backend/server";
 import SInput from "../../components/SInput";
 import SButton from "../../components/SButton";
 import userImg from "../../images/userImg.png";
@@ -23,6 +24,23 @@ const Account = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [isFocusPhone, setIsFocusPhone] = useState(false);
   const [isFocussurName, setIsFocussurName] = useState(false);
+
+  useEffect(() => {
+    const currentUser = async () => {
+      try {
+        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+        const user = Parse.User.current();
+        setName(user.get("name"));
+        setEmail(user.get("email"));
+        setphone(user.get("phone"));
+        setSurName(user.get("surname"));
+        return true;
+      } catch (error) {
+        return error;
+      }
+    };
+    currentUser();
+  }, []);
 
   const handleName = (e) => {
     setName(e.trim());
@@ -55,13 +73,10 @@ const Account = () => {
     Keyboard.dismiss();
   };
 
-  const handleSaveButton = ()=>{
-
-  }
-  const handlePassResetButton =()=>{
+  const handleSaveButton = () => {};
+  const handlePassResetButton = () => {
     doUserPasswordReset(email);
-  }
-
+  };
 
   return (
     <SafeAreaView style={[styles.safeContainer, { paddingTop: 0 }]}>
