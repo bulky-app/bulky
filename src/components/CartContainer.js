@@ -204,7 +204,7 @@ const ListFooterComponent = () => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {},
           style: "cancel",
         },
         { text: "OK", onPress: () => dispatch(clear()) },
@@ -243,7 +243,6 @@ const ListFooterComponent = () => {
             <SButton
               text="Checkout"
               onPress={() => {
-                console.log("Checkout");
                 // dispatch(checkout());
               }}
             />

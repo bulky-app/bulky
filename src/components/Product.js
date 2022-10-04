@@ -11,6 +11,13 @@ import { CartButton } from "./SButton";
 import { addToCart } from "../redux/features/cartSlice";
 
 const Product = ({ item }, dispatch, nav) => {
+
+  const { id } = item;
+  const name = item.get("productName");
+  const price = item.get("productPrice");
+  const pic = item.get("productPicture").url();
+  const category = item.get("productCategory");
+
   const doAddToCart = (name) => {
     ToastAndroid.showWithGravityAndOffset(
       `${name} added to cart`,
@@ -65,8 +72,14 @@ const Product = ({ item }, dispatch, nav) => {
           <CartButton
             text="Add to cart"
             onPress={() => {
+              const item = {
+                image: pic,
+                title: name,
+                price,
+                id: id,
+              };
               dispatch(addToCart(item));
-              doAddToCart(item.get("productName"));
+              doAddToCart(item.title);
             }}
           />
         </View>
@@ -74,6 +87,7 @@ const Product = ({ item }, dispatch, nav) => {
     </View>
   );
 };
+
 const gridStyles = StyleSheet.create({
   itemData: {
     flex: 1,
@@ -102,4 +116,5 @@ const gridStyles = StyleSheet.create({
     },
   },
 });
+
 export default Product;

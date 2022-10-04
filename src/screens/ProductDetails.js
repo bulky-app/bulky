@@ -87,7 +87,6 @@ const ProductDetails = ({ route }) => {
         />
       </View>
       <Text>Related</Text>
-      {console.log(related)}
       <FlatList
         data={related}
         horizontal={true}

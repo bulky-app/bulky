@@ -84,7 +84,6 @@ const LoginScreen = ({ navigation }) => {
       })
       // if error occures during login
       .catch((error) => {
-        console.log(error); //Watch out
         return ToastAndroid.showWithGravityAndOffset(
           "Invalid username/password.",
           ToastAndroid.LONG,
