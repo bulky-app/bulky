@@ -4,7 +4,7 @@ import CartContainer from "../components/CartContainer";
 
 const CartScreen = () => {
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled={true}>
       <CartContainer />
     </ScrollView>
   );

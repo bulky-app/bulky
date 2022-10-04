@@ -32,7 +32,10 @@ const HomeScreen = ({ navigation }) => {
   }, [user]);
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      nestedScrollEnabled={true}
+      contentContainerStyle={styles.contentContainer}
+    >
       {user && (
         <View>
           <View>
@@ -57,12 +60,14 @@ const HomeScreen = ({ navigation }) => {
               paddingHorizontal: 10,
             }}
           >
-            <FlatList
-              data={itemData}
-              numColumns={2}
-              renderItem={(item) => CategoryCard(item, nav)}
-              keyExtractor={(item) => item.id}
-            />
+            <ScrollView nestedScrollEnabled={true}>
+              <FlatList
+                data={itemData}
+                numColumns={2}
+                renderItem={(item) => CategoryCard(item, nav)}
+                keyExtractor={(item) => item.id}
+              />
+            </ScrollView>
             {/* <StoreContainer nav={navigation} /> */}
           </View>
         </View>

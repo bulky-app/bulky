@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const StoreContainer = ({ category }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const StoreContainer = ({ category }) => {
 
   const StoreItems = ({ nav }) => {
     return (
-      <View>
+      <ScrollView nestedScrollEnabled={true}>
         {data && (
           <FlatList
             data={data}
@@ -40,7 +41,7 @@ const StoreContainer = ({ category }) => {
             ListFooterComponent={() => <View style={{ height: 10 }} />}
           />
         )}
-      </View>
+      </ScrollView>
     );
   };
   return (

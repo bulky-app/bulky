@@ -7,6 +7,7 @@ const ShopScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={localStyles.contentContainer}>
       <ScrollView
+        nestedScrollEnabled={true}
         contentContainerStyle={localStyles.contentContainer}
         stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
