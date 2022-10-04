@@ -1,8 +1,3 @@
-import React, { useEffect } from "react";
-import styles from "../../globalStyles";
-import { Input } from "@rneui/themed";
-import { PLACESAPI_KEY } from "../../../backend/env.vars";
-import SInput from "../../components/SInput";
 import {
   View,
   Text,
@@ -10,14 +5,19 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useState } from "react";
+import { Input } from "@rneui/themed";
+import styles from "../../globalStyles";
+import React, { useEffect } from "react";
 import { TextInput } from "react-native";
 import Parse from "../../../backend/server";
-import SButton from "../../components/SButton";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ToastAndroid } from "react-native";
+import SInput from "../../components/SInput";
+import SButton from "../../components/SButton";
+import { PLACESAPI_KEY } from "../../../backend/env.vars";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 navigator.geolocation = require("react-native-geolocation-service");
 
