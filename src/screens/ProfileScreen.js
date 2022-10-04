@@ -1,27 +1,20 @@
-import styles from "../globalStyles";
-import Parse from "../../backend/server";
-import { useEffect, useState } from "react";
-import ProfileCard, { styless } from "../components/ProfileCard";
-import { useNavigation } from "@react-navigation/native";
-import Modal from "../components/Modal";
-import { Ionicons, Feather, SimpleLineIcons } from "@expo/vector-icons";
 import {
   ScrollView,
   Share,
   StyleSheet,
   Text,
-  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
+import styles from "../globalStyles";
+import Modal from "../components/Modal";
+import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import ProfileCard, { styless } from "../components/ProfileCard";
+import { Ionicons, Feather, SimpleLineIcons } from "@expo/vector-icons";
 
-const shareOptions = {
-  title: "Title",
-  message: "Message to share", // Note that according to the documentation at least one of "message" or "url" fields is required
-  url: "www.example.com",
-  subject: "Subject",
-};
 const ProfileScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
