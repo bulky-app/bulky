@@ -1,5 +1,44 @@
 import { Pressable, Text } from "react-native";
 import styles from "../globalStyles";
+import { LogBox } from 'react-native';
+import React, { PureComponent } from 'react';
+import AnimateLoadingButton from 'react-native-animate-loading-button';
+
+class LoadingButton extends PureComponent {
+  //Handle Loges on console
+  componentDidMount() {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+  }
+
+  //When the button is clicked
+  _onPressHandler() {
+    this.loadingButton.showLoading(true);// Set the button to loading
+    this.props.onPress(); // Execute the fuction from props
+
+    // Reset the loading button state after 3 seconds
+    setTimeout(() => {
+      this.loadingButton.showLoading(false);
+    }, 2000);
+  }
+
+  render() {
+    return (
+      <AnimateLoadingButton
+        ref={c => (this.loadingButton = c)}
+        width={styles.button.width}
+        useNativeDriver={true}
+        height={styles.button.height}
+        title={this.props.text}
+        titleFontSize={16}
+        titleColor={this.props.outline && styles.purpleText.color}
+        borderWidth={this.props.outline && 0.5}
+        backgroundColor={this.props.outline ? styles.safeContainer.backgroundColor : styles.button.backgroundColor}
+        borderRadius={styles.button.borderRadius}
+        onPress={this._onPressHandler.bind(this)}
+      />
+    );
+  }
+}
 
 const SButton = ({ text, onPress, outline }) => {
   return (
@@ -8,13 +47,13 @@ const SButton = ({ text, onPress, outline }) => {
         pressed && { opacity: 0.8 },
         outline
           ? [
-              styles.button,
-              {
-                backgroundColor: styles.safeContainer.backgroundColor,
-                borderColor: styles.purpleText.color,
-                borderWidth: 1,
-              },
-            ]
+            styles.button,
+            {
+              backgroundColor: styles.safeContainer.backgroundColor,
+              borderColor: styles.purpleText.color,
+              borderWidth: 1,
+            },
+          ]
           : styles.button,
       ]}
       android_ripple={{
@@ -66,10 +105,10 @@ const SSButton = ({ click, text, outline }) => {
         { padding: 10, width: 140, borderRadius: 48, elevation: 3 },
         outline
           ? {
-              backgroundColor: styles.safeContainer.backgroundColor,
-              borderColor: styles.purpleText.color,
-              borderWidth: 1,
-            }
+            backgroundColor: styles.safeContainer.backgroundColor,
+            borderColor: styles.purpleText.color,
+            borderWidth: 1,
+          }
           : { backgroundColor: styles.purpleText.color },
       ]}
       onPress={click}
@@ -87,5 +126,6 @@ const SSButton = ({ click, text, outline }) => {
     </Pressable>
   );
 };
-export { CartButton, SSButton };
-export default SButton;
+
+export { CartButton, SSButton, SButton };
+export default LoadingButton;

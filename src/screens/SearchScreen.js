@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   Platform,
   Pressable,
- FlatList
+  FlatList
 } from "react-native";
 import { SearchBar } from "@rneui/base";
 
@@ -29,7 +29,7 @@ const DATA = [
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
     title: "Dairy",
   },
-   {
+  {
     id: "58694a0f-3da1-471f-bd96-145571e29d78",
     title: "Starch food",
   },
@@ -42,7 +42,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 export default function SearchScreen() {
   const [searchBar, setSearchBar] = useState("");
   //const onChangeSearch = (query) => setSearchBar(query);
-    const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#A020F0" : "#dcdcdc";
@@ -72,16 +72,16 @@ export default function SearchScreen() {
               round
               value={searchBar}
               onChangeText={setSearchBar}
-              
+
             />
             <View><Text style={styles.output}>{searchBar}</Text></View>
             <View>
-               <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                extraData={selectedId}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -100,10 +100,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 10,
   },
-  output:{
-    padding :5,
+  output: {
+    padding: 5,
     backgroundColor: " #C5C6D0",
-    marginTop:4,
+    marginTop: 4,
   }
 });
 

@@ -10,7 +10,7 @@ import styles from "../../globalStyles";
 import { useState, useEffect } from "react";
 import Parse from "../../../backend/server";
 import SInput from "../../components/SInput";
-import SButton from "../../components/SButton";
+import LoadingButton, { SButton } from "../../components/SButton";
 import userImg from "../../images/userImg.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { doUserPasswordReset } from "../../navigation/functions";
@@ -170,13 +170,12 @@ const Account = () => {
                 />
               </View>
               <View style={{ marginTop: 10 }}>
-                <SButton
-                  text="Save Update"
-                  onPress={() => handleSaveButton()}
-                />
+                <LoadingButton text="Save Update"
+                  onPress={() => handleSaveButton()} 
+                  />
               </View>
               <View style={{ marginTop: 30 }}>
-                <SButton
+                <LoadingButton
                   text="Reset Password"
                   outline={true}
                   onPress={() => handlePassResetButton()}

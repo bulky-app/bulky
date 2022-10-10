@@ -33,6 +33,7 @@
     "react-dom": "18.0.0",
     "react-icons": "^4.4.0",
     "react-native": "0.69.6",
+    "react-native-animate-loading-button": "^1.0.3",
     "react-native-btr": "^2.2.0",
     "react-native-geolocation-service": "^5.3.0",
     "react-native-gesture-handler": "~2.5.0",
