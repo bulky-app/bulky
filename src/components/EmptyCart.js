@@ -30,7 +30,7 @@ const EmptyHistory = ({onClick}) => {
         icon={
           <Feather
             name="arrow-right"
-            size={24}
+            size={22}
             color={styles.purpleText.color}
           />
         }
@@ -50,7 +50,7 @@ const EmptyCart = ({onClick}) => {
         icon={
           <Feather
             name="arrow-right"
-            size={24}
+            size={22}
             color={styles.purpleText.color}
           />
         }
@@ -81,7 +81,7 @@ const localStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     textAlign: "center",
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     color: styles.purpleText.color,
   },
   button: {
