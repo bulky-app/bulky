@@ -46,7 +46,7 @@ const EmptyCart = ({onClick}) => {
       <Text style={localStyles.txt}>Looks like the cart is empyty!</Text>
       <OUButton
         text="Lets fill it"
-        onPress={() => onClick={onClick}}
+        onPress={onClick}
         icon={
           <Feather
             name="arrow-right"
