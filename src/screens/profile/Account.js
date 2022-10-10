@@ -4,6 +4,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Keyboard,
+  ToastAndroid,
 } from "react-native";
 import styles from "../../globalStyles";
 import { useState, useEffect } from "react";
@@ -16,11 +17,13 @@ import { doUserPasswordReset } from "../../navigation/functions";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Account = () => {
+
+  const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [phone, setphone] = useState("");
   const [email, setEmail] = useState("");
   const [surName, setSurName] = useState("");
-
+  const [refresh, setRefresh] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [isFocusPhone, setIsFocusPhone] = useState(false);
   const [isFocussurName, setIsFocussurName] = useState(false);
@@ -30,6 +33,7 @@ const Account = () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
+        setUser(user);
         setName(user.get("name"));
         setEmail(user.get("email"));
         setphone(user.get("phone"));
@@ -40,7 +44,7 @@ const Account = () => {
       }
     };
     currentUser();
-  }, []);
+  }, [refresh]);
 
   const handleName = (e) => {
     setName(e.trim());
@@ -73,7 +77,34 @@ const Account = () => {
     Keyboard.dismiss();
   };
 
-  const handleSaveButton = () => {};
+  //Save the update
+  const handleSaveButton = async () => {
+    try {
+      await Parse.Cloud.run('editUserProperty', {
+        objectId: user.id,
+        name,
+        surname: surName,
+        phone,
+      });
+      ToastAndroid.showWithGravityAndOffset(
+        "Updated successfully.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+      return setRefresh(!refresh)
+    } catch (error) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Some error occured please try again.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    };
+  };
+
   const handlePassResetButton = () => {
     doUserPasswordReset(email);
   };
