@@ -1,13 +1,10 @@
+import { Alert } from "react-native";
 import Parse from "../../backend/server";
 
 const validateEmail = (email) => {
-  var validRegex =
+  const validRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (email.match(validRegex)) {
-    return true;
-  } else {
-    return false;
-  }
+  return email.match(validRegex) ? true : false;
 };
 
 const doUserPasswordReset = async function (email) {
