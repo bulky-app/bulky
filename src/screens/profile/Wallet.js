@@ -1,7 +1,7 @@
 import styles from "../../globalStyles";
 import Parse from "../../../backend/server";
 import { useState, useEffect } from "react";
-import { SSButton } from "../../components/SButton";
+import LoadingButton from "../../components/SButton";
 import { Text, View, StyleSheet } from "react-native";
 import HistoryItem from "../../components/HistoryItem";
 import { styless } from "../../components/ProfileCard";
@@ -80,15 +80,17 @@ const Wallet = () => {
         </View>
       </View>
       <View style={localStyles.buttons}>
-        <SSButton
+        <LoadingButton
           text="Withdraw"
-          click={() => console.log("Im clicked")}
+          onPress={() => console.log("Im clicked")}
           outline={true}
+          small={true}
         />
-        <SSButton
+        <LoadingButton
           text="Deposit"
-          click={() => console.log("Im clicked")}
+          onPress={() => console.log("Im clicked")}
           outline={false}
+          small={true}
         />
       </View>
     </SafeAreaView>
