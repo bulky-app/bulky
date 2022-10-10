@@ -18,10 +18,12 @@ import { PLACESAPI_KEY } from "../../../backend/env.vars";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import * as Location from "expo-location";
 
 navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [city, setCity] = useState("");
   const [notes, setNotes] = useState("");
@@ -32,13 +34,25 @@ const Address = () => {
   const [location, setLocation] = useState({});
   const [streetAddress, setStreetAddress] = useState("");
 
-
   const [isFocus, setIsFocus] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [isFocusnotes, setIsFocusnotes] = useState(false);
   const [isFocussuburb, setIsFocussuburb] = useState(false);
   const [isFocuslocation, setIsFocuslocation] = useState(false);
   const [isFocussetStreetAddress, setIsFocussetStreetAddress] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+    })();
+  }, []);
 
   //Get data from DB
   useEffect(() => {
@@ -60,11 +74,10 @@ const Address = () => {
         setStreetAddress(queryResult[0].get("streetAddresses"));
         setLocation({
           latitude: queryResult[0].get("location").latitude,
-          longitude: queryResult[0].get("location").longitude
-        }
-        );
+          longitude: queryResult[0].get("location").longitude,
+        });
 
-        return true
+        return true;
       } catch (error) {
         return error;
       }
@@ -120,21 +133,23 @@ const Address = () => {
 
   //Save data to database
   const handleSave = async () => {
-
-    const Update = new Parse.Object('userAddresses');
-    Update.set('objectId', user);
+    const Update = new Parse.Object("userAddresses");
+    Update.set("objectId", user);
 
     // Set new done value and save Parse Object changes
-    Update.set('notes', notes);
-    Update.set('userId', userId);
-    Update.set('cityName', city);
-    Update.set('resName', resName);
-    Update.set('suburbName', suburb);
-    Update.set('streetAddresses', streetAddress);
-    Update.set('location', new Parse.GeoPoint(location.latitude, location.longitude));
+    Update.set("notes", notes);
+    Update.set("userId", userId);
+    Update.set("cityName", city);
+    Update.set("resName", resName);
+    Update.set("suburbName", suburb);
+    Update.set("streetAddresses", streetAddress);
+    Update.set(
+      "location",
+      new Parse.GeoPoint(location.latitude, location.longitude)
+    );
     try {
       await Update.save();
-      setRefresh(!refresh)
+      setRefresh(!refresh);
       return ToastAndroid.showWithGravityAndOffset(
         "Updated successfully.",
         ToastAndroid.LONG,
@@ -150,7 +165,7 @@ const Address = () => {
         25,
         50
       );
-    };
+    }
   };
 
   return (
@@ -190,8 +205,8 @@ const Address = () => {
             onPress={(data, details = null) => {
               setStreetAddress(
                 details.address_components[0].long_name +
-                " " +
-                details.address_components[1].long_name
+                  " " +
+                  details.address_components[1].long_name
               );
               setSuburb(details.address_components[2].long_name);
               setCity(details.address_components[3].long_name);
@@ -276,7 +291,8 @@ const Address = () => {
             </View>
 
             <SButton text="Save" onPress={handleSave} />
-          </View></TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </SafeAreaView>
   );
