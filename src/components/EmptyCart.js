@@ -1,9 +1,8 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import styles from "../globalStyles";
 import cartImg from "../images/cartImg.png";
-import historyImg from "../images/historyImg.png";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import historyImg from "../images/historyImg.png";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const OUButton = ({ text, onPress, icon }) => {
   return (
@@ -19,7 +18,7 @@ const OUButton = ({ text, onPress, icon }) => {
     </Pressable>
   );
 };
-const EmptyHistory = ({onClick}) => {
+const EmptyHistory = ({ onClick }) => {
   return (
     <View style={localStyles.container}>
       <Image source={historyImg} style={localStyles.img} />
@@ -39,7 +38,7 @@ const EmptyHistory = ({onClick}) => {
   );
 };
 
-const EmptyCart = ({onClick}) => {
+const EmptyCart = ({ onClick }) => {
   return (
     <View style={localStyles.container}>
       <Image source={cartImg} style={localStyles.img} />
