@@ -1,7 +1,7 @@
-import { Pressable, Text } from "react-native";
 import styles from "../globalStyles";
 import { LogBox } from 'react-native';
 import React, { PureComponent } from 'react';
+import { Pressable, Text } from "react-native";
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 
 class LoadingButton extends PureComponent {
