@@ -24,17 +24,18 @@ class LoadingButton extends PureComponent {
   render() {
     return (
       <AnimateLoadingButton
-        ref={c => (this.loadingButton = c)}
-        width={styles.button.width}
-        useNativeDriver={true}
-        height={styles.button.height}
-        title={this.props.text}
         titleFontSize={16}
-        titleColor={this.props.outline && styles.purpleText.color}
-        borderWidth={this.props.outline && 0.5}
-        backgroundColor={this.props.outline ? styles.safeContainer.backgroundColor : styles.button.backgroundColor}
+        useNativeDriver={true}
+        title={this.props.text}
+        height={styles.button.height}
+        ref={c => (this.loadingButton = c)}
         borderRadius={styles.button.borderRadius}
         onPress={this._onPressHandler.bind(this)}
+        borderWidth={this.props.outline ? 0.5 : 0}
+        width={this.props.small ? 140 : styles.button.width}
+        titleColor={this.props.outline ? styles.purpleText.color : styles.blackWhiteText.color}
+        activityIndicatorColor={this.props.outline ? styles.whiteBlackText.color : styles.blackWhiteText.color}
+        backgroundColor={this.props.outline ? styles.safeContainer.backgroundColor : styles.button.backgroundColor}
       />
     );
   }
