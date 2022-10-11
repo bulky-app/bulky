@@ -4,6 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import { useState } from "react";
 import { Input } from "@rneui/themed";
@@ -14,6 +15,7 @@ import Parse from "../../../backend/server";
 import { ToastAndroid } from "react-native";
 import SInput from "../../components/SInput";
 import SButton from "../../components/SButton";
+import { MaterialIcons } from "@expo/vector-icons";
 import { PLACESAPI_KEY } from "../../../backend/env.vars";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -41,18 +43,15 @@ const Address = () => {
   const [isFocuslocation, setIsFocuslocation] = useState(false);
   const [isFocussetStreetAddress, setIsFocussetStreetAddress] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
-    })();
-  }, []);
+  const getCurrentPosition = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      //console.log("Permission to access location was denied");
+      return;
+    }
+    const location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+  };
 
   //Get data from DB
   useEffect(() => {
@@ -177,53 +176,63 @@ const Address = () => {
         height: "100%",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-        }}
-      >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{
-            height: 200,
+            alignItems: "center",
           }}
         >
-          <GooglePlacesAutocomplete
-            placeholder="Type to start search"
-            minLength={5}
-            autoFocus={true}
-            returnKeyType={"search"}
-            listViewDisplayed="auto"
-            fetchDetails={true}
-            enableHighAccuracyLocation={true}
-            enablePoweredByContainer={true}
-            renderDescription={(row) => row.description}
-            textInputProps={{
-              InputComp: Input,
-              leftIcon: { type: "font-awesome", name: "location-arrow" },
-              errorStyle: { color: "red" },
+          <TouchableOpacity
+            style={localStyles.currentLocation}
+            onPress={getCurrentPosition}
+          >
+            <MaterialIcons name="gps-fixed" size={24} color="black" />
+            <Text style={localStyles.currentLocation.text}>
+              Use my current location.
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: 200,
             }}
-            onPress={(data, details = null) => {
-              setStreetAddress(
-                details.address_components[0].long_name +
-                  " " +
-                  details.address_components[1].long_name
-              );
-              setSuburb(details.address_components[2].long_name);
-              setCity(details.address_components[3].long_name);
-              setLocation(details.geometry.location);
-              setResName(details.name);
-            }}
-            query={{
-              key: PLACESAPI_KEY,
-              language: "en",
-              components: "country:za",
-            }}
-            styles={localStyles.searchBar}
-            currentLocation={true}
-            currentLocationLabel="Use my current location"
-          />
-        </View>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          >
+            <GooglePlacesAutocomplete
+              placeholder="Type to start search"
+              minLength={5}
+              autoFocus={true}
+              returnKeyType={"search"}
+              listViewDisplayed="auto"
+              fetchDetails={true}
+              enableHighAccuracyLocation={true}
+              enablePoweredByContainer={true}
+              renderDescription={(row) => row.description}
+              textInputProps={{
+                InputComp: Input,
+                leftIcon: { type: "font-awesome", name: "location-arrow" },
+                errorStyle: { color: "red" },
+              }}
+              onPress={(data, details = null) => {
+                setStreetAddress(
+                  details.address_components[0].long_name +
+                    " " +
+                    details.address_components[1].long_name
+                );
+                setSuburb(details.address_components[2].long_name);
+                setCity(details.address_components[3].long_name);
+                setLocation(details.geometry.location);
+                setResName(details.name);
+              }}
+              query={{
+                key: PLACESAPI_KEY,
+                language: "en",
+                components: "country:za",
+              }}
+              styles={localStyles.searchBar}
+              currentLocation={false}
+              //currentLocationLabel="Use my current location"
+            />
+          </View>
+
           <View style={{ marginTop: 20 }}>
             <KeyboardAvoidingView>
               <Text style={{ fontWeight: "500", fontSize: 16 }}>
@@ -292,15 +301,15 @@ const Address = () => {
 
             <SButton text="Save" onPress={handleSave} />
           </View>
-        </TouchableWithoutFeedback>
-      </View>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
 const localStyles = StyleSheet.create({
   searchBar: {
     container: {
-      flex: 1,
+      //flex: 1,
       height: 10,
     },
     textInputContainer: {
@@ -333,6 +342,18 @@ const localStyles = StyleSheet.create({
       justifyContent: "flex-end",
       height: 20,
     },
+  },
+  currentLocation: {
+    padding: 5,
+    width: 350,
+    elevation: 1,
+    borderRadius: 10,
+    marginBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    text: { marginLeft: 10 },
   },
 });
 export default Address;
