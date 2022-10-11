@@ -20,6 +20,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { doUserPasswordReset, validateEmail } from "../navigation/functions";
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -31,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
   const handlePassword = (e) => {
     setPassword(e.trim());
   };
-  const dispatch = useDispatch();
+  
   const handleButton = () => {
     Keyboard.dismiss();
 

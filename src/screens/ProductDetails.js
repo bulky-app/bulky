@@ -97,7 +97,6 @@ const ProductDetails = ({ route }) => {
     </SafeAreaView>
   );
 };
-export default ProductDetails;
 
 const localStyles = StyleSheet.create({
   imgContainer: {
@@ -144,3 +143,4 @@ const doAddToCart = (name) => {
     50
   );
 };
+export default ProductDetails;
