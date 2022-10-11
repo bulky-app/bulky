@@ -96,9 +96,8 @@ const RegisterScreen = ({ navigation }) => {
       await Parse.User.logOut();
       return navigation.navigate("EmailVerificationScreen");
     } catch (error) {
-      return error
       return ToastAndroid.showWithGravityAndOffset(
-        "Account already exists for this email.",
+        error.toString(),
         ToastAndroid.LONG,
         ToastAndroid.TOP,
         25,
