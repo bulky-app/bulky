@@ -1,24 +1,28 @@
 import styles from "../globalStyles";
-import { LogBox } from 'react-native';
-import React, { PureComponent } from 'react';
+import { LogBox } from "react-native";
+import React, { PureComponent } from "react";
 import { Pressable, Text } from "react-native";
-import AnimateLoadingButton from 'react-native-animate-loading-button';
+import AnimateLoadingButton from "react-native-animate-loading-button";
 
 class LoadingButton extends PureComponent {
   //Handle Loges on console
   componentDidMount() {
-    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
   }
 
   //When the button is clicked
   _onPressHandler() {
-    this.loadingButton.showLoading(true);// Set the button to loading
+    this.loadingButton.showLoading(true); // Set the button to loading
     this.props.onPress(); // Execute the fuction from props
 
-    // Reset the loading button state after 3 seconds
+    // Reset the loading button state after 1.5 seconds
     setTimeout(() => {
-      this.loadingButton.showLoading(false);
-    }, 2000);
+      try {
+        this.loadingButton.showLoading(false);
+      } catch (error) {
+        return error;
+      }
+    }, 1500);
   }
 
   render() {
@@ -28,14 +32,26 @@ class LoadingButton extends PureComponent {
         useNativeDriver={true}
         title={this.props.text}
         height={styles.button.height}
-        ref={c => (this.loadingButton = c)}
+        ref={(c) => (this.loadingButton = c)}
         borderRadius={styles.button.borderRadius}
         onPress={this._onPressHandler.bind(this)}
         borderWidth={this.props.outline ? 0.5 : 0}
         width={this.props.small ? 140 : styles.button.width}
-        titleColor={this.props.outline ? styles.purpleText.color : styles.blackWhiteText.color}
-        activityIndicatorColor={this.props.outline ? styles.whiteBlackText.color : styles.blackWhiteText.color}
-        backgroundColor={this.props.outline ? styles.safeContainer.backgroundColor : styles.button.backgroundColor}
+        titleColor={
+          this.props.outline
+            ? styles.purpleText.color
+            : styles.blackWhiteText.color
+        }
+        activityIndicatorColor={
+          this.props.outline
+            ? styles.whiteBlackText.color
+            : styles.blackWhiteText.color
+        }
+        backgroundColor={
+          this.props.outline
+            ? styles.safeContainer.backgroundColor
+            : styles.button.backgroundColor
+        }
       />
     );
   }
@@ -48,13 +64,13 @@ const SButton = ({ text, onPress, outline }) => {
         pressed && { opacity: 0.8 },
         outline
           ? [
-            styles.button,
-            {
-              backgroundColor: styles.safeContainer.backgroundColor,
-              borderColor: styles.purpleText.color,
-              borderWidth: 1,
-            },
-          ]
+              styles.button,
+              {
+                backgroundColor: styles.safeContainer.backgroundColor,
+                borderColor: styles.purpleText.color,
+                borderWidth: 1,
+              },
+            ]
           : styles.button,
       ]}
       android_ripple={{
@@ -106,10 +122,10 @@ const SSButton = ({ click, text, outline }) => {
         { padding: 10, width: 140, borderRadius: 48, elevation: 3 },
         outline
           ? {
-            backgroundColor: styles.safeContainer.backgroundColor,
-            borderColor: styles.purpleText.color,
-            borderWidth: 1,
-          }
+              backgroundColor: styles.safeContainer.backgroundColor,
+              borderColor: styles.purpleText.color,
+              borderWidth: 1,
+            }
           : { backgroundColor: styles.purpleText.color },
       ]}
       onPress={click}
