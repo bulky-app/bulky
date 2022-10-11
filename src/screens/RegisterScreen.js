@@ -32,7 +32,7 @@ const RegisterScreen = ({ navigation }) => {
   const [isFocusPassConfirm, setIsFocusPassConfirm] = useState(false);
 
   const handleEmail = (e) => {
-    setEmail(e.trim());
+    setEmail(e.trim().toLowerCase());
   };
   const handlePassword = (e) => {
     setPassword(e.trim());
@@ -86,15 +86,17 @@ const RegisterScreen = ({ navigation }) => {
 
   const doUserRegistration = async (navigation) => {
     const user = new Parse.User();
-    user.set("username", email);
+    user.set("username", email.toLowerCase());
     user.set("password", password);
-    user.set("email", email);
+    user.set("email", email.toLowerCase());
     user.set("name", name);
     user.set("walletBalance", 0);
     try {
       await user.signUp();
       await Parse.User.logOut();
-      return navigation.navigate("EmailVerificationScreen");
+      return navigation.navigate("EmailVerificationScreen", {
+        email: email.toLowerCase(),
+      });
     } catch (error) {
       return ToastAndroid.showWithGravityAndOffset(
         error.toString(),
