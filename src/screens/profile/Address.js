@@ -11,6 +11,7 @@ import { Input } from "@rneui/themed";
 import styles from "../../globalStyles";
 import React, { useEffect } from "react";
 import { TextInput } from "react-native";
+import * as Location from "expo-location";
 import Parse from "../../../backend/server";
 import { ToastAndroid } from "react-native";
 import SInput from "../../components/SInput";
@@ -20,7 +21,6 @@ import { PLACESAPI_KEY } from "../../../backend/env.vars";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import * as Location from "expo-location";
 
 navigator.geolocation = require("react-native-geolocation-service");
 
