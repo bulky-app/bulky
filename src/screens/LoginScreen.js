@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
 
   const doUserLogIn = async (navigation) => {
     const user = new Parse.User();
-    user.set("username", email);
+    user.set("username", email.toLowerCase());
     user.set("password", password);
     return await user
       .logIn()
@@ -68,7 +68,9 @@ const LoginScreen = ({ navigation }) => {
             return dispatch(toggleActive());
           } else {
             // if use not verified
-            return navigation.navigate("EmailVerificationScreen");
+            return navigation.navigate("EmailVerificationScreen", {
+              email: email.toLowerCase(),
+            });
           }
         } else {
           // if users do not match we logout and display the massage
