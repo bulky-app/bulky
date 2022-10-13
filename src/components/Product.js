@@ -9,9 +9,9 @@ import {
 import styles from "../globalStyles";
 import { CartButton } from "./SButton";
 import { addToCart } from "../redux/features/cartSlice";
+import CachedImage from "react-native-expo-cached-image";
 
 const Product = ({ item }, dispatch, nav) => {
-
   const { id } = item;
   const name = item.get("productName");
   const price = item.get("productPrice");
@@ -37,7 +37,7 @@ const Product = ({ item }, dispatch, nav) => {
           color: "#E7E7FF",
         }}
       >
-        <Image
+        <CachedImage
           style={{
             height: 120,
             width: 100,
@@ -99,8 +99,10 @@ const gridStyles = StyleSheet.create({
     elevation: 1,
     borderRadius: 10,
     image: {
-      flex: 1,
-      align: "center",
+      height: 120,
+      width: 100,
+      alignSelf: "center",
+      marginBottom: 10,
     },
     name: {
       textAlign: "left",
