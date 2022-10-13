@@ -26,13 +26,15 @@ navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
   const [city, setCity] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState();
   const [notes, setNotes] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState();
   const [suburb, setSuburb] = useState("");
   const [resName, setResName] = useState("");
   const [location, setLocation] = useState({});
+  const [firstTime, setFirstTime] = useState(true);
   const [streetAddress, setStreetAddress] = useState("");
+  const [addressID, setAddressID] = useState("");
 
   const [isFocus, setIsFocus] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -134,15 +136,16 @@ const Address = () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
-
+        setUser(user);
         const query = new Parse.Query("userAddresses");
         query.contains("userId", user.id);
 
         const queryResult = await query.find();
-        setUser(queryResult[0].id);
+        setAddressID(queryResult[0].id);
         setNotes(queryResult[0].get("notes"));
         setCity(queryResult[0].get("cityName"));
         setUserId(queryResult[0].get("userId"));
+        setFirstTime(queryResult[0].get("userId").length === 0);
         setResName(queryResult[0].get("resName"));
         setSuburb(queryResult[0].get("suburbName"));
         setStreetAddress(queryResult[0].get("streetAddresses"));
@@ -208,11 +211,11 @@ const Address = () => {
   //Save data to database
   const handleSave = async () => {
     const Update = new Parse.Object("userAddresses");
-    Update.set("objectId", user);
+    Update.set("objectId", addressID);
 
     // Set new done value and save Parse Object changes
     Update.set("notes", notes);
-    Update.set("userId", userId);
+    Update.set("userId", user);
     Update.set("cityName", city);
     Update.set("resName", resName);
     Update.set("suburbName", suburb);
@@ -221,6 +224,12 @@ const Address = () => {
       "location",
       new Parse.GeoPoint(location.latitude, location.longitude)
     );
+
+    if (!firstTime) {
+      Update.set("userId", userId);
+    } else {
+      Update.set("userId", user);
+    }
     try {
       await Update.save();
       setRefresh(!refresh);
@@ -232,6 +241,7 @@ const Address = () => {
         50
       );
     } catch (error) {
+      console.error(error);
       return ToastAndroid.showWithGravityAndOffset(
         "Some error occured please try again.",
         ToastAndroid.LONG,
