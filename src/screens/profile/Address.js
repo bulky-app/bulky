@@ -86,7 +86,6 @@ const Address = () => {
             )
               .then((response) => response.json())
               .then((json) => {
-                console.log(json.result);
                 setResName(json.result.name);
               })
               .catch((error) => {
