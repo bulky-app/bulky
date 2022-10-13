@@ -25,11 +25,9 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
-  const [errorMsg, setErrorMsg] = useState("");
-
   const [city, setCity] = useState("");
-  const [notes, setNotes] = useState("");
   const [user, setUser] = useState("");
+  const [notes, setNotes] = useState("");
   const [userId, setUserId] = useState("");
   const [suburb, setSuburb] = useState("");
   const [resName, setResName] = useState("");
@@ -45,12 +43,90 @@ const Address = () => {
 
   const getCurrentPosition = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
+
+    //Ask user for location permission ?
     if (status !== "granted") {
-      //console.log("Permission to access location was denied");
-      return;
+      return ToastAndroid.showWithGravityAndOffset(
+        "Permission to access location was denied.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
     }
-    const location = await Location.getCurrentPositionAsync({});
-    console.log(location);
+
+    const location = await Location.getCurrentPositionAsync();
+
+    const { latitude, longitude } = location.coords;
+    try {
+      //Get user address
+      await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${PLACESAPI_KEY}`
+      )
+        .then((response) => response.json())
+        .then(async (json) => {
+          const data = json.results[0].formatted_address.split(",");
+          setCity(data[data.length - 3]);
+          setSuburb(data[data.length - 4]);
+          setLocation({
+            latitude,
+            longitude,
+          });
+          setStreetAddress(data.length > 5 ? data[0] + data[1] : data[0]);
+
+          const placeId = json.results[0].place_id;
+          //Getting the users location name
+          try {
+            await fetch(
+              `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${PLACESAPI_KEY}&fields=name`,
+              {
+                method: "get",
+                headers: {},
+              }
+            )
+              .then((response) => response.json())
+              .then((json) => {
+                console.log(json.result);
+                setResName(json.result.name);
+              })
+              .catch((error) => {
+                return ToastAndroid.showWithGravityAndOffset(
+                  "Some error occured, please try again!",
+                  ToastAndroid.SHORT,
+                  ToastAndroid.TOP,
+                  25,
+                  50
+                );
+              });
+          } catch (error) {
+            ToastAndroid.showWithGravityAndOffset(
+              "Some error occured, please try again!",
+              ToastAndroid.SHORT,
+              ToastAndroid.TOP,
+              25,
+              50
+            );
+          }
+        })
+        .catch((error) => {
+          return ToastAndroid.showWithGravityAndOffset(
+            "Some error occured, please try again!",
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            25,
+            50
+          );
+        });
+    } catch (error) {
+      //If any of the tries fails we display this error
+      ToastAndroid.showWithGravityAndOffset(
+        "Some error occured, please try again!",
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
   };
 
   //Get data from DB
