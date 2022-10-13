@@ -1,52 +1,48 @@
 import styles from "../../globalStyles";
+import { useDispatch } from "react-redux";
 import { ToastAndroid } from "react-native";
 import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setDarkTheme, setDefaultTheme } from "../../redux/features/themeSlice";
 
 const Settings = () => {
+  const dispatch = useDispatch();
+
+  const [isEnabledSMS, setIsEnabledSMS] = useState(false);
+  const [isEnabledPush, setIsEnabledPush] = useState(false);
   const [isEnabledDark, setIsEnabledDark] = useState(false);
   const [isEnabledEmail, setIsEnabledEmail] = useState(false);
-  const [isEnabledPush, setIsEnabledPush] = useState(false);
-  const [isEnabledSMS, setIsEnabledSMS] = useState(false);
 
   useEffect(() => {
     const update = async () => {
       await AsyncStorage.getItem("email").then((value) => {
-        if (value === "true") {
-          return setIsEnabledEmail(false);
-        } else {
-          return setIsEnabledEmail(true);
-        }
+        return value === "true"
+          ? setIsEnabledEmail(false)
+          : setIsEnabledEmail(true);
       });
       await AsyncStorage.getItem("dark").then((value) => {
-        if (value === "true") {
-          return setIsEnabledDark(false);
-        } else {
-          return setIsEnabledDark(true);
-        }
+        return value === "true"
+          ? setIsEnabledDark(false)
+          : setIsEnabledDark(true);
       });
       await AsyncStorage.getItem("sms").then((value) => {
-        if (value === "true") {
-          return setIsEnabledSMS(false);
-        } else {
-          return setIsEnabledSMS(true);
-        }
+        return value === "true"
+          ? setIsEnabledSMS(false)
+          : setIsEnabledSMS(true);
       });
       await AsyncStorage.getItem("push").then((value) => {
-        if (value === "true") {
-          return setIsEnabledPush(false);
-        } else {
-          return setIsEnabledPush(true);
-        }
+        return value === "true"
+          ? setIsEnabledPush(false)
+          : setIsEnabledPush(true);
       });
     };
 
     update().catch((e) => {});
   }, []);
 
-  const toggleSwitchDark = (name) => {
+  const toggleSwitch = (name) => {
     const updateStorage = async (name, value) => {
       try {
         await AsyncStorage.setItem(name, value.toString());
@@ -66,6 +62,11 @@ const Settings = () => {
     }
     if (name === "dark") {
       setIsEnabledDark(!isEnabledDark);
+      if (!theme.darkmode) {
+        dispatch(setDarkTheme());
+      } else {
+        dispatch(setDefaultTheme());
+      }
       return updateStorage(name, isEnabledDark);
     }
     if (name === "email") {
@@ -103,7 +104,7 @@ const Settings = () => {
             }}
             thumbColor={isEnabledEmail ? styles.purpleText.color : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={() => toggleSwitchDark("email")}
+            onValueChange={() => toggleSwitch("email")}
             value={isEnabledEmail}
           />
         </View>
@@ -116,7 +117,7 @@ const Settings = () => {
             }}
             thumbColor={isEnabledPush ? styles.purpleText.color : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
-            onChange={() => toggleSwitchDark("push")}
+            onChange={() => toggleSwitch("push")}
             //onValueChange={}
             value={isEnabledPush}
           />
@@ -130,7 +131,7 @@ const Settings = () => {
             }}
             thumbColor={isEnabledSMS ? styles.purpleText.color : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={() => toggleSwitchDark("sms")}
+            onValueChange={() => toggleSwitch("sms")}
             value={isEnabledSMS}
           />
         </View>
@@ -146,8 +147,9 @@ const Settings = () => {
             }}
             thumbColor={isEnabledDark ? styles.purpleText.color : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={() => toggleSwitchDark("dark")}
+            onValueChange={() => toggleSwitch("dark")}
             value={isEnabledDark}
+            disabled={true}
           />
         </View>
       </View>

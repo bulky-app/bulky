@@ -23,7 +23,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { cartTotalPriceSelector } from "../redux/selectors";
 
-const amount = 0;
 const CartContainer = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
