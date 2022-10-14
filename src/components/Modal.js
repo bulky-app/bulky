@@ -86,12 +86,10 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
 
     const email = user.get("email");
     const name = user.get("email");
-    const massage = `We have recieved your withdral request of R ${withdrawAmount.toFixed(
-      2
-    )}. After it has been proccessed you will be left with R 
-    ${(balance - withdrawAmount.t).toFixed(
-      2
-    )} in your wallet. If you would like to cancel this withdrawal please reply to this eamil.`;
+    const massage = `We have recieved your withdral request of R ${withdrawAmount}. After it has been proccessed you will be left with R 
+    ${
+      balance - withdrawAmount
+    } in your wallet. If you would like to cancel this withdrawal please reply to this eamil.`;
 
     try {
       await transacton.save();

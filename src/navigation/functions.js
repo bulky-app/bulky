@@ -38,21 +38,25 @@ const sendEmail = async (email, name, massage, alert) => {
       EMAIL_JS_KEY
     )
     .then((response) => {
-      console.log(response);
-      if (alert === true) {
-        return Alert.alert(
-          "Success!",
-          `Please check your eail ${email} for further infomation.`
+      if (response.status === 200) {
+        if (alert === true) {
+          return Alert.alert(
+            "Success!",
+            `Please check your eail ${email} for further infomation.`
+          );
+        }
+        ToastAndroid.showWithGravityAndOffset(
+          "An email has been sent to you.",
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
         );
       }
-      ToastAndroid.showWithGravityAndOffset(
-        "An email has been sent to you.",
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50
-      );
+      return false
     })
-    .catch((e) => console.log(e));
+    .catch((e) => {
+      return error;
+    });
 };
 export { validateEmail, doUserPasswordReset, sendEmail };
