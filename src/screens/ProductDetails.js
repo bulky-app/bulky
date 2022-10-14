@@ -15,6 +15,7 @@ import { ToastAndroid } from "react-native";
 import { CartButton } from "../components/SButton";
 import { addToCart } from "../redux/features/cartSlice";
 import { useNavigation } from "@react-navigation/native";
+import CachedImage from "react-native-expo-cached-image";
 
 const ProductDetails = ({ route }) => {
   const item = route.params;
@@ -50,7 +51,7 @@ const ProductDetails = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
       <View style={localStyles.imgContainer}>
-        <Image
+        <CachedImage
           source={{ uri: item.get("productPicture").url() }}
           style={localStyles.img}
         />
