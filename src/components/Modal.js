@@ -6,11 +6,16 @@ import {
   Pressable,
   View,
   ToastAndroid,
+  Alert,
 } from "react-native";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { toggleActive } from "../redux/features/auth";
+import LoadingButton from "./SButton";
+import SInput from "./SInput";
+import { useState } from "react";
+import { sendEmail } from "../navigation/functions";
 
 const SModal = ({ handleModal, modalVisible }) => {
   const dispatch = useDispatch();
@@ -40,7 +45,7 @@ const SModal = ({ handleModal, modalVisible }) => {
         handleModal();
       }}
     >
-      <View style={localStyles.centeredView}>
+      <View style={localStyles.bottomView}>
         <Text style={{ fontSize: 24 }}>Are you sure you want to logout?</Text>
         <View style={localStyles.modalView}>
           <Pressable
@@ -64,9 +69,106 @@ const SModal = ({ handleModal, modalVisible }) => {
     </Modal>
   );
 };
+const TModal = ({ handleModal, modalVisible, name, other }) => {
+  const [user, balance, refresh, setRefresh] = other;
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
+
+  if (withdrawAmount > balance) {
+    return setWithdrawAmount(balance);
+  }
+
+  const addNewTransaction = async () => {
+    const transacton = new Parse.Object("transactionHistory");
+    transacton.set("transactionName", "Withdrawal");
+    transacton.set("transactionAmount", parseInt(withdrawAmount));
+    transacton.set("status", "pending");
+    transacton.set("userId", user);
+
+    const email = user.get("email");
+    const name = user.get("email");
+    const massage = `We have recieved your withdral request of R ${withdrawAmount.toFixed(
+      2
+    )}. After it has been proccessed you will be left with R 
+    ${(balance - withdrawAmount.t).toFixed(
+      2
+    )} in your wallet. If you would like to cancel this withdrawal please reply to this eamil.`;
+
+    try {
+      await transacton.save();
+      setRefresh(!refresh);
+      handleModal();
+      sendEmail(email, name, massage, false);
+      return Alert.alert(
+        "Success.",
+        "Your withdrawal request has been recieved. Please allow up to 12 hour for it to be processed.",
+        [{ text: "OK", onPress: () => {} }],
+        { cancelable: false }
+      );
+    } catch (error) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Some error occured. Please try again.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
+  };
+  return (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={modalVisible}
+      onRequestClose={() => {
+        handleModal();
+      }}
+    >
+      <View style={localStyles.centeredView}>
+        <Text style={{ fontSize: 24 }}>How much do you want to withdraw?</Text>
+
+        <View style={localStyles.modalView}>
+          <Text style={{ fontSize: 18 }}>
+            Available to withdraw:{" "}
+            <Text style={{ color: styles.purpleText.color }}>{balance}</Text>
+          </Text>
+          <SInput
+            handleChange={setWithdrawAmount}
+            placeholderTxt="100"
+            value={withdrawAmount}
+            keyboard="numeric"
+          />
+
+          {name === "withdraw" && withdrawAmount < 100 ? (
+            <Text style={{ fontSize: 18 }}>Enter value above R100.00</Text>
+          ) : (
+            <LoadingButton
+              text="Withdraw"
+              onPress={() => addNewTransaction()}
+            />
+          )}
+
+          {name === "deposit" && (
+            <LoadingButton
+              text="Deposit"
+              outline={false}
+              onPress={() => console.log("Deposit")}
+            />
+          )}
+        </View>
+        <Pressable
+          style={localStyles.lastButton}
+          activeOpacity={0.3}
+          onPress={() => handleModal()}
+        >
+          <Text style={[localStyles.textStyle, { marginLeft: 0 }]}>Cancel</Text>
+        </Pressable>
+      </View>
+    </Modal>
+  );
+};
 
 const localStyles = StyleSheet.create({
-  centeredView: {
+  bottomView: {
     flex: 1,
     padding: 30,
     width: "100%",
@@ -75,6 +177,15 @@ const localStyles = StyleSheet.create({
     borderTopRightRadius: 40,
     backgroundColor: styles.safeContainer.backgroundColor,
     //alignItems: "center", //To be activated in future
+  },
+  centeredView: {
+    flex: 1,
+    padding: 30,
+    width: "100%",
+    marginTop: "80%",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: styles.safeContainer.backgroundColor,
   },
   modalView: {
     marginVertical: 30,
@@ -99,5 +210,5 @@ const localStyles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
+export { TModal };
 export default SModal;

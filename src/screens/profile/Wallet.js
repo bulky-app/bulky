@@ -7,17 +7,25 @@ import HistoryItem from "../../components/HistoryItem";
 import { styless } from "../../components/ProfileCard";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TModal } from "../../components/Modal";
 
 const Wallet = () => {
+  const [user, setUser] = useState();
   const [balance, setBalance] = useState(0);
+  const [refresh, setRefresh] = useState(0);
   const [history, setHistory] = useState([]);
+  const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
     const currentUser = async () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
-        setBalance(user.get("walletBalance"));
+        const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
+          objectId: user.id,
+        });
+        setUser(user);
+        setBalance(updatedUserDetails.get("walletBalance"));
 
         const query = new Parse.Query("transactionHistory");
         query.contains("userId", user.id);
@@ -29,7 +37,7 @@ const Wallet = () => {
       }
     };
     currentUser();
-  }, []);
+  }, [refresh]);
 
   return (
     <SafeAreaView
@@ -82,17 +90,23 @@ const Wallet = () => {
       <View style={localStyles.buttons}>
         <LoadingButton
           text="Withdraw"
-          onPress={() => console.log("Im clicked")}
+          onPress={() => setShowModal(true)}
           outline={true}
           small={true}
         />
         <LoadingButton
           text="Deposit"
-          onPress={() => console.log("Im clicked")}
+          onPress={() => setShowModal(true)}
           outline={false}
           small={true}
         />
       </View>
+      <TModal
+        name="withdraw"
+        other={[user, balance, refresh,setRefresh]}
+        modalVisible={showModal}
+        handleModal={() => setShowModal(false)}
+      />
     </SafeAreaView>
   );
 };
