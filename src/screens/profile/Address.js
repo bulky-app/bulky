@@ -383,8 +383,7 @@ const Address = () => {
                 value={notes}
               />
             </View>
-
-            <SButton text="Save" onPress={handleSave} />
+            <LoadingButton text="Save" onPress={() => handleSave()} />
           </View>
         </View>
       </TouchableWithoutFeedback>
