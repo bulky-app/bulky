@@ -14,7 +14,7 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [history, setHistory] = useState([]);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const currentUser = async () => {
