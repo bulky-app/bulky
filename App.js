@@ -12,7 +12,7 @@ TextInput.defaultProps.maxFontSizeMultiplier = 1;
 
 const App = () => {
   useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    LogBox.ignoreAllLogs();
   }, []);
   return (
     <Provider store={store}>
