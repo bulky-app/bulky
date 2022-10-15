@@ -11,9 +11,11 @@ TextInput.defaultProps = Text.defaultProps || {};
 TextInput.defaultProps.maxFontSizeMultiplier = 1;
 
 const App = () => {
+
   useEffect(() => {
     LogBox.ignoreAllLogs();
   }, []);
+  
   return (
     <Provider store={store}>
       <RootNavigator />
