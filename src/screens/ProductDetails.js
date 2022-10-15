@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
@@ -19,21 +12,22 @@ import CachedImage from "react-native-expo-cached-image";
 
 const ProductDetails = ({ route }) => {
   const item = route.params;
+
+  //return console.log(item)
   const nav = useNavigation();
   const dispatch = useDispatch();
 
-  const id = item.get("id");
-  const name = item.get("productName");
-  const price = item.get("productPrice");
-  const pic = item.get("productPicture").url();
-  const category = item.get("productCategory");
+  const name = item.productName;
+  const price = item.productPrice;
+  const pic = item.url;
+  const category = item.productCategory;
 
   const [related, setRelated] = useState([]);
 
   async function fetchProducts() {
     const query = new Parse.Query("products");
     query.contains("productName", name.substring(4, 5));
-    query.contains("productCategory", category.id);
+    query.contains("productCategory", category);
     //query.lessThanOrEqualTo("productPrice", price);
     //query.ascending("productPrice", price);
     try {
@@ -51,26 +45,25 @@ const ProductDetails = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
       <View style={localStyles.imgContainer}>
-        <CachedImage
-          source={{ uri: item.get("productPicture").url() }}
-          style={localStyles.img}
-        />
+        <CachedImage source={{ uri: item.url }} style={localStyles.img} />
       </View>
 
-      <Text style={localStyles.title}>{item.get("productName")}</Text>
-      <Text style={localStyles.desc}>{item.get("poductDesc")}</Text>
+      <View>
+        <Text style={localStyles.title}>{item.productName}</Text>
+        <Text style={localStyles.desc}>{item.poductDesc}</Text>
+      </View>
 
       <View style={localStyles.infoTextWrapper}>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Current orders:</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            {item.get("currentOrders")}
+            {item.currentOrders}
           </Text>
         </View>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Price</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            R {item.get("productPrice").toFixed(2)}
+            R {item.productPrice}
           </Text>
         </View>
         <CartButton
