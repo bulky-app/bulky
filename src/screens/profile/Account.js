@@ -17,7 +17,6 @@ import { doUserPasswordReset } from "../../navigation/functions";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Account = () => {
-
   const [user, setUser] = useState();
   const [name, setName] = useState("");
   const [phone, setphone] = useState("");
@@ -33,14 +32,33 @@ const Account = () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
+        const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
+          objectId: user.id,
+        });
+
+        setUser(updatedUserDetails);
+        setName(updatedUserDetails.get("name"));
+        setEmail(updatedUserDetails.get("email"));
+        setphone(updatedUserDetails.get("phone"));
+        setSurName(updatedUserDetails.get("surname"));
+        return true;
+      } catch (error) {
+        return ToastAndroid.showWithGravityAndOffset(
+          "Error connecting to server, check your internet connection.",
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+      } finally {
+        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+        const user = Parse.User.current();
         setUser(user);
         setName(user.get("name"));
         setEmail(user.get("email"));
         setphone(user.get("phone"));
         setSurName(user.get("surname"));
         return true;
-      } catch (error) {
-        return error;
       }
     };
     currentUser();
@@ -80,7 +98,7 @@ const Account = () => {
   //Save the update
   const handleSaveButton = async () => {
     try {
-      await Parse.Cloud.run('editUserProperty', {
+      await Parse.Cloud.run("editUserProperty", {
         objectId: user.id,
         name,
         surname: surName,
@@ -93,7 +111,7 @@ const Account = () => {
         25,
         50
       );
-      return setRefresh(!refresh)
+      return setRefresh(!refresh);
     } catch (error) {
       return ToastAndroid.showWithGravityAndOffset(
         "Some error occured please try again.",
@@ -102,7 +120,7 @@ const Account = () => {
         25,
         50
       );
-    };
+    }
   };
 
   const handlePassResetButton = () => {
@@ -170,9 +188,10 @@ const Account = () => {
                 />
               </View>
               <View style={{ marginTop: 10 }}>
-                <LoadingButton text="Save Update"
-                  onPress={() => handleSaveButton()} 
-                  />
+                <LoadingButton
+                  text="Save Update"
+                  onPress={() => handleSaveButton()}
+                />
               </View>
               <View style={{ marginTop: 30 }}>
                 <LoadingButton
