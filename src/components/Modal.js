@@ -1,25 +1,27 @@
-import styles from "../globalStyles";
 import {
-  Modal,
-  StyleSheet,
   Text,
-  Pressable,
   View,
-  ToastAndroid,
   Alert,
+  Modal,
+  Pressable,
+  StyleSheet,
+  ToastAndroid,
 } from "react-native";
-import Parse from "../../backend/server";
-import { useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
-import { toggleActive } from "../redux/features/auth";
-import LoadingButton from "./SButton";
 import SInput from "./SInput";
 import { useState } from "react";
+import styles from "../globalStyles";
+import LoadingButton from "./SButton";
+import Parse from "../../backend/server";
+import { useDispatch } from "react-redux";
 import { sendEmail } from "../navigation/functions";
+import { toggleActive } from "../redux/features/auth";
+import { useNavigation } from "@react-navigation/native";
 
 const SModal = ({ handleModal, modalVisible }) => {
-  const dispatch = useDispatch();
+
   const nav = useNavigation();
+  const dispatch = useDispatch();
+
   const logout = async (nav, dispatch) => {
     try {
       await Parse.User.logOut();
@@ -30,12 +32,13 @@ const SModal = ({ handleModal, modalVisible }) => {
         25,
         50
       );
-      dispatch(toggleActive());
-      return nav.navigate("LoginScreen");
+
+      return dispatch(toggleActive());
     } catch (error) {
       () => error;
     }
   };
+
   return (
     <Modal
       animationType="slide"
@@ -69,6 +72,7 @@ const SModal = ({ handleModal, modalVisible }) => {
     </Modal>
   );
 };
+
 const TModal = ({ handleModal, modalVisible, name, other }) => {
   const [user, balance, refresh, setRefresh] = other;
   const [withdrawAmount, setWithdrawAmount] = useState(0);
