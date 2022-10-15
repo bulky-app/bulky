@@ -16,9 +16,9 @@ import { useDispatch } from "react-redux";
 import { sendEmail } from "../navigation/functions";
 import { toggleActive } from "../redux/features/auth";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SModal = ({ handleModal, modalVisible }) => {
-
   const nav = useNavigation();
   const dispatch = useDispatch();
 
@@ -32,7 +32,12 @@ const SModal = ({ handleModal, modalVisible }) => {
         25,
         50
       );
-
+      const keys = ["address", "cart", "userDetails"];
+      try {
+        await AsyncStorage.multiRemove(keys);
+      } catch (e) {
+        return false;
+      }
       return dispatch(toggleActive());
     } catch (error) {
       () => error;
