@@ -1,20 +1,23 @@
-import React, { useState } from "react";
 import {
   View,
   Text,
-  SectionList,
-  StatusBar,
+  FlatList,
+  Keyboard,
   StyleSheet,
   SafeAreaView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
-  Platform,
-  Pressable,
-  FlatList
+  TouchableWithoutFeedback,
 } from "react-native";
-import { SearchBar } from "@rneui/base";
+import styles from "../globalStyles";
+import React, { useState } from "react";
+import algoliasearch from "algoliasearch/lite";
+import SearchBox from "../components/search/SearchBox";
+import { ScrollView } from "react-native-gesture-handler";
+import { InstantSearch } from "react-instantsearch-hooks";
+import { ALGOLIA_ID, ALGOLIA_KEY } from "../../backend/env.vars";
+import { InfiniteHits } from "../components/search/InfiniteList";
+
+const searchClient = algoliasearch(ALGOLIA_ID, ALGOLIA_KEY);
 
 const DATA = [
   {
@@ -34,20 +37,21 @@ const DATA = [
     title: "Starch food",
   },
 ];
+
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
+  <TouchableOpacity
+    onPress={onPress}
+    style={[localStyles.item, backgroundColor]}
+  >
+    <Text style={[localStyles.title, textColor]}>{item.title}</Text>
   </TouchableOpacity>
 );
-export default function SearchScreen() {
-  const [searchBar, setSearchBar] = useState("");
-  //const onChangeSearch = (query) => setSearchBar(query);
-  const [selectedId, setSelectedId] = useState(null);
 
+const SearchScreen = () => {
+  const [selectedId, setSelectedId] = useState(null);
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#A020F0" : "#dcdcdc";
-    const color = item.id === selectedId ? 'white' : 'black';
-
+    const color = item.id === selectedId ? "white" : "black";
 
     return (
       <Item
@@ -58,52 +62,60 @@ export default function SearchScreen() {
       />
     );
   };
-  return (
-    <SafeAreaView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            <SearchBar
-              placeholder="Search"
-              lightTheme
-              round
-              value={searchBar}
-              onChangeText={setSearchBar}
 
-            />
-            <View><Text style={styles.output}>{searchBar}</Text></View>
-            <View>
+  return (
+    <SafeAreaView style={localStyles.container}>
+      <InstantSearch searchClient={searchClient} indexName="bulky">
+        <SearchBox />
+        <InfiniteHits />
+      </InstantSearch>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={localStyles.wrapper}
+      >
+        <View>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={localStyles.chips}>
               <FlatList
                 data={DATA}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                alwaysBounceHorizontal={true}
               />
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
-}
-const styles = StyleSheet.create({
+};
+
+const localStyles = StyleSheet.create({
+  container: {
+    padding: styles.safeContainer.padding,
+  },
+  wrapper: {
+    alignItems: "center",
+  },
+  chips: {
+    borderRadius: 20,
+  },
   item: {
     backgroundColor: "#dcdcdc",
-    padding: 20,
-    borderRadius: 2000,
+    padding: 10,
+    height: 40,
+    borderRadius: 20,
     margin: 8,
+    width: 100,
   },
-
   title: {
-    fontSize: 10,
+    fontSize: 16,
+    textAlign: "center",
   },
-  output: {
-    padding: 5,
-    backgroundColor: " #C5C6D0",
-    marginTop: 4,
-  }
 });
 
+export default SearchScreen;
