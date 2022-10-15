@@ -74,7 +74,6 @@ const SearchScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={localStyles.wrapper}
       >
-        <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={localStyles.chips}>
               <FlatList
@@ -88,7 +87,6 @@ const SearchScreen = () => {
               />
             </View>
           </TouchableWithoutFeedback>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
