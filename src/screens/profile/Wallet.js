@@ -14,7 +14,7 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [history, setHistory] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState([false, ""]);
 
   useEffect(() => {
     const currentUser = async () => {
@@ -90,22 +90,22 @@ const Wallet = () => {
       <View style={localStyles.buttons}>
         <LoadingButton
           text="Withdraw"
-          onPress={() => setShowModal(true)}
+          onPress={() => setShowModal([true, "withdraw"])}
           outline={true}
           small={true}
         />
         <LoadingButton
           text="Deposit"
-          onPress={() => setShowModal(true)}
+          onPress={() => setShowModal([true, "deposit"])}
           outline={false}
           small={true}
         />
       </View>
       <TModal
-        name="withdraw"
-        other={[user, balance, refresh,setRefresh]}
-        modalVisible={showModal}
-        handleModal={() => setShowModal(false)}
+        name={showModal[1]}
+        other={[user, balance, refresh, setRefresh]}
+        modalVisible={showModal[0]}
+        handleModal={() => setShowModal([false, ""])}
       />
     </SafeAreaView>
   );
