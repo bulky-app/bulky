@@ -1,13 +1,13 @@
 import styles from "../../globalStyles";
 import Parse from "../../../backend/server";
 import { useState, useEffect } from "react";
+import { TModal } from "../../components/Modal";
 import LoadingButton from "../../components/SButton";
 import { Text, View, StyleSheet } from "react-native";
 import HistoryItem from "../../components/HistoryItem";
 import { styless } from "../../components/ProfileCard";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TModal } from "../../components/Modal";
 
 const Wallet = () => {
   const [user, setUser] = useState();
