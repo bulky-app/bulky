@@ -79,7 +79,10 @@ const SModal = ({ handleModal, modalVisible }) => {
 };
 
 const TModal = ({ handleModal, modalVisible, name, other }) => {
+  const nav = useNavigation();
+
   const [user, balance, refresh, setRefresh] = other;
+  const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
   if (withdrawAmount > balance) {
@@ -94,7 +97,7 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
     transacton.set("userId", user);
 
     const email = user.get("email");
-    const name = user.get("email");
+    const name = user.get("name");
     const massage = `We have recieved your withdral request of R ${withdrawAmount}. After it has been proccessed you will be left with R 
     ${
       balance - withdrawAmount
@@ -121,7 +124,30 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
       );
     }
   };
-  return (
+
+  const hanldleDeposit = () => {
+    const id = user.id;
+    const name = user.get("name");
+    const surname = user.get("surname");
+    const email = user.get("email");
+    const phone = user.get("phone");
+
+    const paymentDetails = {
+      name,
+      surname,
+      email,
+      phone: phone.length > 5 ? phone : "",
+      depositAmount,
+      id,
+      balance,
+      user,
+    };
+    nav.navigate("Payment", paymentDetails);
+
+    return handleModal(false);
+  };
+
+  return name === "withdraw" ? (
     <Modal
       animationType="slide"
       transparent={false}
@@ -145,7 +171,7 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
             keyboard="numeric"
           />
 
-          {name === "withdraw" && withdrawAmount < 100 ? (
+          {withdrawAmount < 100 ? (
             <Text style={{ fontSize: 18 }}>Enter value above R100.00</Text>
           ) : (
             <LoadingButton
@@ -153,12 +179,47 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
               onPress={() => addNewTransaction()}
             />
           )}
+        </View>
+        <Pressable
+          style={localStyles.lastButton}
+          activeOpacity={0.3}
+          onPress={() => handleModal()}
+        >
+          <Text style={[localStyles.textStyle, { marginLeft: 0 }]}>Cancel</Text>
+        </Pressable>
+      </View>
+    </Modal>
+  ) : (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={modalVisible}
+      onRequestClose={() => {
+        handleModal();
+      }}
+    >
+      <View style={localStyles.centeredView}>
+        <Text style={{ fontSize: 24 }}>How much do you want to Deposit?</Text>
 
-          {name === "deposit" && (
+        <View style={localStyles.modalView}>
+          <Text style={{ fontSize: 18 }}>
+            Current balance:{" "}
+            <Text style={{ color: styles.purpleText.color }}>{balance}</Text>
+          </Text>
+          <SInput
+            handleChange={setDepositAmount}
+            placeholderTxt="100"
+            value={depositAmount}
+            keyboard="numeric"
+          />
+
+          {depositAmount < 100 ? (
+            <Text style={{ fontSize: 18 }}>Enter value above R100.00</Text>
+          ) : (
             <LoadingButton
               text="Deposit"
               outline={false}
-              onPress={() => console.log("Deposit")}
+              onPress={() => hanldleDeposit()}
             />
           )}
         </View>

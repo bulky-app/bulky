@@ -26,12 +26,13 @@ import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 
+import Help from "../screens/profile/Help";
+import About from "../screens/profile/About";
 import Wallet from "../screens/profile/Wallet";
 import Address from "../screens/profile/Address";
-import About from "../screens/profile/About";
-import Help from "../screens/profile/Help";
-import Settings from "../screens/profile/Settings";
 import Account from "../screens/profile/Account";
+import Settings from "../screens/profile/Settings";
+import PaymentScreen from "../screens/profile/PaymentScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,6 +91,11 @@ function AllScreens() {
       <Stack.Screen
         name="About"
         component={About}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
         options={{ headerTintColor: "white" }}
       />
     </Stack.Navigator>
