@@ -28,6 +28,7 @@ const SearchBox = (props) => {
       autoCapitalize="none"
       autoCorrect={false}
       spellCheck={false}
+      autoFocus={true}
       autoCompleteType="off"
     />
   );
