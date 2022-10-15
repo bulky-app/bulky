@@ -10,31 +10,31 @@ import { useState } from "react";
 import { Input } from "@rneui/themed";
 import styles from "../../globalStyles";
 import React, { useEffect } from "react";
-import { TextInput } from "react-native";
 import * as Location from "expo-location";
 import Parse from "../../../backend/server";
 import { ToastAndroid } from "react-native";
 import SInput from "../../components/SInput";
-import SButton from "../../components/SButton";
 import { MaterialIcons } from "@expo/vector-icons";
+import LoadingButton from "../../components/SButton";
 import { PLACESAPI_KEY } from "../../../backend/env.vars";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 navigator.geolocation = require("react-native-geolocation-service");
 
 const Address = () => {
-  const [city, setCity] = useState("");
   const [user, setUser] = useState();
+  const [city, setCity] = useState("");
   const [notes, setNotes] = useState("");
   const [userId, setUserId] = useState();
   const [suburb, setSuburb] = useState("");
   const [resName, setResName] = useState("");
   const [location, setLocation] = useState({});
+  const [addressID, setAddressID] = useState("");
   const [firstTime, setFirstTime] = useState(true);
   const [streetAddress, setStreetAddress] = useState("");
-  const [addressID, setAddressID] = useState("");
 
   const [isFocus, setIsFocus] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -154,9 +154,35 @@ const Address = () => {
           longitude: queryResult[0].get("location").longitude,
         });
 
+        const jsonValue = JSON.stringify(queryResult[0]);
+        await AsyncStorage.setItem("address", jsonValue);
         return true;
       } catch (error) {
-        return error;
+        return ToastAndroid.showWithGravityAndOffset(
+          "Connect to the internet and try again.",
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+      } finally {
+        try {
+          const jsonValue = await AsyncStorage.getItem("address");
+          if (jsonValue != null) {
+            const data = JSON.parse(jsonValue);
+            setNotes(data.notes);
+            setCity(data.cityName);
+            setUserId(data.userId.objectId);
+            setResName(data.resName);
+            setSuburb(data.suburbName);
+            setStreetAddress(data.streetAddresses);
+            return true;
+          } else {
+            return null;
+          }
+        } catch (e) {
+          return e;
+        }
       }
     };
     currentUser();
@@ -166,7 +192,7 @@ const Address = () => {
     setResName(e);
   };
   const handlenotes = (e) => {
-    setNotes(e.target.value);
+    setNotes(e);
   };
   const handlestreetAddress = (e) => {
     setStreetAddress(e);
@@ -314,7 +340,6 @@ const Address = () => {
               }}
               styles={localStyles.searchBar}
               currentLocation={false}
-              //currentLocationLabel="Use my current location"
             />
           </View>
 
@@ -368,18 +393,13 @@ const Address = () => {
             </View>
             <View tyle={{ marginTop: 40 }}>
               <Text style={{ fontWeight: "500", fontSize: 16 }}>Notes:</Text>
-              <TextInput
-                onFocus={handleFocusnotes}
-                onBlur={handleBlurnotes}
-                onChange={handlenotes}
-                multiline={true}
-                placeholder="Notes here..."
-                numberOfLines={5}
-                style={[
-                  styles.textInput,
-                  isFocusnotes && styles.textInputFocused,
-                  { marginBottom: 40 },
-                ]}
+              <SInput
+                placeholderTxt="Notes here..."
+                handleChange={handlenotes}
+                keyboardType="default"
+                focus={handleFocusnotes}
+                blur={handleBlurnotes}
+                isFocus={isFocusnotes}
                 value={notes}
               />
             </View>
@@ -390,10 +410,10 @@ const Address = () => {
     </SafeAreaView>
   );
 };
+
 const localStyles = StyleSheet.create({
   searchBar: {
     container: {
-      //flex: 1,
       height: 10,
     },
     textInputContainer: {
