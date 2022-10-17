@@ -17,10 +17,11 @@ const ProductDetails = ({ route }) => {
   const nav = useNavigation();
   const dispatch = useDispatch();
 
-  const name = item.productName;
-  const price = item.productPrice;
   const pic = item.url;
+  const id = item.objectId;
+  const name = item.productName;
   const category = item.productCategory;
+  const price = item.productPrice;
 
   const [related, setRelated] = useState([]);
 
