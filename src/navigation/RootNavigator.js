@@ -2,8 +2,11 @@ import Parse from "../../backend/server";
 import { Feather } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import styles from "../globalStyles";
@@ -22,9 +25,10 @@ import ProfileScreen from "../screens/ProfileScreen";
 import ShopScreen from "../screens/ShopScreen";
 import ProductDetails from "../screens/ProductDetails";
 
+import axios from "axios";
 import { useSelector } from "react-redux";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import Help from "../screens/profile/Help";
 import About from "../screens/profile/About";
@@ -33,6 +37,7 @@ import Address from "../screens/profile/Address";
 import Account from "../screens/profile/Account";
 import Settings from "../screens/profile/Settings";
 import PaymentScreen from "../screens/profile/PaymentScreen";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -133,8 +138,11 @@ function NotLogged() {
 }
 
 const RootNavigator = () => {
-  const userIsActive = useSelector((state) => state.user.active);
+  const routeNameRef = useRef();
+  const navigationRef = useNavigationContainerRef();
   const [loggedIn, setLoggedin] = useState(userIsActive);
+  const userIsActive = useSelector((state) => state.user.active);
+
   useEffect(() => {
     const isLoggedIn = async () => {
       try {
@@ -152,8 +160,29 @@ const RootNavigator = () => {
     isLoggedIn();
   }, [userIsActive]);
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.getCurrentRoute().name;
+      }}
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          useEffect(() => {
+            axios.post(`https://app.nativenotify.com/api/analytics`, {
+              app_id: 4389,
+              app_token: "doPzgNGgUBdkYeDW9LKjD4",
+              screenName: currentRouteName,
+            });
+          });
+        }
+        routeNameRef.current = currentRouteName;
+      }}
+    >
       {loggedIn ? <AllScreens /> : <NotLogged />}
+      <StatusBar style="dark" />
     </NavigationContainer>
   );
 };

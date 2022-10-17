@@ -9,6 +9,7 @@ import {
 import styles from "../../globalStyles";
 import { useState, useEffect } from "react";
 import Parse from "../../../backend/server";
+import { StatusBar } from "expo-status-bar";
 import SInput from "../../components/SInput";
 import userImg from "../../images/userImg.png";
 import LoadingButton from "../../components/SButton";
@@ -129,6 +130,7 @@ const Account = () => {
 
   return (
     <SafeAreaView style={[styles.safeContainer, { paddingTop: 0 }]}>
+      <StatusBar style="light" />
       <View style={[styles.container, { alignItems: "center" }]}>
         <Image
           style={{ height: 100, width: 100, marginBottom: 40 }}

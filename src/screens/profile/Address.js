@@ -11,8 +11,9 @@ import { Input } from "@rneui/themed";
 import styles from "../../globalStyles";
 import React, { useEffect } from "react";
 import * as Location from "expo-location";
-import Parse from "../../../backend/server";
+import { StatusBar } from "expo-status-bar";
 import { ToastAndroid } from "react-native";
+import Parse from "../../../backend/server";
 import SInput from "../../components/SInput";
 import { MaterialIcons } from "@expo/vector-icons";
 import LoadingButton from "../../components/SButton";
@@ -287,6 +288,7 @@ const Address = () => {
         height: "100%",
       }}
     >
+      <StatusBar style="light" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{

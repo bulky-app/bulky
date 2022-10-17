@@ -4,6 +4,7 @@ import {
   PAYFAST_PASSPHRASE,
 } from "../../../backend/env.vars";
 import Parse from "../../../backend/server";
+import { StatusBar } from "expo-status-bar";
 import { sendEmail } from "../../navigation/functions";
 import { useNavigation } from "@react-navigation/native";
 import { PayFastWebView } from "react-native-payfast-gateway";
@@ -87,6 +88,7 @@ const PaymentScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       <PayFastWebView
         sandbox={false}
         onClick={() => nav.navigate("Wallet")}

@@ -1,7 +1,7 @@
-import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
+import { StatusBar } from "expo-status-bar";
 import Product from "../components/Product";
 import { useState, useEffect } from "react";
 import { ToastAndroid } from "react-native";
@@ -9,6 +9,7 @@ import { CartButton } from "../components/SButton";
 import { addToCart } from "../redux/features/cartSlice";
 import { useNavigation } from "@react-navigation/native";
 import CachedImage from "react-native-expo-cached-image";
+import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 
 const ProductDetails = ({ route }) => {
   const item = route.params;
@@ -45,6 +46,7 @@ const ProductDetails = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
+      <StatusBar style="light" />
       <View style={localStyles.imgContainer}>
         <CachedImage source={{ uri: item.url }} style={localStyles.img} />
       </View>

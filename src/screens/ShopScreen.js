@@ -1,4 +1,5 @@
 import React from "react";
+import { StatusBar } from "expo-status-bar";
 import StoreContainer from "../components/StoreContainer";
 import { StyleSheet, Text, ScrollView, View, SafeAreaView } from "react-native";
 
@@ -6,6 +7,7 @@ const ShopScreen = ({ route, navigation }) => {
   const { categoryName, id } = route.params;
   return (
     <SafeAreaView style={localStyles.contentContainer}>
+      <StatusBar style="light" />
       <ScrollView
         nestedScrollEnabled={true}
         contentContainerStyle={localStyles.contentContainer}

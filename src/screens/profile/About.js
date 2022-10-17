@@ -11,6 +11,7 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import styles from "../../globalStyles";
+import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const About = () => {
@@ -23,7 +24,7 @@ const About = () => {
           position: "relative",
         },
       ]}
-    >
+    ><StatusBar style="light" />
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Terms */}
         <Collapse style={localStyles.collapse}>

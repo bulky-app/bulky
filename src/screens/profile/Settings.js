@@ -1,7 +1,8 @@
 import styles from "../../globalStyles";
 import { useDispatch } from "react-redux";
-import { ToastAndroid } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
+import { ToastAndroid } from "react-native";
 import { Text, View, StyleSheet, Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -93,6 +94,7 @@ const Settings = () => {
         },
       ]}
     >
+      <StatusBar style="light" />
       <Text style={localStyles.text}>Communication Preferences</Text>
       <View style={localStyles.item}>
         <View style={localStyles.item.container}>

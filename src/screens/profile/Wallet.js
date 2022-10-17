@@ -1,6 +1,7 @@
 import styles from "../../globalStyles";
 import Parse from "../../../backend/server";
 import { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import { TModal } from "../../components/Modal";
 import LoadingButton from "../../components/SButton";
 import { Text, View, StyleSheet } from "react-native";
@@ -46,6 +47,7 @@ const Wallet = () => {
         { position: "relative", alignItems: "center", paddingTop: 0 },
       ]}
     >
+      <StatusBar style="light" />
       <View style={[localStyles.walletCard, styless.profileCard.boxWithShadow]}>
         <Text style={localStyles.walletCard.leftText}>Wallet balance:</Text>
         <Text style={localStyles.walletCard.rightText}>
