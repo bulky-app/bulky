@@ -14,3 +14,4 @@ web-build/
 .DS_Store
 backend/env.vars.js
 .vscode/launch.json
+google-services.json
