@@ -12,7 +12,6 @@ import {
   decrement,
   clear,
   removeItem,
-  loadCart,
 } from "../redux/features/cartSlice";
 import SButton from "./SButton";
 import { useEffect } from "react";
@@ -22,17 +21,29 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { cartTotalPriceSelector } from "../redux/selectors";
+import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const amount = 0;
 const CartContainer = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
-  useEffect(() => {
-    () => {
-      dispatch(loadCart());
-    };
-  }, []);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     const storeData = async () => {
+  //       try {
+  //         const jsonValue = JSON.stringify(cart);
+  //         await AsyncStorage.setItem("cart", jsonValue);
+  //         console.log("Saved cart");
+  //       } catch (e) {
+  //         console.log("Cart err: " + e);
+  //       }
+  //     };
+  //     storeData();
+  //   }, 10000);
+
+  //   return () => clearInterval(intervalId);
+  // }, [useState]);
 
   //Items in the cart
   const renderStoreItems = ({ item }) => {
@@ -54,7 +65,7 @@ const CartContainer = () => {
           >
             <Text style={LocalStyles.storeItemTitle}>{item.title}</Text>
             <Text style={LocalStyles.storeItemPrice}>
-              R{(item.quantity * item.price).toFixed(2)}
+              R{item.quantity * item.price}
             </Text>
           </View>
 
@@ -203,7 +214,7 @@ const ListFooterComponent = () => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {},
           style: "cancel",
         },
         { text: "OK", onPress: () => dispatch(clear()) },
@@ -235,13 +246,12 @@ const ListFooterComponent = () => {
               ]}
             >
               Total:
-              <Text style={styles.purpleText}> R {totalPrice.toFixed(2)}</Text>
+              <Text style={styles.purpleText}> R {totalPrice}</Text>
             </Text>
 
             <SButton
               text="Checkout"
               onPress={() => {
-                console.log("Checkout");
                 // dispatch(checkout());
               }}
             />

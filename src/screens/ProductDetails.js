@@ -1,64 +1,91 @@
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
 import styles from "../globalStyles";
-import Data from "../../assets/cartItems";
+import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
+import { StatusBar } from "expo-status-bar";
 import Product from "../components/Product";
+import { useState, useEffect } from "react";
 import { ToastAndroid } from "react-native";
 import { CartButton } from "../components/SButton";
 import { addToCart } from "../redux/features/cartSlice";
 import { useNavigation } from "@react-navigation/native";
+import CachedImage from "react-native-expo-cached-image";
+import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 
 const ProductDetails = ({ route }) => {
-  const dispatch = useDispatch();
+  const item = route.params;
+
+  //return console.log(item)
   const nav = useNavigation();
-  const { title, price, image, description } = route.params;
+  const dispatch = useDispatch();
+
+  const pic = item.url;
+  const id = item.objectId;
+  const name = item.productName;
+  const category = item.productCategory;
+  const price = item.productPrice;
+
+  const [related, setRelated] = useState([]);
+
+  async function fetchProducts() {
+    const query = new Parse.Query("products");
+    query.contains("productName", name.substring(4, 5));
+    query.contains("productCategory", category);
+    //query.lessThanOrEqualTo("productPrice", price);
+    //query.ascending("productPrice", price);
+    try {
+      const queryResult = await query.find();
+      setRelated(queryResult);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F2F4F5", padding: 20 }}>
+      <StatusBar style="light" />
       <View style={localStyles.imgContainer}>
-        <Image source={{ uri: image }} style={localStyles.img} />
+        <CachedImage source={{ uri: item.url }} style={localStyles.img} />
       </View>
 
-      <Text style={localStyles.title}>{title}</Text>
-      <Text style={localStyles.desc}>{description}</Text>
+      <View>
+        <Text style={localStyles.title}>{item.productName}</Text>
+        <Text style={localStyles.desc}>{item.poductDesc}</Text>
+      </View>
 
       <View style={localStyles.infoTextWrapper}>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Current orders:</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            25
+            {item.currentOrders}
           </Text>
         </View>
         <View style={localStyles.infoTextInnerWrapper}>
           <Text>Price</Text>
           <Text style={{ fontSize: 20, color: styles.purpleText.color }}>
-            {price}
+            R {item.productPrice}
           </Text>
         </View>
         <CartButton
           text="Add to cart"
           onPress={() => {
             const item = {
-              image: image,
-              price: price,
-              title: title,
-              id: id,
+              image: pic,
+              title: name,
+              price,
+              id,
             };
             dispatch(addToCart(item));
-            doAddToCart(title);
+            doAddToCart(name);
           }}
         />
       </View>
       <Text>Related</Text>
       <FlatList
-        data={Data}
+        data={related}
         horizontal={true}
         renderItem={(item) => Product(item, dispatch, nav)}
         keyExtractor={(item) => item.id}
@@ -67,30 +94,29 @@ const ProductDetails = ({ route }) => {
     </SafeAreaView>
   );
 };
-export default ProductDetails;
 
 const localStyles = StyleSheet.create({
   imgContainer: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
   img: {
     width: 200,
     height: 150,
-    borderRadius: 10,
-    backgroundColor: "white",
     padding: 20,
     elevation: 1,
+    borderRadius: 10,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
-    color: styles.purpleText.color,
     overflow: "scroll",
     marginVertical: 10,
+    color: styles.purpleText.color,
   },
   desc: { fontSize: 18, color: styles.greyText.color },
   infoTextWrapper: {
@@ -100,8 +126,8 @@ const localStyles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   infoTextInnerWrapper: {
-    flexDirection: "column",
     alignItems: "center",
+    flexDirection: "column",
   },
 });
 
@@ -114,3 +140,4 @@ const doAddToCart = (name) => {
     50
   );
 };
+export default ProductDetails;

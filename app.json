@@ -3,6 +3,7 @@
     "name": "bulky",
     "slug": "bulky",
     "version": "1.0.1",
+    "versionCode": 1.0,
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,11 +28,26 @@
       },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ]
+        "ACCESS_FINE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECEIVE_BOOT_COMPLETED",
+        "SCHEDULE_EXACT_ALARM"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyAo0HYBN0t0YqUiZIXWFD9YytCFeWcnbvk",
+          "authDomain": "runtime-363015.firebaseapp.com",
+          "projectId": "runtime-363015",
+          "storageBucket": "runtime-363015.appspot.com",
+          "messagingSenderId": "145509535320",
+          "appId": "1:145509535320:web:5fc4bb3e1bd467f990042d"
+        }
+      }
     }
   }
 }

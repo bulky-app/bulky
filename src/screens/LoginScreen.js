@@ -16,10 +16,11 @@ import { ToastAndroid } from "react-native";
 import SButton from "../components/SButton";
 import loginImage from "../images/loginImg.png";
 import { toggleActive } from "../redux/features/auth";
-import { validateEmail } from "../navigation/functions";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { doUserPasswordReset, validateEmail } from "../navigation/functions";
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -31,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
   const handlePassword = (e) => {
     setPassword(e.trim());
   };
-  const dispatch = useDispatch();
+  
   const handleButton = () => {
     Keyboard.dismiss();
 
@@ -50,7 +51,7 @@ const LoginScreen = ({ navigation }) => {
 
   const doUserLogIn = async (navigation) => {
     const user = new Parse.User();
-    user.set("username", email);
+    user.set("username", email.toLowerCase());
     user.set("password", password);
     return await user
       .logIn()
@@ -68,7 +69,9 @@ const LoginScreen = ({ navigation }) => {
             return dispatch(toggleActive());
           } else {
             // if use not verified
-            return navigation.navigate("EmailVerificationScreen");
+            return navigation.navigate("EmailVerificationScreen", {
+              email: email.toLowerCase(),
+            });
           }
         } else {
           // if users do not match we logout and display the massage
@@ -84,7 +87,6 @@ const LoginScreen = ({ navigation }) => {
       })
       // if error occures during login
       .catch((error) => {
-        console.log(error); //Watch out
         return ToastAndroid.showWithGravityAndOffset(
           "Invalid username/password.",
           ToastAndroid.LONG,
@@ -93,6 +95,20 @@ const LoginScreen = ({ navigation }) => {
           50
         );
       });
+  };
+
+  const resetPassword = () => {
+    if (validateEmail(email) === true) {
+      doUserPasswordReset(email);
+    } else {
+      ToastAndroid.showWithGravityAndOffset(
+        `Invalid email.`,
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
   };
 
   const handleFocus = () => {
@@ -146,7 +162,7 @@ const LoginScreen = ({ navigation }) => {
                 blur={handleBlurPass}
                 isFocus={isFocusPass}
               />
-              <Pressable style={styles.purpleText}>
+              <Pressable style={styles.purpleText} onPress={resetPassword}>
                 <Text style={styles.purpleText}>Fogot Password?</Text>
               </Pressable>
               <SButton

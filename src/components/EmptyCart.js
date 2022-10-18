@@ -1,9 +1,8 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import styles from "../globalStyles";
 import cartImg from "../images/cartImg.png";
-import historyImg from "../images/historyImg.png";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import historyImg from "../images/historyImg.png";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const OUButton = ({ text, onPress, icon }) => {
   return (
@@ -19,7 +18,7 @@ const OUButton = ({ text, onPress, icon }) => {
     </Pressable>
   );
 };
-const EmptyHistory = ({onClick}) => {
+const EmptyHistory = ({ onClick }) => {
   return (
     <View style={localStyles.container}>
       <Image source={historyImg} style={localStyles.img} />
@@ -30,7 +29,7 @@ const EmptyHistory = ({onClick}) => {
         icon={
           <Feather
             name="arrow-right"
-            size={24}
+            size={22}
             color={styles.purpleText.color}
           />
         }
@@ -39,18 +38,18 @@ const EmptyHistory = ({onClick}) => {
   );
 };
 
-const EmptyCart = ({onClick}) => {
+const EmptyCart = ({ onClick }) => {
   return (
     <View style={localStyles.container}>
       <Image source={cartImg} style={localStyles.img} />
       <Text style={localStyles.txt}>Looks like the cart is empyty!</Text>
       <OUButton
         text="Lets fill it"
-        onPress={() => onClick={onClick}}
+        onPress={onClick}
         icon={
           <Feather
             name="arrow-right"
-            size={24}
+            size={22}
             color={styles.purpleText.color}
           />
         }
@@ -81,7 +80,7 @@ const localStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     textAlign: "center",
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     color: styles.purpleText.color,
   },
   button: {

@@ -12,16 +12,6 @@ import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 
 const ProfileCard = ({ userId, userName, userBalance }) => {
-  const copyToClipboard = (userId) => {
-    Clipboard.setStringAsync(userId);
-    ToastAndroid.showWithGravityAndOffset(
-      `Reference copied to clipboard`,
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-      25,
-      50
-    );
-  };
   return (
     <View style={[styless.profileCard, styless.profileCard.boxWithShadow]}>
       <Image style={styless.profileCard.imageIcon} source={userImg} />
@@ -39,7 +29,7 @@ const ProfileCard = ({ userId, userName, userBalance }) => {
           activeOpacity={0.5}
         >
           <Text style={[styless.profileCard.greyText]}>
-            {userId.toUpperCase() + " "}
+            {`${userId.toUpperCase()} `}
             <Ionicons name="copy-outline" size={20} color="black" />
           </Text>
         </TouchableOpacity>
@@ -48,8 +38,9 @@ const ProfileCard = ({ userId, userName, userBalance }) => {
     </View>
   );
 };
+export { copyToClipboard };
 export default ProfileCard;
-const styless = StyleSheet.create({
+export const styless = StyleSheet.create({
   profileCard: {
     padding: 20,
     borderRadius: 13,
@@ -88,3 +79,13 @@ const styless = StyleSheet.create({
     },
   },
 });
+const copyToClipboard = (userId) => {
+  Clipboard.setStringAsync(userId);
+  ToastAndroid.showWithGravityAndOffset(
+    `Reference copied to clipboard`,
+    ToastAndroid.LONG,
+    ToastAndroid.TOP,
+    25,
+    50
+  );
+};

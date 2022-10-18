@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import CategoryCard from "../components/CategoryCard";
 import { useNavigation } from "@react-navigation/native";
-import StoreContainer from "../components/StoreContainer";
+//import StoreContainer from "../components/StoreContainer";
 import { FlatList, Image, ScrollView, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
         const user = Parse.User.current();
         setUser(user.get("name"));
         setUserId(user.id);
-        setWalletBalance(user.get("walletBalance"));
+        setWalletBalance(user.get("walletBalance").toFixed(2));
         return true;
       } catch (error) {
         return seterror(error);
@@ -32,7 +32,10 @@ const HomeScreen = ({ navigation }) => {
   }, [user]);
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      nestedScrollEnabled={true}
+      contentContainerStyle={styles.contentContainer}
+    >
       {user && (
         <View>
           <View>
@@ -57,13 +60,15 @@ const HomeScreen = ({ navigation }) => {
               paddingHorizontal: 10,
             }}
           >
-            <FlatList
-              data={itemData}
-              numColumns={2}
-              renderItem={(item) => CategoryCard(item, nav)}
-              keyExtractor={(item) => item.id}
-            />
-            <StoreContainer nav={navigation} />
+            <ScrollView nestedScrollEnabled={true}>
+              <FlatList
+                data={itemData}
+                numColumns={2}
+                renderItem={(item) => CategoryCard(item, nav)}
+                keyExtractor={(item) => item.id}
+              />
+            </ScrollView>
+            {/* <StoreContainer nav={navigation} /> */}
           </View>
         </View>
       )}
@@ -75,23 +80,23 @@ export default HomeScreen;
 
 const itemData = [
   {
-    icon: <Image source={require("../images/categories/everydaymeals.jpg")} />,
+    icon: <Image source={require("../images/categories/everdaymeals.png")} />,
     id: 1,
     categoryName: "My Needs",
   },
   {
-    icon: <Image source={require("../images/categories/snacks.jpg")} />,
+    icon: <Image source={require("../images/categories/snacks.png")} />,
     id: 2,
     categoryName: "Snacks",
   },
   {
-    icon: <Image source={require("../images/categories/toiletries.jpg")} />,
+    icon: <Image source={require("../images/categories/toiletries.png")} />,
     id: 3,
     categoryName: "Toiletries",
   },
   {
     icon: <Image source={require("../images/categories/busket.png")} />,
-    id: 4,
+    id: "x9pc6rXKFc",
     categoryName: "Bulky bulks",
   },
 ];

@@ -1,16 +1,29 @@
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  View,
-} from "react-native";
 import styles from "../globalStyles";
 import { CartButton } from "./SButton";
 import { addToCart } from "../redux/features/cartSlice";
+import CachedImage from "react-native-expo-cached-image";
+import { View, Text, StyleSheet, Pressable, ToastAndroid } from "react-native";
 
 const Product = ({ item }, dispatch, nav) => {
+  const { id } = item;
+  const name = item.get("productName");
+  const price = item.get("productPrice");
+  const pic = item.get("productPicture").url();
+  const currentOrders = item.get("currentOrders");
+  const poductDesc = item.get("poductDesc");
+  const category = item.get("productCategory");
+  const productCategory = category.id;
+
+  const detailsData = {
+    objectId: id,
+    productName: name,
+    productPrice: price,
+    productCategory,
+    url: pic,
+    currentOrders,
+    poductDesc,
+  };
+
   const doAddToCart = (name) => {
     ToastAndroid.showWithGravityAndOffset(
       `${name} added to cart`,
@@ -20,28 +33,29 @@ const Product = ({ item }, dispatch, nav) => {
       50
     );
   };
+
   return (
     <View>
       <Pressable
-        style={gridStyles.item}
-        onPress={() => nav.navigate("Details", item)}
+        style={gridStyles.itemData}
+        onPress={() => nav.navigate("Details", detailsData)}
         android_ripple={{
           color: "#E7E7FF",
         }}
       >
-        <Image
+        <CachedImage
           style={{
             height: 120,
             width: 100,
             alignSelf: "center",
             marginBottom: 10,
           }}
-          source={{ uri: item.image }}
+          source={{ uri: item.get("productPicture").url() }}
         />
         <View>
           <Text
             style={[
-              gridStyles.item.name,
+              gridStyles.itemData.name,
               {
                 fontWeight: "700",
                 color: styles.purpleText.color,
@@ -49,21 +63,28 @@ const Product = ({ item }, dispatch, nav) => {
               },
             ]}
           >
-            R {item.price}
+            R {item.get("productPrice").toFixed(2)}
           </Text>
           <Text
             style={[
-              gridStyles.item.name,
+              gridStyles.itemData.name,
               { textAlign: "center", marginTop: 5 },
             ]}
           >
-            {item.title}
+            {item.get("productName")}
           </Text>
         </View>
-        <View style={gridStyles.item.buttonWrapper}>
+        <View style={gridStyles.itemData.buttonWrapper}>
           <CartButton
             text="Add to cart"
             onPress={() => {
+              const item = {
+                category: productCategory,
+                image: pic,
+                title: name,
+                price,
+                id: id,
+              };
               dispatch(addToCart(item));
               doAddToCart(item.title);
             }}
@@ -73,8 +94,101 @@ const Product = ({ item }, dispatch, nav) => {
     </View>
   );
 };
+
+const SearchProduct = ({ item }, dispatch, nav) => {
+  const {
+    objectId,
+    productName,
+    productPrice,
+    productCategory,
+    currentOrders,
+    poductDesc,
+  } = item;
+  const { url } = item.productPicture;
+
+  const detailsData = {
+    objectId,
+    productName,
+    productPrice,
+    productCategory,
+    url,
+    currentOrders,
+    poductDesc,
+  };
+
+  const doAddToCart = (name) => {
+    ToastAndroid.showWithGravityAndOffset(
+      `${name} added to cart`,
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+      25,
+      50
+    );
+  };
+
+  return (
+    <View>
+      <Pressable
+        style={gridStyles.itemData}
+        onPress={() => nav.navigate("Details", detailsData)}
+        android_ripple={{
+          color: "#E7E7FF",
+        }}
+      >
+        <CachedImage
+          style={{
+            height: 120,
+            width: 100,
+            alignSelf: "center",
+            marginBottom: 10,
+          }}
+          source={{ uri: url }}
+        />
+        <View>
+          <Text
+            style={[
+              gridStyles.itemData.name,
+              {
+                fontWeight: "700",
+                color: styles.purpleText.color,
+                marginLeft: 5,
+              },
+            ]}
+          >
+            R {productPrice.toFixed(2)}
+          </Text>
+          <Text
+            style={[
+              gridStyles.itemData.name,
+              { textAlign: "center", marginTop: 5 },
+            ]}
+          >
+            {productName}
+          </Text>
+        </View>
+        <View style={gridStyles.itemData.buttonWrapper}>
+          <CartButton
+            text="Add to cart"
+            onPress={() => {
+              const item = {
+                category: productCategory,
+                image: url,
+                title: productName,
+                price: productPrice,
+                id: objectId,
+              };
+              dispatch(addToCart(item));
+              doAddToCart(productName);
+            }}
+          />
+        </View>
+      </Pressable>
+    </View>
+  );
+};
+
 const gridStyles = StyleSheet.create({
-  item: {
+  itemData: {
     flex: 1,
     height: 300,
     width: 150,
@@ -84,8 +198,10 @@ const gridStyles = StyleSheet.create({
     elevation: 1,
     borderRadius: 10,
     image: {
-      flex: 1,
-      align: "center",
+      height: 120,
+      width: 100,
+      alignSelf: "center",
+      marginBottom: 10,
     },
     name: {
       textAlign: "left",
@@ -101,4 +217,6 @@ const gridStyles = StyleSheet.create({
     },
   },
 });
+
+export { SearchProduct };
 export default Product;

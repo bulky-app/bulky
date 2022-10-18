@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = [];
@@ -53,14 +54,9 @@ const cartSlice = createSlice({
     clear(state) {
       return [];
     },
-    loadCart: (state) => {
-      async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem("@Cart");
-          return jsonValue != null && JSON.parse(jsonValue);
-        } catch (e) {}
-      };
-    },
+    loadCart: (state, { payload }) => {
+      return payload;
+    }
   },
 });
 

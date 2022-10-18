@@ -1,12 +1,15 @@
 import React from "react";
+import { StatusBar } from "expo-status-bar";
 import StoreContainer from "../components/StoreContainer";
 import { StyleSheet, Text, ScrollView, View, SafeAreaView } from "react-native";
 
-const ShopScreen = ({ route }) => {
+const ShopScreen = ({ route, navigation }) => {
   const { categoryName, id } = route.params;
   return (
     <SafeAreaView style={localStyles.contentContainer}>
+      <StatusBar style="light" />
       <ScrollView
+        nestedScrollEnabled={true}
         contentContainerStyle={localStyles.contentContainer}
         stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
@@ -14,7 +17,8 @@ const ShopScreen = ({ route }) => {
         <View>
           <Text style={localStyles.categoryName}>{categoryName}</Text>
         </View>
-        <StoreContainer />
+
+        <StoreContainer nav={navigation} category={id} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -24,12 +28,12 @@ const localStyles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: "center",
-    paddingBottom: 25
+    paddingBottom: 25,
   },
   categoryName: {
     fontSize: 18,
-    elevation:3,
-    paddingVertical: 10
+    elevation: 3,
+    paddingVertical: 10,
   },
 });
 

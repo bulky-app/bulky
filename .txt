@@ -21,3 +21,26 @@ link text: background: #6B4EFF; color: #6B4EFF
 
 light
 white #D9D9D9
+
+
+
+
+Categories
+snacks - UnjwmvHJd3
+everyday - SB7z4wK5Hr
+toiletries - NM0kWSezrS
+busket - x9pc6rXKFc
+
+orders
+jMfduTSjh1
+GVSXn71hBF
+
+products
+uZ3NquTG1T
+RJ9wYGTFIF
+
+
+Todo.
+App admin: https://bulky.admin.back4app.com/
+App website: https://bulky.b4a.app/
+Notifications: https://app.nativenotify.com/in-app

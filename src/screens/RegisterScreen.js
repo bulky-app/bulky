@@ -1,11 +1,11 @@
 import {
-  KeyboardAvoidingView,
   Text,
-  TouchableWithoutFeedback,
   View,
   Keyboard,
   Pressable,
   ToastAndroid,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useState } from "react";
 import { Image } from "react-native";
@@ -32,7 +32,7 @@ const RegisterScreen = ({ navigation }) => {
   const [isFocusPassConfirm, setIsFocusPassConfirm] = useState(false);
 
   const handleEmail = (e) => {
-    setEmail(e.trim());
+    setEmail(e.trim().toLowerCase());
   };
   const handlePassword = (e) => {
     setPassword(e.trim());
@@ -83,21 +83,23 @@ const RegisterScreen = ({ navigation }) => {
       doUserRegistration(navigation);
     }
   };
+
   const doUserRegistration = async (navigation) => {
     const user = new Parse.User();
-    user.set("username", email);
+    user.set("username", email.toLowerCase());
     user.set("password", password);
-    user.set("email", email);
+    user.set("email", email.toLowerCase());
     user.set("name", name);
     user.set("walletBalance", 0);
     try {
       await user.signUp();
       await Parse.User.logOut();
-      return navigation.navigate("EmailVerificationScreen");
+      return navigation.navigate("EmailVerificationScreen", {
+        email: email.toLowerCase(),
+      });
     } catch (error) {
-      console.log(error);
       return ToastAndroid.showWithGravityAndOffset(
-        "Account already exists for this email.",
+        error.toString(),
         ToastAndroid.LONG,
         ToastAndroid.TOP,
         25,
@@ -105,6 +107,7 @@ const RegisterScreen = ({ navigation }) => {
       );
     }
   };
+
   const handleFocus = () => {
     setIsFocus(true);
   };

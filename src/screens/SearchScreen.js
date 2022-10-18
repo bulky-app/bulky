@@ -1,76 +1,119 @@
-import React, { useState } from "react";
 import {
   View,
   Text,
-  SectionList,
-  StatusBar,
+  FlatList,
+  Keyboard,
   StyleSheet,
   SafeAreaView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
-  Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
-import { SearchBar } from "@rneui/base";
+import styles from "../globalStyles";
+import React, { useState } from "react";
+import algoliasearch from "algoliasearch/lite";
+import SearchBox from "../components/search/SearchBox";
+import { ScrollView } from "react-native-gesture-handler";
+import { InstantSearch } from "react-instantsearch-hooks";
+import { ALGOLIA_ID, ALGOLIA_KEY } from "../../backend/env.vars";
+import { InfiniteHits } from "../components/search/InfiniteList";
+
+const searchClient = algoliasearch(ALGOLIA_ID, ALGOLIA_KEY);
 
 const DATA = [
   {
-    title: "Search by Category :",
-    data: ["Canned food", "Meat", "Dairy", "Starch food"],
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "Canned food",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Meat",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Dairy",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d78",
+    title: "Starch food",
   },
 ];
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
+
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={[localStyles.item, backgroundColor]}
+  >
+    <Text style={[localStyles.title, textColor]}>{item.title}</Text>
+  </TouchableOpacity>
 );
-export default function SearchScreen() {
-  const [searchBar, setSearchBar] = useState("");
-  const onChangeSearch = (query) => setSearchBar(query);
+
+const SearchScreen = () => {
+  const [selectedId, setSelectedId] = useState(null);
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#A020F0" : "#dcdcdc";
+    const color = item.id === selectedId ? "white" : "black";
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
+    <SafeAreaView style={localStyles.container}>
+      <InstantSearch searchClient={searchClient} indexName="bulky">
+        <SearchBox />
+        <InfiniteHits />
+      </InstantSearch>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={localStyles.wrapper}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            <SearchBar
-              placeholder="Search"
-              lightTheme
-              round
-              onChangeText={onChangeSearch}
-              value={searchBar}
-            />
-            <View></View>
-            <View>
-              <TouchableOpacity>
-                <SectionList
-                  sections={DATA}
-                  keyExtractor={(item, index) => item + index}
-                  renderItem={({ item }) => <Item title={item} />}
-                  renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                  )}
-                />
-              </TouchableOpacity>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={localStyles.chips}>
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                extraData={selectedId}
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                alwaysBounceHorizontal={true}
+              />
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+      </ScrollView>
     </SafeAreaView>
   );
-}
-const styles = StyleSheet.create({
+};
+
+const localStyles = StyleSheet.create({
+  container: {
+    padding: styles.safeContainer.padding,
+  },
+  wrapper: {
+    alignItems: "center",
+  },
+  chips: {
+    borderRadius: 20,
+  },
   item: {
     backgroundColor: "#dcdcdc",
-    padding: 20,
-    borderRadius: 2000,
+    padding: 10,
+    height: 40,
+    borderRadius: 20,
     margin: 8,
+    width: 100,
   },
-
   title: {
-    fontSize: 15,
+    fontSize: 16,
+    textAlign: "center",
   },
 });
+
+export default SearchScreen;

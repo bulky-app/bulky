@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
     backgroundColor: "#F2F4F5",
-    padding: 30,
+    padding: 20,
   },
   container: {
     flex: 0.8,
