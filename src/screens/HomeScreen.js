@@ -75,17 +75,17 @@ export default HomeScreen;
 
 const itemData = [
   {
-    icon: <Image source={require("../images/categories/everdaymeals.png")} />,
+    icon: <Image source={require("../images/categories/everydaymeals.jpg")} />,
     id: 1,
     categoryName: "My Needs",
   },
   {
-    icon: <Image source={require("../images/categories/snacks.png")} />,
+    icon: <Image source={require("../images/categories/snacks.jpg")} />,
     id: 2,
     categoryName: "Snacks",
   },
   {
-    icon: <Image source={require("../images/categories/toiletries.png")} />,
+    icon: <Image source={require("../images/categories/toiletries.jpg")} />,
     id: 3,
     categoryName: "Toiletries",
   },
