@@ -5,7 +5,7 @@ import ProfileCard from "../components/ProfileCard";
 import CategoryCard from "../components/CategoryCard";
 import { useNavigation } from "@react-navigation/native";
 //import StoreContainer from "../components/StoreContainer";
-import { FlatList, Image, ScrollView, Text, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
   const nav = useNavigation();
@@ -78,24 +78,31 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
+const localStyles = StyleSheet.create({
+  image:{
+    height: 90,
+    width: 60
+  }
+})
+
 const itemData = [
   {
-    icon: <Image source={require("../images/categories/everdaymeals.png")} />,
-    id: 1,
-    categoryName: "My Needs",
+    icon: <Image style={localStyles.image} source={require("../images/categories/everydaymeals.jpg")} />,
+    id: "SB7z4wK5Hr",
+    categoryName: "Everyday Meals",
   },
   {
-    icon: <Image source={require("../images/categories/snacks.png")} />,
-    id: 2,
+    icon: <Image style={localStyles.image} source={require("../images/categories/snacks.jpg")} />,
+    id: "UnjwmvHJd3",
     categoryName: "Snacks",
   },
   {
-    icon: <Image source={require("../images/categories/toiletries.png")} />,
-    id: 3,
+    icon: <Image style={localStyles.image} source={require("../images/categories/toiletries.jpg")} />,
+    id: "NM0kWSezrS",
     categoryName: "Toiletries",
   },
   {
-    icon: <Image source={require("../images/categories/busket.png")} />,
+    icon: <Image style={localStyles.image} source={require("../images/categories/busket.png")} />,
     id: "x9pc6rXKFc",
     categoryName: "Bulky bulks",
   },
