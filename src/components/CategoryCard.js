@@ -1,22 +1,25 @@
-import styles from "../globalStyles";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 
 const CategoryCard = ({ item }, nav) => {
   return (
-    <View>
+    <ImageBackground
+      style={gridStyles.item}
+      imageStyle={gridStyles.item.image}
+      source={item.icon}
+    >
       <Pressable
-        style={gridStyles.item}
+        style={gridStyles.press}
         onPress={() => nav.navigate("Shop", item)}
         android_ripple={{
           color: "#E7E7FF",
         }}
       >
-        {item.icon}
         <Text style={gridStyles.item.name}>{item.categoryName}</Text>
       </Pressable>
-    </View>
+    </ImageBackground>
   );
 };
+
 const gridStyles = StyleSheet.create({
   app: {
     flex: 1,
@@ -24,19 +27,27 @@ const gridStyles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
   },
-  item: {
+  press: {
     flex: 1,
-    margin: 10,
     width: 150,
     height: 200,
-    elevation: 1,
-    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: styles.blackWhiteText.color,
+  },
+  item: {
+    margin: 10,
+    elevation: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    image: {
+      borderRadius: 10,
+    },
     name: {
       fontSize: 20,
+      fontSize: 40,
       marginTop: 20,
+      color: "white",
+      fontWeight: "900",
       textAlign: "center",
     },
   },
