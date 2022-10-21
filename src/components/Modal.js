@@ -101,7 +101,7 @@ const TModal = ({ handleModal, modalVisible, name, other }) => {
     const massage = `We have recieved your withdral request of R ${withdrawAmount}. After it has been proccessed you will be left with R 
     ${
       balance - withdrawAmount
-    } in your wallet. If you would like to cancel this withdrawal please reply to this eamil.`;
+    } in your wallet. If you would like to cancel this withdrawal please reply to this email.`;
 
     try {
       await transacton.save();
