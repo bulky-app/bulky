@@ -23,6 +23,7 @@ import { useNavigation } from "@react-navigation/native";
 import { cartTotalPriceSelector } from "../redux/selectors";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToastAndroid } from "react-native";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
@@ -122,7 +123,9 @@ const CartContainer = () => {
     </View>
   );
 };
+
 export default CartContainer;
+
 const LocalStyles = StyleSheet.create({
   storeItem: {
     flexDirection: "row",
@@ -252,7 +255,20 @@ const ListFooterComponent = () => {
 
             <SButton
               text="Checkout"
-              onPress={() => navigation.navigate("Checkout")}
+              onPress={() =>
+                cartTotalPriceSelector < 0
+                  ? () => {
+                      ToastAndroid.showWithGravityAndOffset(
+                        `Please add something to yor cart.`,
+                        ToastAndroid.LONG,
+                        ToastAndroid.TOP,
+                        25,
+                        50
+                      );
+                      return navigation.navigate("Search");
+                    }
+                  : navigation.navigate("Checkout")
+              }
             />
             <View
               style={{
