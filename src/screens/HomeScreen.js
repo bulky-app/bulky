@@ -14,6 +14,28 @@ import everydayImg from "../images/categories/everydaymeals.jpg";
 
 const HomeScreen = () => {
   const nav = useNavigation();
+  const itemData = [
+    {
+      icon: busketImg,
+      id: "x9pc6rXKFc",
+      categoryName: "Bulky bulks",
+    },
+    {
+      icon: everydayImg,
+      id: "SB7z4wK5Hr",
+      categoryName: "Everyday Meals",
+    },
+    {
+      icon: snacksImg,
+      id: "UnjwmvHJd3",
+      categoryName: "Snacks",
+    },
+    {
+      icon: toiletriesImg,
+      id: "NM0kWSezrS",
+      categoryName: "Toiletries",
+    },
+  ];
 
   const [error, seterror] = useState();
   const [user, setUser] = useState("");
@@ -31,6 +53,7 @@ const HomeScreen = () => {
             objectId: user.id,
           });
           setUser(updatedUserDetails.get("name"));
+          console.log("I ran");
           return setWalletBalance(
             updatedUserDetails.get("walletBalance").toFixed(2)
           );
@@ -43,7 +66,8 @@ const HomeScreen = () => {
       }
     };
     currentUser();
-  }, [user]);
+  }),
+    [];
 
   return (
     <ScrollView
@@ -91,26 +115,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const itemData = [
-  {
-    icon: busketImg,
-    id: "x9pc6rXKFc",
-    categoryName: "Bulky bulks",
-  },
-  {
-    icon: everydayImg,
-    id: "SB7z4wK5Hr",
-    categoryName: "Everyday Meals",
-  },
-  {
-    icon: snacksImg,
-    id: "UnjwmvHJd3",
-    categoryName: "Snacks",
-  },
-  {
-    icon: toiletriesImg,
-    id: "NM0kWSezrS",
-    categoryName: "Toiletries",
-  },
-];
