@@ -12,7 +12,7 @@ import snacksImg from "../images/categories/snacks.jpg";
 import toiletriesImg from "../images/categories/toiletries.jpg";
 import everydayImg from "../images/categories/everydaymeals.jpg";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const nav = useNavigation();
 
   const [error, seterror] = useState();
@@ -38,7 +38,6 @@ const HomeScreen = ({ navigation }) => {
           setUser(user.get("name"));
           return setWalletBalance(user.get("walletBalance").toFixed(2));
         }
-        return true;
       } catch (error) {
         return seterror(error);
       }
