@@ -26,6 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const cart = useSelector((state) => state.cart);
 
   // useEffect(() => {
@@ -251,9 +252,7 @@ const ListFooterComponent = () => {
 
             <SButton
               text="Checkout"
-              onPress={() => {
-                // dispatch(checkout());
-              }}
+              onPress={() => navigation.navigate("Checkout")}
             />
             <View
               style={{

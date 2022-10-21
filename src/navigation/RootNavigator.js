@@ -1,4 +1,5 @@
 import Parse from "../../backend/server";
+import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -24,6 +25,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 
 import ShopScreen from "../screens/ShopScreen";
 import ProductDetails from "../screens/ProductDetails";
+import CheckoutScreen from "../screens/CheckoutScreen";
 
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -37,7 +39,7 @@ import Address from "../screens/profile/Address";
 import Account from "../screens/profile/Account";
 import Settings from "../screens/profile/Settings";
 import PaymentScreen from "../screens/profile/PaymentScreen";
-import { StatusBar } from "expo-status-bar";
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -65,6 +67,11 @@ function AllScreens() {
       <Stack.Screen
         name="Shop"
         component={ShopScreen}
+        options={{ headerTintColor: "white" }}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={CheckoutScreen}
         options={{ headerTintColor: "white" }}
       />
       {/* Profile Screen Navigations */}
