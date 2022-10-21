@@ -119,6 +119,15 @@ function Tabs() {
   );
 }
 
+function AdminTabs() {
+  return (
+    <Tab.Navigator screenOptions={optionsStyles}>
+      <Tab.Screen name="History" component={HistoryScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
 function NotLogged() {
   return (
     <Stack.Navigator
@@ -141,6 +150,7 @@ const RootNavigator = () => {
   const routeNameRef = useRef();
   const navigationRef = useNavigationContainerRef();
   const [loggedIn, setLoggedin] = useState(userIsActive);
+  const [isAdmin, setIsAdmin] = useState(false);
   const userIsActive = useSelector((state) => state.user.active);
 
   useEffect(() => {
@@ -149,6 +159,7 @@ const RootNavigator = () => {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
         if (user != null) {
+          setIsAdmin(user.get("isAdmin"));
           setLoggedin(true);
         } else {
           setLoggedin(false);
@@ -181,7 +192,7 @@ const RootNavigator = () => {
         routeNameRef.current = currentRouteName;
       }}
     >
-      {loggedIn ? <AllScreens /> : <NotLogged />}
+      {loggedIn ? !isAdmin ? <AllScreens /> : <AdminTabs /> : <NotLogged />}
       <StatusBar style="dark" />
     </NavigationContainer>
   );
