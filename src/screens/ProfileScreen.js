@@ -1,10 +1,10 @@
 import {
-  ScrollView,
+  View,
+  Text,
   Share,
   StyleSheet,
-  Text,
+  ScrollView,
   TouchableOpacity,
-  View,
 } from "react-native";
 import styles from "../globalStyles";
 import Modal from "../components/Modal";
@@ -39,10 +39,19 @@ const ProfileScreen = () => {
       try {
         await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
         const user = Parse.User.current();
-        setUser(user.get("name"));
         setUserId(user.id);
-        setWalletBalance(user.get("walletBalance").toFixed(2));
-        return true;
+        try {
+          const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
+            objectId: user.id,
+          });
+          setUser(updatedUserDetails.get("name"));
+          return setWalletBalance(
+            updatedUserDetails.get("walletBalance").toFixed(2)
+          );
+        } catch (e) {
+          setUser(user.get("name"));
+          return setWalletBalance(user.get("walletBalance").toFixed(2));
+        }
       } catch (error) {
         return seterror(error);
       }
