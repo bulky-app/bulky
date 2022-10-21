@@ -3,7 +3,7 @@ import Parse from "../../backend/server";
 import { useEffect, useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import CategoryCard from "../components/CategoryCard";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 //import StoreContainer from "../components/StoreContainer";
 import { FlatList, ScrollView, Text, View } from "react-native";
 
@@ -11,6 +11,7 @@ import busketImg from "../images/categories/busket.png";
 import snacksImg from "../images/categories/snacks.jpg";
 import toiletriesImg from "../images/categories/toiletries.jpg";
 import everydayImg from "../images/categories/everydaymeals.jpg";
+import { useCallback } from "react";
 
 const HomeScreen = () => {
   const nav = useNavigation();
@@ -42,32 +43,34 @@ const HomeScreen = () => {
   const [userId, setUserId] = useState("");
   const [walletBalance, setWalletBalance] = useState();
 
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
-        const user = Parse.User.current();
-        setUserId(user.id);
+  const [active, setActive] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      const currentUser = async () => {
         try {
-          const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
-            objectId: user.id,
-          });
-          setUser(updatedUserDetails.get("name"));
-          console.log("I ran");
-          return setWalletBalance(
-            updatedUserDetails.get("walletBalance").toFixed(2)
-          );
-        } catch (e) {
-          setUser(user.get("name"));
-          return setWalletBalance(user.get("walletBalance").toFixed(2));
+          await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+          const user = Parse.User.current();
+          setUserId(user.id);
+          try {
+            const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
+              objectId: user.id,
+            });
+            setUser(updatedUserDetails.get("name"));
+            return setWalletBalance(
+              updatedUserDetails.get("walletBalance").toFixed(2)
+            );
+          } catch (e) {
+            setUser(user.get("name"));
+            return setWalletBalance(user.get("walletBalance").toFixed(2));
+          }
+        } catch (error) {
+          return seterror(error);
         }
-      } catch (error) {
-        return seterror(error);
-      }
-    };
-    currentUser();
-  }),
-    [];
+      };
+      currentUser();
+    }, [active])
+  );
 
   return (
     <ScrollView
