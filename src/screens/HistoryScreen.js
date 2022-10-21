@@ -1,10 +1,11 @@
+import styles from "../globalStyles";
 import Parse from "../../backend/server";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { EmptyHistory } from "../components/EmptyCart";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import OrderHistoryItem from "../components/OrderHistoryItem";
-import styles from "../globalStyles";
 
 function HistoryScreen() {
   const navigation = useNavigation();
@@ -31,6 +32,7 @@ function HistoryScreen() {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={[styles.safeContainer]}>
+      <StatusBar style="light" />
       {history.length > 0 ? history.map((item) =>
         <OrderHistoryItem
           key={item.id}
