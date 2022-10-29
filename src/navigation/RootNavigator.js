@@ -39,6 +39,8 @@ import Address from "../screens/profile/Address";
 import Account from "../screens/profile/Account";
 import Settings from "../screens/profile/Settings";
 import PaymentScreen from "../screens/profile/PaymentScreen";
+import Orders from "../screens/admin/Orders";
+import Requests from "../screens/admin/Requests";
 
 
 const Stack = createStackNavigator();
@@ -129,8 +131,8 @@ function Tabs() {
 function AdminTabs() {
   return (
     <Tab.Navigator screenOptions={optionsStyles}>
-      <Tab.Screen name="History" component={HistoryScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Requests" component={Requests} />
     </Tab.Navigator>
   );
 }
@@ -226,7 +228,14 @@ const optionsStyles = ({ route }) => ({
     } else if (route.name === "Profile") {
       provider = 0;
       iconName = "person-outline";
+    } else if (route.name === "Orders") {
+      provider = 1;
+      iconName = "package";
+    } else if (route.name === "Requests") {
+      provider = 1;
+      iconName = "inbox";
     }
+    
 
     return provider === 1 ? (
       <Feather name={iconName} size={size} color={color} />
