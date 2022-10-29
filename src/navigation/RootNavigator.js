@@ -2,9 +2,11 @@ import Parse from "../../backend/server";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { ToastAndroid, TouchableOpacity } from "react-native";
 
 import {
   NavigationContainer,
+  useNavigation,
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -28,7 +30,9 @@ import ProductDetails from "../screens/ProductDetails";
 import CheckoutScreen from "../screens/CheckoutScreen";
 
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { toggleActive } from "../redux/features/auth";
+import { useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useEffect, useState, useRef } from "react";
 
@@ -39,9 +43,9 @@ import Address from "../screens/profile/Address";
 import Account from "../screens/profile/Account";
 import Settings from "../screens/profile/Settings";
 import PaymentScreen from "../screens/profile/PaymentScreen";
+
 import Orders from "../screens/admin/Orders";
 import Requests from "../screens/admin/Requests";
-
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -129,9 +133,38 @@ function Tabs() {
 }
 
 function AdminTabs() {
+  const nav = useNavigation()
+  const dispatch = useDispatch()
+  const logout = async () => {
+    try {
+      await Parse.User.logOut();
+      ToastAndroid.showWithGravityAndOffset(
+        `Logged out successfully.`,
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+      const keys = ["address", "cart", "userDetails"];
+      await AsyncStorage.multiRemove(keys);
+      dispatch(toggleActive());
+      return nav.navigate("LoginScreen")
+    } catch (error) {
+      () => error;
+    }
+  }
+
   return (
     <Tab.Navigator screenOptions={optionsStyles}>
-      <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Orders" component={Orders} options={{
+        headerRight: () => {
+          return (
+            <TouchableOpacity style={{ marginRight: 20 }} onPress={logout} >
+              <Ionicons name="md-exit-outline" size={24} color="black" />
+            </TouchableOpacity>
+          );
+        },
+      }} />
       <Tab.Screen name="Requests" component={Requests} />
     </Tab.Navigator>
   );
@@ -161,6 +194,9 @@ const RootNavigator = () => {
   const [loggedIn, setLoggedin] = useState(userIsActive);
   const [isAdmin, setIsAdmin] = useState(false);
   const userIsActive = useSelector((state) => state.user.active);
+
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     const isLoggedIn = async () => {
@@ -235,7 +271,7 @@ const optionsStyles = ({ route }) => ({
       provider = 1;
       iconName = "inbox";
     }
-    
+
 
     return provider === 1 ? (
       <Feather name={iconName} size={size} color={color} />
