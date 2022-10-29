@@ -12,6 +12,7 @@ import snacksImg from "../images/categories/snacks.jpg";
 import toiletriesImg from "../images/categories/toiletries.jpg";
 import everydayImg from "../images/categories/everydaymeals.jpg";
 import { useCallback } from "react";
+import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = () => {
   const nav = useNavigation();
@@ -77,6 +78,7 @@ const HomeScreen = () => {
       nestedScrollEnabled={true}
       contentContainerStyle={styles.contentContainer}
     >
+      <StatusBar style="dark"/>
       {user && (
         <View>
           <View>

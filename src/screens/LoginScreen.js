@@ -18,6 +18,7 @@ import loginImage from "../images/loginImg.png";
 import { toggleActive } from "../redux/features/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { doUserPasswordReset, validateEmail } from "../navigation/functions";
+import { StatusBar } from "expo-status-bar";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -127,6 +128,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <StatusBar style="dark"/>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Image

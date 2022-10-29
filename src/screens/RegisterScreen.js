@@ -17,6 +17,7 @@ import SButton from "../components/SButton";
 import loginImage from "../images/registerImg.png";
 import { validateEmail } from "../navigation/functions";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -137,6 +138,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
+      <StatusBar style="dark"/>
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Image
