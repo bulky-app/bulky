@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import ProfileCard, { styless } from "../components/ProfileCard";
 import { Ionicons, Feather, SimpleLineIcons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 const ProfileScreen = () => {
   const nav = useNavigation();
@@ -65,6 +66,7 @@ const ProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
+      <StatusBar style="dark"/>
       {user && (
         <View>
           <View>

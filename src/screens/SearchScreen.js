@@ -16,6 +16,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { InstantSearch } from "react-instantsearch-hooks";
 import { ALGOLIA_ID, ALGOLIA_KEY } from "../../backend/env.vars";
 import { InfiniteHits } from "../components/search/InfiniteList";
+import { StatusBar } from "expo-status-bar";
 
 const searchClient = algoliasearch(ALGOLIA_ID, ALGOLIA_KEY);
 
@@ -65,6 +66,7 @@ const SearchScreen = () => {
 
   return (
     <SafeAreaView style={localStyles.container}>
+      <StatusBar style="dark"/>
       <InstantSearch searchClient={searchClient} indexName="bulky">
         <SearchBox />
         <InfiniteHits />

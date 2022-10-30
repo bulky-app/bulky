@@ -8,10 +8,12 @@ import {
 import SOButton from "../components/SOButton";
 import Image from "../images/welcomeImg.png";
 import { StackActions } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const WelcomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style="light"/>
       <View style={localStyles.container}>
         <ImageBackground
           source={Image}

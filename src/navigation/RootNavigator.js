@@ -259,8 +259,8 @@ const RootNavigator = () => {
         routeNameRef.current = currentRouteName;
       }}
     >
-      {loggedIn ? !isAdmin ? <AllScreens /> : <AdminStack /> : <NotLogged />}
-      <StatusBar style="dark" />
+      {loggedIn ? isAdmin ? <AdminStack /> : <AllScreens /> : <NotLogged />}
+    
     </NavigationContainer>
   );
 };

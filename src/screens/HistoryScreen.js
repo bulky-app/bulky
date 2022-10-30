@@ -32,7 +32,7 @@ function HistoryScreen() {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={[styles.safeContainer]}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       {history.length > 0 ? (
         history.map((item) => (
           <OrderHistoryItem
