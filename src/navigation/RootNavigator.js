@@ -46,6 +46,7 @@ import PaymentScreen from "../screens/profile/PaymentScreen";
 
 import Orders from "../screens/admin/Orders";
 import Requests from "../screens/admin/Requests";
+import OrderDetails from "../screens/admin/OrderDetails";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -132,6 +133,30 @@ function Tabs() {
   );
 }
 
+const AdminStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: styles.purpleText.color,
+          shadowColor: styles.purpleText.color,
+        },
+      }}
+    >
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Tabs"
+        component={AdminTabs}
+      />
+      <Stack.Screen
+        name="Order Details"
+        component={OrderDetails}
+        options={{ headerTintColor: "white" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function AdminTabs() {
   const nav = useNavigation()
   const dispatch = useDispatch()
@@ -195,9 +220,6 @@ const RootNavigator = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const userIsActive = useSelector((state) => state.user.active);
 
-  const dispatch = useDispatch();
-
-
   useEffect(() => {
     const isLoggedIn = async () => {
       try {
@@ -237,7 +259,7 @@ const RootNavigator = () => {
         routeNameRef.current = currentRouteName;
       }}
     >
-      {loggedIn ? !isAdmin ? <AllScreens /> : <AdminTabs /> : <NotLogged />}
+      {loggedIn ? !isAdmin ? <AllScreens /> : <AdminStack /> : <NotLogged />}
       <StatusBar style="dark" />
     </NavigationContainer>
   );

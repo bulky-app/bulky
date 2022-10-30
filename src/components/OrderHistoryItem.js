@@ -1,8 +1,9 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { copyToClipboard, styless } from "./ProfileCard";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const OrderHistoryItem = ({ date, id, status }) => {
+const OrderHistoryItem = ({ date, id, status, total, quantity }) => {
   let textStyle = "";
   if (status.toLowerCase() === "awaiting delivery") {
     textStyle = localStyles.awaitting;
@@ -36,8 +37,8 @@ const OrderHistoryItem = ({ date, id, status }) => {
           <Text style={[localStyles.container.middle.text, textStyle]}>
             {status}
           </Text>
-          <Text style={[localStyles.container.middle.text]}>R 255</Text>
-          <Text style={[localStyles.container.middle.text]}>15</Text>
+          <Text style={[localStyles.container.middle.text]}>R {total.toFixed(2)}</Text>
+          <Text style={[localStyles.container.middle.text]}>{quantity}</Text>
         </View>
       </View>
       <TouchableOpacity style={localStyles.container.outer}>
@@ -108,3 +109,53 @@ const localStyles = StyleSheet.create({
   clip: { margin: 0, padding: 0 },
   group: { flexDirection: "row" },
 });
+
+
+const OrderHistoryItemAdmin = ({ date, id, status, total, quantity, data }) => {
+  const nav = useNavigation();
+
+  let textStyle = "";
+  if (status.toLowerCase() === "awaiting delivery") {
+    textStyle = localStyles.awaitting;
+  } else if (status.toLowerCase() === "paid") {
+    textStyle = localStyles.paid;
+  } else {
+    textStyle = localStyles.delivered;
+  }
+  date = date.toString().substring(4, 21);
+  return (
+    <View style={localStyles.container}>
+      <View style={localStyles.container.outer}>
+        <Feather name="box" size={24} color="black" />
+      </View>
+      <View style={localStyles.container.middle}>
+        <Text style={localStyles.idCover}>
+          Order ID:{" "}
+          <TouchableOpacity
+            onPress={() => copyToClipboard(id)}
+            activeOpacity={0.5}
+            style={localStyles.clip}
+          >
+            <Text style={localStyles.id}>
+              {`${id.toUpperCase()} `}
+              <Ionicons name="copy-outline" size={12} color="black" />
+            </Text>
+          </TouchableOpacity>
+        </Text>
+        <Text style={localStyles.container.middle.text}>{date.toString()}</Text>
+        <View style={localStyles.group}>
+          <Text style={[localStyles.container.middle.text, textStyle]}>
+            {status}
+          </Text>
+          <Text style={[localStyles.container.middle.text]}>R {total.toFixed(2)}</Text>
+          <Text style={[localStyles.container.middle.text]}>{quantity}</Text>
+        </View>
+      </View>
+      <TouchableOpacity onPress={() => nav.navigate("Order Details", data)} style={localStyles.container.outer}>
+        <Ionicons name="chevron-forward-sharp" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export { OrderHistoryItemAdmin };

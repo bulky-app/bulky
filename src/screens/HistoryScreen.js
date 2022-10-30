@@ -36,11 +36,13 @@ function HistoryScreen() {
       {history.length > 0 ? (
         history.map((item) => (
           <OrderHistoryItem
-            key={item.id}
-            amount={item.get("totalPrice")}
-            date={item.get("createdAt")}
-            status={item.get("orderStatus")}
             id={item.id}
+            key={item.id}
+            date={item.get("createdAt")}
+            total={item.get('totalPrice')}
+            quantity={item.get("quantity")}
+            amount={item.get("totalPrice")}
+            status={item.get("orderStatus")}
           />
         ))
       ) : (
