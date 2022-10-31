@@ -12,6 +12,8 @@ web-build/
 
 # macOS
 .DS_Store
-backend/env.vars.js
 .vscode/launch.json
+app.json
+eas.json
 google-services.json
+backend/env.vars.js

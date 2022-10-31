@@ -33,7 +33,8 @@
         "RECEIVE_BOOT_COMPLETED",
         "SCHEDULE_EXACT_ALARM"
       ],
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.bulky.app"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -46,6 +47,11 @@
           "messagingSenderId": "145509535320",
           "appId": "1:145509535320:web:5fc4bb3e1bd467f990042d"
         }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dd5df2a9-8fe7-4e04-b66b-e81b5b335d8b"
       }
     }
   }
