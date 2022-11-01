@@ -74,6 +74,7 @@ const Requests = () => {
                         onRefresh={() => setSaved(prev => prev + 1)}
                     />
                 }
+                ListEmptyComponent={<Text style={localStyle.emptyText}>No new massages at this moment</Text>}
             />
         </View>
     );
@@ -120,7 +121,6 @@ const ListItem = ({ data, update }) => {
     )
 }
 
-
 const localStyle = StyleSheet.create({
     card: {
         flex: 1,
@@ -148,6 +148,12 @@ const localStyle = StyleSheet.create({
                 }
             }
         }
+    },
+    emptyText:{
+        fontSize: 20,
+        marginTop: 20,
+        fontWeight: "700",
+        textAlign: "center",
     }
 })
 

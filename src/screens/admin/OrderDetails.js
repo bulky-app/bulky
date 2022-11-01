@@ -248,7 +248,7 @@ const OrderDetails = ({ route }) => {
 
                 </View>
                 <View style={localStyles.container.btn}>
-                    <LoadingButton text="Directions" onPress={() => handleGetUpdate()} />
+                    <LoadingButton text="Update Order" onPress={() => handleGetUpdate()} />
                 </View>
             </View>}
         </SafeAreaView>
