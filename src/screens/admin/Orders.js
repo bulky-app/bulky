@@ -25,12 +25,14 @@ const Orders = () => {
                 const orders2 = new Parse.Query("orders");
                 orders.equalTo("orderStatus", "Paid");
                 orders2.equalTo("orderStatus", "Awaiting Delivery");
-                const query = Parse.Query.or(orders, orders2);
+                orders3.equalTo("orderStatus", "Awaiting Payment");
+                const query = Parse.Query.or(orders, orders2, orders3);
                 try {
                     const response = await query.find()
                     setData(response)
                     return setLoading(false)
                 } catch (error) {
+                    console.log(error)
                     ToastAndroid.showWithGravity(
                         "Failed getting orders.",
                         ToastAndroid.SHORT,
@@ -49,7 +51,7 @@ const Orders = () => {
                 setCount(prev => prev + 1)
         }, 3000);
         return () => {
-            if (count < 3) clearTimeout(timer);
+            if (count > 3) clearTimeout(timer);
             return
         };
 
