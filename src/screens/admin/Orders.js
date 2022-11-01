@@ -1,82 +1,79 @@
-import { Text, Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Parse from "../../../backend/server";
-import { useState, useCallback } from "react";
-import { ScrollView } from "react-native-gesture-handler";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList } from "react-native-gesture-handler";
+import { useState, useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { OrderHistoryItemAdmin } from "../../components/OrderHistoryItem";
-import { ToastAndroid } from "react-native";
-import { ActivityIndicator } from "react-native";
-import styles from "../../globalStyles";
-import { useEffect } from "react";
+import { RefreshControl, Text, ToastAndroid, View, StyleSheet } from "react-native";
 
 const Orders = () => {
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true)
-    const isFocused = useIsFocused();
-    const [count, setCount] = useState(0)
+    const [data, setData] = useState();
+    const [saved, setSaved] = useState(0)
+    const [refreshing, setRefershing] = useState(false)
 
-    useFocusEffect(
-        useCallback(() => {
-            setLoading(true)
-            const getOrders = async () => {
-                const orders = new Parse.Query("orders");
-                const orders2 = new Parse.Query("orders");
-                orders.equalTo("orderStatus", "Paid");
-                orders2.equalTo("orderStatus", "Awaiting Delivery");
-                orders3.equalTo("orderStatus", "Awaiting Payment");
-                const query = Parse.Query.or(orders, orders2, orders3);
-                try {
-                    const response = await query.find()
-                    setData(response)
-                    return setLoading(false)
-                } catch (error) {
-                    console.log(error)
-                    ToastAndroid.showWithGravity(
-                        "Failed getting orders.",
-                        ToastAndroid.SHORT,
-                        ToastAndroid.CENTER
-                    )
-                }
-            }
-            return () => { getOrders(); setLoading(false) }
-        }, [isFocused])
-    );
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(loading)
-            console.log("Ran time out"),
-                setCount(prev => prev + 1)
-        }, 3000);
-        return () => {
-            if (count > 3) clearTimeout(timer);
-            return
-        };
+    async function fetchData() {
+        const orders = new Parse.Query("orders");
+        const orders2 = new Parse.Query("orders");
+        const orders3 = new Parse.Query("orders");
+        orders.equalTo("orderStatus", "Paid");
+        orders2.equalTo("orderStatus", "Awaiting Delivery");
+        orders3.equalTo("orderStatus", "Awaiting Payment");
+        const query = Parse.Query.or(orders, orders2, orders3);
+        try {
+            const response = await query.find()
+            setData(response)
+            return setRefershing(false)
+        } catch (error) {
+            console.log(error); setRefershing(false)
+            ToastAndroid.showWithGravity(
+                "Failed getting orders.",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+            )
+        }
+    }
 
-    }, []);
+    useFocusEffect(useCallback(
+        () => {
+            fetchData()
+        }, [saved])
+    )
 
     return (
-        <SafeAreaView>
+        <View>
             <StatusBar style="dark" />
-            <ScrollView>
-                { data.length > 0 ?
-                    data.map(item =>
-                        <OrderHistoryItemAdmin
-                            id={item.id}
-                            data={item}
-                            key={item.id}
-                            date={item.get("createdAt")}
-                            total={item.get('totalPrice')}
-                            quantity={item.get("quantity")}
-                            status={item.get("orderStatus")}
-                        />
-                    )
-                    :
-                    <Text>No orders</Text>}
-            </ScrollView>
-        </SafeAreaView>
+            <FlatList
+                data={data}
+                renderItem={({ item }) => <OrderHistoryItemAdmin
+                    id={item.id}
+                    data={item}
+                    key={item.id}
+                    date={item.get("createdAt")}
+                    total={item.get('totalPrice')}
+                    quantity={item.get("quantity")}
+                    status={item.get("orderStatus")}
+                />}
+                keyExtractor={item => item.id}
+                refreshControl={
+                    <RefreshControl
+                        enabled={true}
+                        refreshing={refreshing}
+                        onRefresh={() => setSaved(prev => prev + 1)}
+                    />
+                }
+                ListEmptyComponent={<Text style={localStyle.emptyText}>No orders at this moment</Text>}
+            />
+        </View>
     );
 };
 export default Orders;
+
+const localStyle = StyleSheet.create({
+    emptyText: {
+        fontSize: 20,
+        marginTop: 20,
+        fontWeight: "700",
+        textAlign: "center",
+    }
+})

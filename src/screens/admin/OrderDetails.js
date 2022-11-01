@@ -60,7 +60,7 @@ const OrderDetails = ({ route }) => {
                 const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
                     objectId
                 });
-                setName(`${updatedUserDetails.get("name")} ${updatedUserDetails.get("surname")}`)
+                setName(`${updatedUserDetails.get("name")} ${updatedUserDetails.get("surname") ? updatedUserDetails.get("surname") : " "}`)
                 setEmail(updatedUserDetails.get("email"))
                 setPhone(updatedUserDetails.get("phone"))
                 setAddress({
@@ -70,7 +70,7 @@ const OrderDetails = ({ route }) => {
                     resName: queryResult[0].get("resName")
                 })
             } catch (error) {
-                console.log(`Get user Address${error}`);
+                return
             }
         }
 
