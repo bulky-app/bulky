@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import styles from "../globalStyles";
 import { Keyboard } from "react-native";
 import Parse from "../../backend/server";
@@ -6,15 +5,15 @@ import SInput from "../components/SInput";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
 import { useState, useCallback } from "react";
+import LoadingButton from "../components/SButton";
 import { sendEmail } from "../navigation/functions";
 import { clear } from "../redux/features/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CachedImage from "react-native-expo-cached-image";
+import { cartTotalPriceSelector } from "../redux/selectors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LoadingButton, { CartButton } from "../components/SButton";
-import { StyleSheet, Text, View, ToastAndroid } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { cartTotalPriceSelector, cartTotalSelector } from "../redux/selectors";
+import { StyleSheet, Text, View, ToastAndroid, Alert } from "react-native";
 import { ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const CheckoutScreen = () => {
@@ -42,8 +41,8 @@ const CheckoutScreen = () => {
         const name = user.get("name")
         const currentMonth = new Date().getMonth() + 1;
 
-        const total = delivery + totalPrice - discount
-        const credit = balance - (delivery + totalPrice - discount)
+        const total = totalPrice + delivery - discount
+        const credit = balance - total
         const order = new Parse.Object("orders");
         order.set("items", cart)
         order.set("userID", user);
@@ -51,7 +50,7 @@ const CheckoutScreen = () => {
         order.set("totalPrice", total);
         order.set("quantity", quantity);
         order.set("discountValue", discount)
-        if (balance - (delivery + discount + totalPrice) < 0) {
+        if (credit < 0) {
             order.set("orderStatus", "Awaiting Payment");
         } else {
             order.set("orderStatus", "Paid");
@@ -61,7 +60,7 @@ const CheckoutScreen = () => {
         try {
             const result = await order.save()
             //Send confirmation Email
-            if (balance - (delivery + discount + totalPrice) < 0) {
+            if (credit < 0) {
                 const massage = `We have recieved your order (${result.id}), however you did not have enough balance. Please make a diposit of R 
                 ${credit.toFixed(2)} for you order to be processed by the 28th of ${currentMonth}`
                 sendEmail(email, name, massage)
@@ -71,7 +70,7 @@ const CheckoutScreen = () => {
             }
 
             //Update user balance
-            await Parse.Cloud.run('depleteUserBalance', { credit, balance, objectId: userId });
+            await Parse.Cloud.run('depleteUserBalance', { balance: credit, objectId: userId });
 
             //Save cart items
             try {
@@ -184,7 +183,7 @@ const CheckoutScreen = () => {
     return (
         <SafeAreaView>
             <StatusBar style="light" />
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     {/* {Cart summary} */}
                     <View style={localStyles.card}>
@@ -254,7 +253,7 @@ const CheckoutScreen = () => {
                         />
                         <Text style={localStyles.card.smallText}>Please wait few second after input well hanlde the rest.</Text>
                     </View>
-                    {/* {Discount details} */}
+                    {/* {Invoive details} */}
                     <View style={localStyles.card}>
                         <Text style={localStyles.card.cart.head}>Invoice </Text>
                         <View>
@@ -268,13 +267,13 @@ const CheckoutScreen = () => {
                                 Discount: {`R ${discount.toFixed(2)}`}
                             </Text>
                             <Text style={localStyles.card.invoice.text}>
-                                VAT (15%): {totalPrice * 15 / 100}
+                                VAT (15%): {(totalPrice * 15 / 100).toFixed(2)}
                             </Text>
                             <Text style={localStyles.card.invoice.text}>
-                                Delivery: R15.00
+                                Delivery: {`R ${delivery.toFixed(2)}`}
                             </Text>
                             <Text style={[localStyles.card.invoice.text, localStyles.card.invoice.bold]}>
-                                Total: {`R ${(totalPrice + 15 - discount).toFixed(2)}`}
+                                Total: {`R ${(totalPrice + delivery - discount).toFixed(2)}`}
                             </Text>
                             <Text style={[localStyles.card.invoice.text, localStyles.card.invoice.purple]}>
                                 You are saving: {`R ${(10 + discount + (totalPrice * 10 / 100)).toFixed(2)}`}
