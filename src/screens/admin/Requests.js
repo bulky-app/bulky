@@ -9,7 +9,6 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { StyleSheet, Text, View, RefreshControl, ToastAndroid } from "react-native";
 
 const Requests = () => {
-
     const [data, setData] = useState();
     const [saved, setSaved] = useState(0)
     const [refreshing, setRefershing] = useState(false)
@@ -72,10 +71,9 @@ const Requests = () => {
                     <RefreshControl
                         enabled={true}
                         refreshing={refreshing}
-                        onRefresh={onRefresh}
+                        onRefresh={() => setSaved(prev => prev + 1)}
                     />
                 }
-
             />
         </View>
     );
