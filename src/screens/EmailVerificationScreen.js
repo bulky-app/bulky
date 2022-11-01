@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import LoadingButton from "../components/SButton";
@@ -9,40 +8,41 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const EmailVerificationScreen = ({ navigation, route }) => {
   const { email } = route.params;
-  const [verified, setVerified] = useState(false);
 
   const doUserQuery = async function () {
     const parseQuery = new Parse.Query(Parse.User);
     parseQuery.equalTo("email", email.toLowerCase());
-    parseQuery.equalTo("emailVerified", false);
-    return await parseQuery
-      .find()
-      .then(async (queriedUsers) => {
-        return typeof queriedUsers === "object"
-          ? setVerified(queriedUsers[0].get("emailVerified"))
-          : setVerified(false);
-      })
-      .catch((error) => {
-        return ToastAndroid.showWithGravityAndOffset(
-          "Some error occured!",
+    try {
+      const queriedUsers = await parseQuery.find();
+      const isVerified = queriedUsers[0].get("emailVerified");
+      if (isVerified) {
+        ToastAndroid.showWithGravityAndOffset(
+          "Thank you for email verification.",
           ToastAndroid.LONG,
           ToastAndroid.TOP,
           25,
           50
         );
-      });
+        return navigation.navigate("LoginScreen", email);
+      }
+      return ToastAndroid.showWithGravityAndOffset(
+        "Email not verified!",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
+    catch (error) {
+      return ToastAndroid.showWithGravityAndOffset(
+        "Some error occured!",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    };
   };
-
-  if (verified === true) {
-    navigation.navigate("LoginScreen", email);
-    return ToastAndroid.showWithGravityAndOffset(
-      "Thank you for email verification.",
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-      25,
-      50
-    );
-  }
 
   return (
     <SafeAreaView style={styles.safeContainer}>
