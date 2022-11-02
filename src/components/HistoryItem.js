@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
 import styles from "../globalStyles";
+import { View, Text, StyleSheet } from "react-native";
 
 const HistoryItem = ({ amount, date, type, status }) => {
   return (
@@ -32,7 +32,7 @@ const HistoryItem = ({ amount, date, type, status }) => {
             status.toLowerCase() === "processed" && { color: "green" },
           ]}
         >
-          R {amount}
+          R {amount.toFixed(2)}
         </Text>
       </View>
       <View style={localStyles.divider}></View>
