@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import styles from "../globalStyles";
 import Modal from "../components/Modal";
@@ -72,7 +73,7 @@ const ProfileScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
       <StatusBar style="dark" />
-      {user && (
+      {user ? (
         <View>
           <View>
             <ProfileCard
@@ -82,7 +83,7 @@ const ProfileScreen = () => {
             />
           </View>
         </View>
-      )}
+      ) : <ActivityIndicator />}
 
       <View
         style={[localStyles.optionsCard, styless.profileCard.boxWithShadow]}
