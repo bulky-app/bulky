@@ -53,7 +53,9 @@ const Orders = () => {
                     total={item.get('totalPrice')}
                     quantity={item.get("quantity")}
                     status={item.get("orderStatus")}
-                />}
+                    showsVerticalScrollIndicator ={false}
+                />
+            }
                 keyExtractor={item => item.id}
                 refreshControl={
                     <RefreshControl

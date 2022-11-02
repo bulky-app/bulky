@@ -74,6 +74,7 @@ const Requests = () => {
                         onRefresh={() => setSaved(prev => prev + 1)}
                     />
                 }
+                showsVerticalScrollIndicator ={false}
                 ListEmptyComponent={<Text style={localStyle.emptyText}>No new massages at this moment</Text>}
             />
         </View>

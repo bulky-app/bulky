@@ -90,6 +90,7 @@ const ProductDetails = ({ route }) => {
         renderItem={(item) => Product(item, dispatch, nav)}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => <View style={{ height: 150 }} />}
+        showsVerticalScrollIndicator ={false}
       />
     </SafeAreaView>
   );

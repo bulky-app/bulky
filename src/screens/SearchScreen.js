@@ -86,6 +86,7 @@ const SearchScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}
                 alwaysBounceHorizontal={true}
+                showsVerticalScrollIndicator ={false}
               />
             </View>
           </TouchableWithoutFeedback>

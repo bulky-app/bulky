@@ -119,6 +119,7 @@ const CartContainer = () => {
         renderItem={renderStoreItems}
         keyExtractor={(item) => item.id}
         ListFooterComponent={ListFooterComponent}
+        showsVerticalScrollIndicator ={false}
       />
     </View>
   );

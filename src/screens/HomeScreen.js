@@ -109,6 +109,7 @@ const HomeScreen = () => {
                 numColumns={2}
                 renderItem={(item) => CategoryCard(item, nav)}
                 keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator ={false}
               />
             </ScrollView>
             {/* <StoreContainer nav={navigation} /> */}
