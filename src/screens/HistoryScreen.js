@@ -1,54 +1,68 @@
 import styles from "../globalStyles";
-import React, { useState } from "react";
 import Parse from "../../backend/server";
 import { StatusBar } from "expo-status-bar";
+import { RefreshControl, View } from "react-native";
+import React, { useCallback, useState } from "react";
 import { EmptyHistory } from "../components/EmptyCart";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import OrderHistoryItem from "../components/OrderHistoryItem";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 function HistoryScreen() {
   const navigation = useNavigation();
-  const [history, setHistory] = useState([]);
-  const [active, setActive] = useState(false);
+  const [data, setData] = useState();
+  const [saved, setSaved] = useState(0)
+  const [refreshing, setRefershing] = useState(false)
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const userHistoryGet = async () => {
-        try {
-          await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
-          const user = Parse.User.current();
-          const query = new Parse.Query("orders");
-          query.contains("userID", user.id); //filter for current user only
-          const queryResult = await query.find();
-          return setHistory(queryResult);
-        } catch (error) {
-          return error;
-        }
-      };
-      return () => userHistoryGet();
-    }, [])
-  );
+  async function fetchData() {
+    setRefershing(true)
+    try {
+      await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+      const user = Parse.User.current();
+      const query = new Parse.Query("orders");
+      query.contains("userID", user.id); //filter for current user only
+      const queryResult = await query.find();
+      setRefershing(false)
+      return setData(queryResult);
+    } catch (error) {
+      setRefershing(false)
+      return error;
+    }
+  }
 
+  useFocusEffect(useCallback(
+    () => {
+      fetchData()
+    },
+    [saved],
+  )
+  )
   return (
-    <ScrollView nestedScrollEnabled={true} style={[styles.safeContainer]}>
+    <View style={[styles.safeContainer]}>
       <StatusBar style="dark" />
-      {history.length > 0 ? (
-        history.map((item) => (
-          <OrderHistoryItem
-            id={item.id}
-            key={item.id}
-            date={item.get("createdAt")}
-            total={item.get('totalPrice')}
-            quantity={item.get("quantity")}
-            amount={item.get("totalPrice")}
-            status={item.get("orderStatus")}
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <OrderHistoryItem
+          id={item.id}
+          key={item.id}
+          date={item.get("createdAt")}
+          total={item.get('totalPrice')}
+          quantity={item.get("quantity")}
+          amount={item.get("totalPrice")}
+          status={item.get("orderStatus")}
+        />}
+        keyExtractor={item => item.id}
+        refreshControl={
+          <RefreshControl
+            enabled={true}
+            refreshing={refreshing}
+            onRefresh={() => setSaved(prev => prev + 1)}
           />
-        ))
-      ) : (
-        <EmptyHistory onClick={() => navigation.navigate("Home")} />
-      )}
-    </ScrollView>
+        }
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<EmptyHistory onClick={() => navigation.navigate("Home")} />}
+      />
+    </View>
   );
 }
 
