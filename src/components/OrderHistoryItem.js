@@ -106,6 +106,13 @@ const localStyles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
+  payment: {
+    backgroundColor: "#ed9595",
+    color: "red",
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
   clip: { margin: 0, padding: 0 },
   group: { flexDirection: "row" },
 });
@@ -114,15 +121,19 @@ const localStyles = StyleSheet.create({
 const OrderHistoryItemAdmin = ({ date, id, status, total, quantity, data }) => {
   const nav = useNavigation();
 
-  let textStyle = "";
+  let textStyle;
   if (status.toLowerCase() === "awaiting delivery") {
     textStyle = localStyles.awaitting;
   } else if (status.toLowerCase() === "paid") {
     textStyle = localStyles.paid;
-  } else {
+  } else if (status.toLowerCase() === "awaiting payment") {
+    textStyle = localStyles.payment;
+  } else if (status.toLowerCase() === "delivered"){
     textStyle = localStyles.delivered;
   }
+
   date = date.toString().substring(4, 21);
+  
   return (
     <View style={localStyles.container}>
       <View style={localStyles.container.outer}>
