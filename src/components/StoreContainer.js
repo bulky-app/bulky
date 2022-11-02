@@ -1,11 +1,12 @@
 import Product from "./Product";
-import { Text } from "react-native";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
 import { View, FlatList } from "react-native";
+import { Text, ToastAndroid } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StoreContainer = ({ category, name }) => {
   const dispatch = useDispatch();
@@ -16,17 +17,39 @@ const StoreContainer = ({ category, name }) => {
   async function fetchProducts() {
     const query = new Parse.Query("products");
     query.contains("productCategory", category.length > 3 ? category : "");
+
     try {
+      //When network available 
       const queryResult = await query.find();
-      setData(queryResult);
+
+      //Convert Parse object to stting
+      const jsonValue = JSON.stringify(queryResult);
+      const products = JSON.parse(jsonValue)
+      setData(products);
+
+      //Caching
+      await AsyncStorage.setItem(category, jsonValue);
+
     } catch (error) {
-      return error;
+      //Getting data from cache
+      const queryResult = JSON.parse(await AsyncStorage.getItem(category));
+      setData(queryResult);
+
+      //Alert the user
+      return ToastAndroid.showWithGravityAndOffset(
+        "No internet connection.",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
     }
   }
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
 
   const StoreItems = ({ nav }) => {
     return (

@@ -5,21 +5,22 @@ import CachedImage from "react-native-expo-cached-image";
 import { View, Text, StyleSheet, Pressable, ToastAndroid } from "react-native";
 
 const Product = ({ item }, dispatch, nav) => {
-  const { id } = item;
-  const name = item.get("productName");
-  const price = item.get("productPrice");
-  const pic = item.get("productPicture").url();
-  const currentOrders = item.get("currentOrders");
-  const poductDesc = item.get("poductDesc");
-  const category = item.get("productCategory");
-  const productCategory = category.id;
+
+  const id = item.objectId;
+  const name = item.productName
+  const price = item.productPrice
+
+  const { url } = item.productPicture;
+  const currentOrders = item.currentOrders
+  const poductDesc = item.poductDesc
+  const productCategory = item.productCategory.objectId
 
   const detailsData = {
     objectId: id,
     productName: name,
     productPrice: price,
     productCategory,
-    url: pic,
+    url,
     currentOrders,
     poductDesc,
   };
@@ -50,7 +51,7 @@ const Product = ({ item }, dispatch, nav) => {
             alignSelf: "center",
             marginBottom: 10,
           }}
-          source={{ uri: item.get("productPicture").url() }}
+          source={{ uri: url }}
         />
         <View>
           <Text
@@ -63,7 +64,7 @@ const Product = ({ item }, dispatch, nav) => {
               },
             ]}
           >
-            R {item.get("productPrice").toFixed(2)}
+            R {price.toFixed(2)}
           </Text>
           <Text
             style={[
@@ -71,7 +72,7 @@ const Product = ({ item }, dispatch, nav) => {
               { textAlign: "center", marginTop: 5 },
             ]}
           >
-            {item.get("productName")}
+            {name}
           </Text>
         </View>
         <View style={gridStyles.itemData.buttonWrapper}>
@@ -80,7 +81,7 @@ const Product = ({ item }, dispatch, nav) => {
             onPress={() => {
               const item = {
                 category: productCategory,
-                image: pic,
+                image: url,
                 title: name,
                 price,
                 id: id,

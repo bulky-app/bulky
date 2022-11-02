@@ -13,8 +13,6 @@ import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 
 const ProductDetails = ({ route }) => {
   const item = route.params;
-
-  //return console.log(item)
   const nav = useNavigation();
   const dispatch = useDispatch();
 
@@ -34,7 +32,9 @@ const ProductDetails = ({ route }) => {
     //query.ascending("productPrice", price);
     try {
       const queryResult = await query.find();
-      setRelated(queryResult);
+      const jsonValue = JSON.stringify(queryResult);
+      const products = JSON.parse(jsonValue)
+      setRelated(products);
     } catch (error) {
       return error;
     }
@@ -90,7 +90,7 @@ const ProductDetails = ({ route }) => {
         renderItem={(item) => Product(item, dispatch, nav)}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => <View style={{ height: 150 }} />}
-        showsVerticalScrollIndicator ={false}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
