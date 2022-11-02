@@ -1,12 +1,13 @@
 import Product from "./Product";
+import { Text } from "react-native";
+import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
 import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
 
-const StoreContainer = ({ category }) => {
+const StoreContainer = ({ category, name }) => {
   const dispatch = useDispatch();
 
   const nav = useNavigation();
@@ -29,24 +30,30 @@ const StoreContainer = ({ category }) => {
 
   const StoreItems = ({ nav }) => {
     return (
-      <ScrollView nestedScrollEnabled={true}>
-        {data && (
-          <FlatList
-            data={data}
-            numColumns={2}
-            renderItem={(item) => Product(item, dispatch, nav)}
-            keyExtractor={(item) => item.id}
-            ListFooterComponent={() => <View style={{ height: 10 }} />}
-          />
-        )}
-      </ScrollView>
+      <FlatList
+        data={data}
+        numColumns={2}
+        stickyHeaderIndices={[0]}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        renderItem={(item) => Product(item, dispatch, nav)}
+        ListFooterComponent={() => <View style={{ height: 10 }} />}
+        ListHeaderComponent={() => <Text style={headText}>{name}</Text>}
+      />
     );
   };
   return (
-    <View>
-      <StoreItems nav={nav} />
-    </View>
+    <StoreItems nav={nav} />
   );
 };
 
 export default StoreContainer;
+
+const headText = {
+  fontSize: 20,
+  fontWeight: "700",
+  paddingVertical: 15,
+  textAlign: "center",
+  paddingHorizontal: 5,
+  backgroundColor: styles.safeContainer.backgroundColor,
+}
