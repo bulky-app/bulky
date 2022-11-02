@@ -1,23 +1,25 @@
 import {
   Text,
   View,
+  Image,
+  Linking,
   Keyboard,
   Pressable,
   ToastAndroid,
+  TouchableOpacity,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from "react-native";
 import { useState } from "react";
-import { Image } from "react-native";
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
 import SInput from "../components/SInput";
+import { StatusBar } from "expo-status-bar";
 import { CheckBox } from "react-native-btr";
 import SButton from "../components/SButton";
 import loginImage from "../images/registerImg.png";
 import { validateEmail } from "../navigation/functions";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -138,7 +140,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
-      <StatusBar style="dark"/>
+      <StatusBar style="dark" />
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Image
@@ -203,11 +205,11 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={[styles.greyText, { marginLeft: 5 }]}>
                   I agree to
                 </Text>
-                <Pressable>
+                <TouchableOpacity onPress={async () => await Linking.openURL("https://bulky.b4a.app/terms")}>
                   <Text style={[styles.purpleText, { marginLeft: -7 }]}>
                     Ts & Cs
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </Pressable>
               <SButton
                 text="Sign Up"
