@@ -1,21 +1,22 @@
 import styles from "../globalStyles";
 import Parse from "../../backend/server";
-import { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { useState, useCallback } from "react";
 import ProfileCard from "../components/ProfileCard";
 import CategoryCard from "../components/CategoryCard";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-//import StoreContainer from "../components/StoreContainer";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { FlatList, ScrollView, Text, ToastAndroid, View } from "react-native";
+import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 
-import busketImg from "../images/categories/busket.png";
+import busketImg from "../images/categories/busket.jpg";
 import snacksImg from "../images/categories/snacks.jpg";
 import toiletriesImg from "../images/categories/toiletries.jpg";
 import everydayImg from "../images/categories/everydaymeals.jpg";
-import { useCallback } from "react";
-import { StatusBar } from "expo-status-bar";
+
 
 const HomeScreen = () => {
   const nav = useNavigation();
+  const active = useIsFocused();
+
   const itemData = [
     {
       icon: busketImg,
@@ -39,12 +40,9 @@ const HomeScreen = () => {
     },
   ];
 
-  const [error, seterror] = useState();
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
   const [walletBalance, setWalletBalance] = useState();
-
-  const [active, setActive] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -66,7 +64,14 @@ const HomeScreen = () => {
             return setWalletBalance(user.get("walletBalance").toFixed(2));
           }
         } catch (error) {
-          return seterror(error);
+          ToastAndroid.showWithGravityAndOffset(
+            "Error. Please restart the app.",
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER,
+            50,
+            25
+          )
+          return error;
         }
       };
       currentUser();
@@ -78,7 +83,7 @@ const HomeScreen = () => {
       nestedScrollEnabled={true}
       contentContainerStyle={styles.contentContainer}
     >
-      <StatusBar style="dark"/>
+      <StatusBar style="dark" />
       {user && (
         <View>
           <View>
@@ -103,16 +108,13 @@ const HomeScreen = () => {
               paddingHorizontal: 10,
             }}
           >
-            <ScrollView nestedScrollEnabled={true}>
-              <FlatList
-                data={itemData}
-                numColumns={2}
-                renderItem={(item) => CategoryCard(item, nav)}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator ={false}
-              />
-            </ScrollView>
-            {/* <StoreContainer nav={navigation} /> */}
+            <FlatList
+              data={itemData}
+              numColumns={2}
+              renderItem={(item) => CategoryCard(item, nav)}
+              keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
         </View>
       )}
