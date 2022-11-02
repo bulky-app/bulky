@@ -1,11 +1,11 @@
 import {
-  Alert,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  Alert,
+  Image,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import {
   increment,
@@ -14,40 +14,19 @@ import {
   removeItem,
 } from "../redux/features/cartSlice";
 import SButton from "./SButton";
-import { useEffect } from "react";
 import styles from "../globalStyles";
 import { EmptyCart } from "./EmptyCart";
+import { ToastAndroid } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { cartTotalPriceSelector } from "../redux/selectors";
-import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ToastAndroid } from "react-native";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const cart = useSelector((state) => state.cart);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     const storeData = async () => {
-  //       try {
-  //         const jsonValue = JSON.stringify(cart);
-  //         await AsyncStorage.setItem("cart", jsonValue);
-  //         console.log("Saved cart");
-  //       } catch (e) {
-  //         console.log("Cart err: " + e);
-  //       }
-  //     };
-  //     storeData();
-  //   }, 10000);
 
-  //   return () => clearInterval(intervalId);
-  // }, [useState]);
-
-  //Items in the cart
   const renderStoreItems = ({ item }) => {
     return (
       <View style={LocalStyles.storeItem}>
@@ -67,7 +46,7 @@ const CartContainer = () => {
           >
             <Text style={LocalStyles.storeItemTitle}>{item.title}</Text>
             <Text style={LocalStyles.storeItemPrice}>
-              R{item.quantity * item.price}
+              R{(item.quantity * item.price).toFixed(2)}
             </Text>
           </View>
 
@@ -119,7 +98,7 @@ const CartContainer = () => {
         renderItem={renderStoreItems}
         keyExtractor={(item) => item.id}
         ListFooterComponent={ListFooterComponent}
-        showsVerticalScrollIndicator ={false}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -219,7 +198,7 @@ const ListFooterComponent = () => {
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel",
         },
         { text: "OK", onPress: () => dispatch(clear()) },
@@ -251,7 +230,7 @@ const ListFooterComponent = () => {
               ]}
             >
               Total:
-              <Text style={styles.purpleText}> R {totalPrice}</Text>
+              <Text style={styles.purpleText}> R {totalPrice.toFixed(2)}</Text>
             </Text>
 
             <SButton
@@ -259,15 +238,15 @@ const ListFooterComponent = () => {
               onPress={() =>
                 cartTotalPriceSelector < 0
                   ? () => {
-                      ToastAndroid.showWithGravityAndOffset(
-                        `Please add something to yor cart.`,
-                        ToastAndroid.LONG,
-                        ToastAndroid.TOP,
-                        25,
-                        50
-                      );
-                      return navigation.navigate("Search");
-                    }
+                    ToastAndroid.showWithGravityAndOffset(
+                      `Please add something to yor cart.`,
+                      ToastAndroid.LONG,
+                      ToastAndroid.TOP,
+                      25,
+                      50
+                    );
+                    return navigation.navigate("Search");
+                  }
                   : navigation.navigate("Checkout")
               }
             />
