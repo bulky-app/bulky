@@ -10,17 +10,16 @@ import styles from "../globalStyles";
 import Modal from "../components/Modal";
 import Parse from "../../backend/server";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { useCallback, useState } from "react";
 import ProfileCard, { styless } from "../components/ProfileCard";
 import { Ionicons, Feather, SimpleLineIcons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+import { useFocusEffect, useIsFocused, useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
 
-  const [error, seterror] = useState();
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
   const [walletBalance, setWalletBalance] = useState();
@@ -35,30 +34,36 @@ const ProfileScreen = () => {
       subject: "Check out Bulky",
     });
 
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
-        const user = Parse.User.current();
-        setUserId(user.id);
+  const active = useIsFocused();
+
+  useFocusEffect(
+    useCallback(() => {
+      const currentUser = async () => {
         try {
-          const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
-            objectId: user.id,
-          });
-          setUser(updatedUserDetails.get("name"));
-          return setWalletBalance(
-            updatedUserDetails.get("walletBalance").toFixed(2)
-          );
-        } catch (e) {
-          setUser(user.get("name"));
-          return setWalletBalance(user.get("walletBalance").toFixed(2));
+          await Parse.User.currentAsync(); // Do not remove it Solves a certain error LOL.
+          const user = Parse.User.current();
+          setUserId(user.id);
+          try {
+            const updatedUserDetails = await Parse.Cloud.run("getUserDetails", {
+              objectId: user.id,
+            });
+            setUser(updatedUserDetails.get("name"));
+            return setWalletBalance(
+              updatedUserDetails.get("walletBalance").toFixed(2)
+            );
+          } catch (e) {
+            setUser(user.get("name"));
+            return setWalletBalance(user.get("walletBalance").toFixed(2));
+          }
+        } catch (error) {
+          setUser("No name")
+          setWalletBalance(0.00)
+          return
         }
-      } catch (error) {
-        return seterror(error);
-      }
-    };
-    currentUser();
-  }, [user]);
+      };
+      currentUser();
+    }, [active])
+  );
 
   const handleModal = () => {
     setModalVisible(!modalVisible);
@@ -66,7 +71,7 @@ const ProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
-      <StatusBar style="dark"/>
+      <StatusBar style="dark" />
       {user && (
         <View>
           <View>
