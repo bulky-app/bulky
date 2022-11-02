@@ -160,7 +160,7 @@ const Address = () => {
         return true;
       } catch (error) {
         return ToastAndroid.showWithGravityAndOffset(
-          "Connect to the internet and try again.",
+          "No internet connection.",
           ToastAndroid.LONG,
           ToastAndroid.TOP,
           25,
@@ -169,7 +169,15 @@ const Address = () => {
       } finally {
         try {
           const jsonValue = await AsyncStorage.getItem("address");
-          if (jsonValue != null) {
+          if (jsonValue == null) {
+            return ToastAndroid.showWithGravityAndOffset(
+              "Set a new address.",
+              ToastAndroid.LONG,
+              ToastAndroid.TOP,
+              25,
+              50
+            );
+          } else {
             const data = JSON.parse(jsonValue);
             setNotes(data.notes);
             setCity(data.cityName);
@@ -178,8 +186,6 @@ const Address = () => {
             setSuburb(data.suburbName);
             setStreetAddress(data.streetAddresses);
             return true;
-          } else {
-            return null;
           }
         } catch (e) {
           return e;
@@ -327,8 +333,8 @@ const Address = () => {
               onPress={(data, details = null) => {
                 setStreetAddress(
                   details.address_components[0].long_name +
-                    " " +
-                    details.address_components[1].long_name
+                  " " +
+                  details.address_components[1].long_name
                 );
                 setSuburb(details.address_components[2].long_name);
                 setCity(details.address_components[3].long_name);
