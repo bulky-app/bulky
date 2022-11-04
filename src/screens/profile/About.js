@@ -1,17 +1,18 @@
 import {
   Text,
-  StyleSheet,
-  TouchableOpacity,
   View,
   ScrollView,
+  StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import {
   Collapse,
-  CollapseHeader,
   CollapseBody,
+  CollapseHeader,
 } from "accordion-collapse-react-native";
 import styles from "../../globalStyles";
 import { StatusBar } from "expo-status-bar";
+import * as Application from 'expo-application';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const About = () => {
@@ -1042,7 +1043,7 @@ const About = () => {
         </Collapse>
       </ScrollView>
 
-      <Text style={localStyles.version}>Version: 1.0.0</Text>
+      <Text style={localStyles.version}>Version: {Application.nativeApplicationVersion}</Text>
     </SafeAreaView>
   );
 };
