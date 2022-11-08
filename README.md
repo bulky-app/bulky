@@ -12,6 +12,7 @@
 - Emailjs
 - PayFast
 - Algolia Search
+- Linking
 
 ### Device APIs
 - GPS
