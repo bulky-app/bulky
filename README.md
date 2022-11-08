@@ -6,11 +6,19 @@
 - Github : https://github.com/bulky-app/bulky
 - Packages (NPM): https://github.com/bulky-app/bulky/blob/main/package.json
 
-### APIS
+### APIs
 - NativeNotify
 - GoogleMaps (PlacesAPI, GeocodingAPI)
 - Emailjs
 - PayFast
+- Algolia Search
+
+### Device APIs
+- GPS
+- Notifications
+- Share
+- Clipboard
+- Network
 
 ### Backend
 - Back4App (Database, Auth, Storage, Cloud Funtions) : back4app.com
