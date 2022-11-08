@@ -1,5 +1,10 @@
 # Bulky - RunTime T-Errors
 
+## Running the project
+- 1. Clone 
+- 2. ```npm install```
+- 3. ```npx expo start```
+
 ### Tools
 - React Native
 - Expo
