@@ -1,7 +1,8 @@
+ <div align="center">
 # Welcome to bulky :tada:
 
 <img width="200px" src="https://github.com/bulky-app/.github/blob/main/assets/Picture1.png?raw=true" alt="bulky logo">
-
+</div>
 ## Description :pencil2:
 
 Bulky is an app designed as a platform for varsity students to buy groceries in groups. The groceries will be purchased from wholesalers at lower prices and then distributed among the students. The app allows students to register their accounts with basic information, have a wallet to load their balances, and select food items and toiletries they want to purchase within the total of their balance. Once a month, the food items will be bought from wholesalers at the lowest prices and delivered to the respective students and residences.
@@ -24,12 +25,14 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
 ## Technologies :computer:
 
 ### Core Libraries:
+
 - React Native
 - <a href="https://www.back4app.com" target="_blank">Back4App (Database, Auth, Storage, Cloud Functions)</a>
 - Native Notify
 - Expo
 
 ### APIs:
+
 - Google Maps (PlacesAPI, GeocodingAPI)
 - Emailjs
 - PayFast
@@ -37,6 +40,7 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
 - Linking
 
 ### Device APIs:
+
 - GPS
 - Notifications
 - Share
@@ -54,13 +58,45 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
             <td><img height="480" width="240" style="margin: 10px;" src="https://github.com/bulky-app/.github/blob/main/assets/2.png?raw=true" alt="User Picture 2"></td>
             <td><img height="480" width="240" style="margin: 10px;" src="https://github.com/bulky-app/.github/blob/main/assets/3.png?raw=true" alt="User Picture 3"></td>
         </tr>
-        <!-- Add more rows and images here -->
+        <tr>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/5.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/6.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/7.png?raw=true" /></td>
+                    </tr>
+                    <tr>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/9.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/10.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/11.png?raw=true" /></td>
+                    </tr>
+                    <tr>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/12.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/13.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/15.png?raw=true" /></td>
+                    </tr>
+                    <tr>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/16.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/17.png?raw=true" /></td>
+                        <td><img height=480 width=240 style="margin: 10px;"
+                                src="https://github.com/bulky-app/.github/blob/main/assets/18.png?raw=true" /></td>
+                    </tr>
     </tbody>
 </table>
 
 ### Video Demo :clapper:
 
 <video autoplay muted height="480" width="240" style="margin: 10px;" src="https://github.com/bulky-app/.github/raw/main/assets/2023_07_22_00_30_47.mp4"></video>
+[Click here to watch the video demo](https://github.com/bulky-app/.github/raw/main/assets/2023_07_22_00_30_47.mp4)
 
 ## Links :link:
 
@@ -76,4 +112,6 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
 - <a href="https://github.com/BMakgopa">@Ofentse Bethuel</a> - UX, Dev
 - <a href="https://github.com/junior-03">@Junior</a> - UX, Dev
 
+ <div align="center">
 Thank you for viewing our project! If you have any questions, you can contact us via the email on the landing page or through <a href="https://github.com/Axolem">@Axole's profile</a>. :smiley:
+</div>
