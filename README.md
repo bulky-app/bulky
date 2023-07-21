@@ -1,8 +1,12 @@
  <div align="center">
+
 # Welcome to bulky :tada:
 
+<br/>
 <img width="200px" src="https://github.com/bulky-app/.github/blob/main/assets/Picture1.png?raw=true" alt="bulky logo">
 </div>
+
+
 ## Description :pencil2:
 
 Bulky is an app designed as a platform for varsity students to buy groceries in groups. The groceries will be purchased from wholesalers at lower prices and then distributed among the students. The app allows students to register their accounts with basic information, have a wallet to load their balances, and select food items and toiletries they want to purchase within the total of their balance. Once a month, the food items will be bought from wholesalers at the lowest prices and delivered to the respective students and residences.
