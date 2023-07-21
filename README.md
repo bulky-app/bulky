@@ -55,6 +55,8 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
 
 ### User Pictures :camera:
 
+ <div align="center">
+
 <table>
     <tbody>
         <tr>
@@ -96,6 +98,8 @@ Bulky is an app designed as a platform for varsity students to buy groceries in 
                     </tr>
     </tbody>
 </table>
+
+</div>
 
 ### Video Demo :clapper:
 
